@@ -1,0 +1,16 @@
+//Import all .scss files here
+@import "seminar/Seminar";
+
+$default-font: 'Roboto', sans-serif;
+$header-font: 'Roboto Slab', serif;
+$font-color: #05EB8C;
+
+body {
+  margin: 20px;
+  font-family: $default-font;
+}
+
+h1, h2, h3, h4 {
+  color: $font-color;
+  font-family: $header-font;
+}
