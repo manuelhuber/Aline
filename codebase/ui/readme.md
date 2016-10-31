@@ -1,5 +1,5 @@
 # "Welcome! My Name is Aline."
-======================
+![](src/assets/aline_500x500.png?raw=true)
 "I am a web app for managing the seminars of the company MaibornWolff. 
 I help Users to create and maintenance seminars, see all available seminars and book them."
 
