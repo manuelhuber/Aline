@@ -10,7 +10,7 @@ module.exports = {
     //An array of files which will be run at startup
     entry: [
         'babel-polyfill',
-        './src/app'
+        './src/app',
     ],
     //Tells the webpack-dev-server where to serve compiled files from
     //We tell it to build the single file app.bundle.js,
@@ -37,12 +37,18 @@ module.exports = {
             //Sass
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap')
-            }
+                loader: ExtractTextPlugin.extract('style', 'css!sass')
+            },
+            //images
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader: "file-loader?name=assets/[name].[ext]"
+            },
+
         ]
     },
     plugins: [
-        new ExtractTextPlugin('src/style.css', {
+        new ExtractTextPlugin('style.css', {
             allChunks: true
         })
     ],
