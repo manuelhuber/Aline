@@ -1,0 +1,28 @@
+server:
+  contextPath: /api
+
+spring:
+  jpa:
+    show-sql: true
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  devtools:
+    livereload:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: DEBUG
+
+token:
+  secret: foobar123
+  header: X-Auth-Token
+  expiration: 604800
+route:
+  authentication: auth
+  protected: protected
+  refresh: refresh

@@ -5,6 +5,6 @@ package de.fh.rosenheim.security;
  */
 public class Roles {
 
-    public static final String DIVISION_HEAD = "ROLE_DIVISION_HEAD";
-    public static final String STAFF = "STAFF";
+    public static final String DIVISION_HEAD = "DIVISION_HEAD";
+    public static final String USER = "USER";
 }
