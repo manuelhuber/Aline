@@ -1,6 +1,5 @@
 package de.fh.rosenheim.security;
 
-import de.fh.rosenheim.security.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
