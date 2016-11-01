@@ -22,7 +22,11 @@ public class SecurityUser implements UserDetails {
     private Boolean credentialsNonExpired = true;
     private Boolean enabled = true;
 
-    public SecurityUser(Long id, String username, String password, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+    public SecurityUser(Long id,
+                        String username,
+                        String password,
+                        Date lastPasswordReset,
+                        Collection<? extends GrantedAuthority> authorities) {
         this.setId(id);
         this.setUsername(username);
         this.setPassword(password);

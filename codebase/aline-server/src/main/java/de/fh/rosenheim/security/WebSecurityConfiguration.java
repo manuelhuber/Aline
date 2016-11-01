@@ -1,7 +1,5 @@
 package de.fh.rosenheim.security;
 
-import de.fh.rosenheim.security.AuthenticationTokenFilter;
-import de.fh.rosenheim.security.EntryPointUnauthorizedHandler;
 import de.fh.rosenheim.security.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
