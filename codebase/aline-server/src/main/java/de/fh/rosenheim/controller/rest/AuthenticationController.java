@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("${route.authentication}")
@@ -58,7 +60,7 @@ public class AuthenticationController {
         String token = this.tokenUtils.generateToken(userDetails);
 
         // Return the token
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        return ResponseEntity.ok(new AuthenticationResponse(token, getAuthoritiesFromUser(userDetails)));
     }
 
     @RequestMapping(value = "${route.refresh}", method = RequestMethod.GET)
@@ -68,9 +70,16 @@ public class AuthenticationController {
         SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
         if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(new AuthenticationResponse(refreshedToken, getAuthoritiesFromUser(user)));
         } else {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    private String[] getAuthoritiesFromUser(UserDetails userDetails) {
+        List<String> authoritiesList = new ArrayList<>();
+        userDetails.getAuthorities().forEach(o -> authoritiesList.add(o.getAuthority()));
+        String[] authoritiesArray = new String[authoritiesList.size()];
+        return authoritiesList.toArray(authoritiesArray);
     }
 }
