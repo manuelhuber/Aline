@@ -1,5 +1,6 @@
 server:
   contextPath: /api
+  port: 8008
 
 spring:
   jpa:
