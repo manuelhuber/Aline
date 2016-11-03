@@ -1,6 +1,8 @@
-import {SeminarList} from './seminar/SeminarList';
+import {SeminarList} from './components/seminar/SeminarList';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'whatwg-fetch'; //Github fetch
+import {loginUser, seminarService} from "./services/LoginService";
 
 require("./App.scss");
 var url = require("./assets/aline_500x500.png");
@@ -8,7 +10,9 @@ var url = require("./assets/aline_500x500.png");
 class App extends React.Component {
     constructor() {
         super();
-        this.state = {hello: 'Hello, I am Aline.'}
+        this.state = {hello: 'Hello, I am Aline.'};
+        loginUser('admin', 'admin');
+        window.setTimeout(seminarService, 5000);
     }
 
     render() {
