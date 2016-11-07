@@ -1,4 +1,4 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.impl;
 
 import de.fh.rosenheim.domain.entity.User;
 import de.fh.rosenheim.model.factory.SecurityUserFactory;

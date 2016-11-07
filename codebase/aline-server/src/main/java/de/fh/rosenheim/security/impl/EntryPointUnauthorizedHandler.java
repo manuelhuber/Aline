@@ -1,4 +1,4 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.impl;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

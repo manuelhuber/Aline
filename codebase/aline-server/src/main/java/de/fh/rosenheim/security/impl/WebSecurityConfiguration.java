@@ -1,4 +1,4 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private SecurityService securityService;
+    private SecurityServiceImpl securityService;
 
     /**
      * Adds our UserDetailsService to the AuthenticationManagerBuilder. This way the AuthenticationManager can
@@ -60,7 +60,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SecurityService securityService() {
+    public SecurityServiceImpl securityService() {
         return this.securityService;
     }
 

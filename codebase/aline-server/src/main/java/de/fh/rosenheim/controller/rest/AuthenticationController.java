@@ -3,7 +3,7 @@ package de.fh.rosenheim.controller.rest;
 import de.fh.rosenheim.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.model.security.SecurityUser;
-import de.fh.rosenheim.security.TokenUtils;
+import de.fh.rosenheim.security.utils.TokenUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

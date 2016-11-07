@@ -1,8 +1,7 @@
 package de.fh.rosenheim.repository;
 
 import de.fh.rosenheim.domain.entity.User;
-import de.fh.rosenheim.repository.UserRepository;
-import de.fh.rosenheim.security.Roles;
+import de.fh.rosenheim.security.utils.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

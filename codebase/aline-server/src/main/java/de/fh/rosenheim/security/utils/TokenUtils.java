@@ -1,4 +1,4 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.utils;
 
 import de.fh.rosenheim.model.security.SecurityUser;
 import io.jsonwebtoken.Claims;

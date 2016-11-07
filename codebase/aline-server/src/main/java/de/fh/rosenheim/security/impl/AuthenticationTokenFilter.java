@@ -1,5 +1,6 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.impl;
 
+import de.fh.rosenheim.security.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

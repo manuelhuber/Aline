@@ -1,4 +1,4 @@
-package de.fh.rosenheim.security;
+package de.fh.rosenheim.security.utils;
 
 /**
  * Created by Manuel on 21.10.2016.
