@@ -26,7 +26,7 @@ public class User extends DomainBase {
     private Long id;
     private String username;
     private String password;
-    private String email;
+    private String division;
     private Date lastPasswordReset;
     private Date lastLogout;
     private String authorities;
