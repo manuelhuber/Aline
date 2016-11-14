@@ -28,15 +28,25 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
      */
     @PostConstruct
     private void addUsers() {
-        User staff = User.builder()
-                .username("user")
-                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC")
+        User fitStaff = User.builder()
+                .username("fituser")
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
                 .authorities(Roles.USER)
+                .division("FIT")
                 .build();
-        User admin = User.builder()
+
+        User losStaff = User.builder()
+                .username("losuser")
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
+                .authorities(Roles.USER)
+                .division("LOS")
+                .build();
+
+        User fitDivisonHead = User.builder()
                 .username("admin")
-                .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi")
-                .authorities(Roles.DIVISION_HEAD)
+                .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi") // admin
+                .authorities(Roles.USER + ',' + Roles.DIVISION_HEAD)
+                .division("FIT")
                 .build();
 
         Calendar calendar = Calendar.getInstance();
@@ -49,6 +59,6 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .lastPasswordReset(date)
                 .build();
 
-        userRepository.save(asList(staff, admin, expired));
+        userRepository.save(asList(losStaff, fitStaff, fitDivisonHead, expired));
     }
 }
