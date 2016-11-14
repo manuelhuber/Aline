@@ -4,6 +4,7 @@ import de.fh.rosenheim.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.model.security.SecurityUser;
 import de.fh.rosenheim.security.utils.TokenUtils;
+import de.fh.rosenheim.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,9 @@ public class AuthenticationController {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest)
             throws AuthenticationException {
@@ -63,6 +67,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponse(token, getAuthoritiesFromUser(userDetails)));
     }
 
+    /**
+     * Sends a new token, if the old one is valid without the need for username & password
+     */
     @RequestMapping(value = "${route.refresh}", method = RequestMethod.GET)
     public ResponseEntity<?> authenticationRequest(HttpServletRequest request) {
         String token = request.getHeader(this.tokenHeader);
@@ -71,6 +78,22 @@ public class AuthenticationController {
         if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
             return ResponseEntity.ok(new AuthenticationResponse(refreshedToken, getAuthoritiesFromUser(user)));
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    /**
+     * Logs the user out, making all tokens granted before the logout invalid
+     */
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String token = request.getHeader(this.tokenHeader);
+        String username = this.tokenUtils.getUsernameFromToken(token);
+        SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
+        if (this.tokenUtils.validateToken(token, user)) {
+            this.userService.logout(username);
+            return ResponseEntity.ok(null);
         } else {
             return ResponseEntity.badRequest().body(null);
         }

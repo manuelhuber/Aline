@@ -12,6 +12,7 @@ public class SecurityUserFactory {
                 user.getUsername(),
                 user.getPassword(),
                 user.getLastPasswordReset(),
+                user.getLastLogout(),
                 AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthorities())
         );
     }

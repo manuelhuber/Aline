@@ -87,6 +87,10 @@ public class TokenUtils {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
+    private Boolean isCreatedBeforeLastLogout(Date created, Date lastLogout) {
+        return (lastLogout != null && created.before(lastLogout));
+    }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", userDetails.getUsername());
@@ -126,6 +130,7 @@ public class TokenUtils {
         final Date created = this.getCreatedDateFromToken(token);
         return (username.equals(user.getUsername()) &&
                 !this.isTokenExpired(token) &&
-                !this.isCreatedBeforeLastPasswordReset(created, user.getLastPasswordReset()));
+                !this.isCreatedBeforeLastPasswordReset(created, user.getLastPasswordReset()) &&
+                !this.isCreatedBeforeLastLogout(created, user.getLastLogout()));
     }
 }
