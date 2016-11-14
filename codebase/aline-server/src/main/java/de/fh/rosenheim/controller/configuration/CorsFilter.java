@@ -1,4 +1,4 @@
-package de.fh.rosenheim.controller;
+package de.fh.rosenheim.controller.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

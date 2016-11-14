@@ -47,7 +47,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest)
+    public ResponseEntity<AuthenticationResponse> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest)
             throws AuthenticationException {
 
         // Perform the authentication
@@ -71,7 +71,7 @@ public class AuthenticationController {
      * Sends a new token, if the old one is valid without the need for username & password
      */
     @RequestMapping(value = "${route.refresh}", method = RequestMethod.GET)
-    public ResponseEntity<?> authenticationRequest(HttpServletRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticationRequest(HttpServletRequest request) {
         String token = request.getHeader(this.tokenHeader);
         String username = this.tokenUtils.getUsernameFromToken(token);
         SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
