@@ -7,6 +7,9 @@ This Project uses Lombok which auto-generates boilerplate code (like getter and 
 - Add CORS urls as necessary in the corsConfigurer function
 - The PersistenceConfiguration adds users (for development purposes) - You probably don't want those going live
 
+### Good to know:
+- Swagger Url: ${serveraddress}/${contextPath}/swagger-ui.html
+
 
     |-- java
         |-- AlineServerApplication.java  <- Main
