@@ -27,3 +27,4 @@ route:
   authentication: auth
   protected: protected
   refresh: refresh
+  logout: logout

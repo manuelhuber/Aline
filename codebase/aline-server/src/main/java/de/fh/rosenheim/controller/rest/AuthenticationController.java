@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+
+import static de.fh.rosenheim.util.UserUtil.getAuthorityStringsAsArray;
 
 @RestController
 @RequestMapping("${route.authentication}")
@@ -64,7 +64,7 @@ public class AuthenticationController {
         String token = this.tokenUtils.generateToken(userDetails);
 
         // Return the token
-        return ResponseEntity.ok(new AuthenticationResponse(token, getAuthoritiesFromUser(userDetails)));
+        return ResponseEntity.ok(new AuthenticationResponse(token, getAuthorityStringsAsArray(userDetails)));
     }
 
     /**
@@ -77,7 +77,7 @@ public class AuthenticationController {
         SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
         if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return ResponseEntity.ok(new AuthenticationResponse(refreshedToken, getAuthoritiesFromUser(user)));
+            return ResponseEntity.ok(new AuthenticationResponse(refreshedToken, getAuthorityStringsAsArray(user)));
         } else {
             return ResponseEntity.badRequest().body(null);
         }
@@ -86,7 +86,7 @@ public class AuthenticationController {
     /**
      * Logs the user out, making all tokens granted before the logout invalid
      */
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "${route.logout}", method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpServletRequest request) {
         String token = request.getHeader(this.tokenHeader);
         String username = this.tokenUtils.getUsernameFromToken(token);
@@ -99,10 +99,4 @@ public class AuthenticationController {
         }
     }
 
-    private String[] getAuthoritiesFromUser(UserDetails userDetails) {
-        List<String> authoritiesList = new ArrayList<>();
-        userDetails.getAuthorities().forEach(o -> authoritiesList.add(o.getAuthority()));
-        String[] authoritiesArray = new String[authoritiesList.size()];
-        return authoritiesList.toArray(authoritiesArray);
-    }
 }
