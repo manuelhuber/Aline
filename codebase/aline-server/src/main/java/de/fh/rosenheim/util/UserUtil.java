@@ -5,9 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Manuel on 15.11.2016.
- */
 public class UserUtil {
 
     public static String[] getAuthorityStringsAsArray(UserDetails userDetails) {
