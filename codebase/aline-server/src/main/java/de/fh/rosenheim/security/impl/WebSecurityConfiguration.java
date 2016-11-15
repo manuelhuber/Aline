@@ -74,11 +74,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Login
                 .antMatchers("/auth/**").permitAll()
+                // Swagger
                 .antMatchers("/swagger**").permitAll()
+                // Swagger
                 .antMatchers("/configuration/**").permitAll()
+                // Swagger
                 .antMatchers("/v2/**").permitAll()
+                // H2 database web interface
+                .antMatchers("/console/**").permitAll()
                 .anyRequest().authenticated();
+
+        // TODO: This is needed to use the web console for the h2 Database. Not quite sure yet if this should be
+        // disabled for production
+        httpSecurity.headers().frameOptions().disable();
+
 
         // Custom JWT based authentication
         httpSecurity
