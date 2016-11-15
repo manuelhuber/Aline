@@ -1,7 +1,7 @@
 package de.fh.rosenheim.repository;
 
 import de.fh.rosenheim.domain.entity.User;
-import de.fh.rosenheim.security.utils.Roles;
+import de.fh.rosenheim.security.utils.Authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -31,21 +31,21 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         User fitStaff = User.builder()
                 .username("fituser")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
-                .authorities(Roles.USER)
+                .authorities(Authorities.EMPLOYEE)
                 .division("FIT")
                 .build();
 
         User losStaff = User.builder()
                 .username("losuser")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
-                .authorities(Roles.USER)
+                .authorities(Authorities.EMPLOYEE)
                 .division("LOS")
                 .build();
 
         User fitDivisonHead = User.builder()
                 .username("admin")
                 .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi") // admin
-                .authorities(Roles.USER + ',' + Roles.DIVISION_HEAD)
+                .authorities(Authorities.EMPLOYEE + ',' + Authorities.DIVISION_HEAD)
                 .division("FIT")
                 .build();
 
@@ -55,7 +55,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         User expired = User.builder()
                 .username("expired")
                 .password("$2a$10$PZ.A0IuNG958aHnKDzILyeD9k44EOi1Ny0VlAn.ygrGcgmVcg8PRK")
-                .authorities(Roles.USER)
+                .authorities(Authorities.EMPLOYEE)
                 .lastPasswordReset(date)
                 .build();
 

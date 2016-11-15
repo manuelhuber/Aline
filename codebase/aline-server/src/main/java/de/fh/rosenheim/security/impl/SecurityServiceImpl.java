@@ -1,7 +1,7 @@
 package de.fh.rosenheim.security.impl;
 
 import de.fh.rosenheim.security.interfaces.SecurityService;
-import de.fh.rosenheim.security.utils.Roles;
+import de.fh.rosenheim.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,6 @@ public class SecurityServiceImpl implements SecurityService {
      */
     public Boolean hasProtectedAccess() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .contains(new SimpleGrantedAuthority(Roles.DIVISION_HEAD));
+                .contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
     }
 }

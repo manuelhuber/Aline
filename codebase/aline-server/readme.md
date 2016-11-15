@@ -6,3 +6,15 @@ This Project uses Lombok which auto-generates boilerplate code (like getter and 
 - Change the secret in the properties
 - Add CORS urls as necessary in the corsConfigurer function
 - The PersistenceConfiguration adds users (for development purposes) - You probably don't want those going live
+
+
+    |-- java
+        |-- AlineServerApplication.java  <- Main
+        |-- controller                   <- Rest Endpoints   
+        |-- domain                       <- Domain models
+        |-- model                        <- Technical models
+        |-- repository                   <- Data access
+        |-- security                     <- Authentication/Authorication
+        |-- service                      <- Buisness Logic
+    |-- resources
+        |-- application.yml              <- Configuration
