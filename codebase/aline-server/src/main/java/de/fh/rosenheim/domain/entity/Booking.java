@@ -15,18 +15,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
+@IdClass(BookingKey.class)
 public class Booking {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "seminar_id")
+    @Id
     private Seminar seminar;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Id
     private User user;
 
     private BookingStatus status;
