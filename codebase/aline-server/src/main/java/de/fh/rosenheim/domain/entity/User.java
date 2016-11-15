@@ -1,10 +1,8 @@
 package de.fh.rosenheim.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.fh.rosenheim.domain.base.DomainBase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,9 +23,12 @@ public class User extends DomainBase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
+    @Getter(onMethod = @__(@JsonIgnore))
     private String password;
     private String division;
+    @Getter(onMethod = @__(@JsonIgnore))
     private Date lastPasswordReset;
+    @Getter(onMethod = @__(@JsonIgnore))
     private Date lastLogout;
     private String authorities;
 }
