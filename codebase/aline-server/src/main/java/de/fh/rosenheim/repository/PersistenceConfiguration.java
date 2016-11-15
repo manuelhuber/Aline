@@ -1,5 +1,8 @@
 package de.fh.rosenheim.repository;
 
+import de.fh.rosenheim.domain.entity.Booking;
+import de.fh.rosenheim.domain.entity.BookingStatus;
+import de.fh.rosenheim.domain.entity.Seminar;
 import de.fh.rosenheim.domain.entity.User;
 import de.fh.rosenheim.security.utils.Authorities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,17 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SeminarRepository seminarRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
     /**
-     * Add dummy users
+     * Add dummy data
      */
     @PostConstruct
-    private void addUsers() {
+    private void addData() {
         User fitStaff = User.builder()
                 .username("fituser")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
@@ -60,5 +69,27 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .build();
 
         userRepository.save(asList(losStaff, fitStaff, fitDivisonHead, expired));
+        Seminar seminar1 = Seminar.builder()
+                .name("Programmieren 101")
+                .description("Alles was man wissen muss")
+                .trainer("Joe")
+                .build();
+
+        Seminar seminar2 = Seminar.builder()
+                .name("Kundengespräche führen")
+                .description("Wenig reden, viel sagen")
+                .trainer("Peter")
+                .build();
+
+        seminarRepository.save(asList(seminar1, seminar2));
+
+        Booking booking = Booking.builder()
+                .seminar(seminar1)
+                .user(losStaff)
+                .status(BookingStatus.REQUESTED)
+                .build();
+
+        bookingRepository.save(booking);
+
     }
 }

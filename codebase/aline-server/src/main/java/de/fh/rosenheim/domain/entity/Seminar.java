@@ -1,7 +1,10 @@
 package de.fh.rosenheim.domain.entity;
 
 import de.fh.rosenheim.domain.base.DomainBase;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +12,11 @@ import java.util.Date;
 @Entity
 @Table(name = "trainings")
 @Data
+@Builder()
+// Needed for Hibernate
+@NoArgsConstructor
+// Needed for builder
+@AllArgsConstructor
 public class Seminar extends DomainBase {
 
     private static final long serialVersionUID = 2353528359632158741L;

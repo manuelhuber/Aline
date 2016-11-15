@@ -1,6 +1,8 @@
 package de.fh.rosenheim.controller.rest;
 
+import de.fh.rosenheim.domain.entity.Booking;
 import de.fh.rosenheim.domain.entity.User;
+import de.fh.rosenheim.repository.BookingRepository;
 import de.fh.rosenheim.repository.UserRepository;
 import de.fh.rosenheim.security.impl.SecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class ProtectedController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BookingRepository bookingRepository;
+
     /**
      * This is an example of some different kinds of granular restriction for endpoints. You can use the built-in SPEL
      * expressions in @PreAuthorize such as 'hasRole()' to determine if a user has access. However, if you require
@@ -40,5 +45,10 @@ public class ProtectedController {
 //    @PreAuthorize("@securityService.hasProtectedAccess()")
     public User user(@PathVariable int id) {
         return userRepository.findOne((long) id);
+    }
+
+    @RequestMapping(value = "/booking/{id}", method = RequestMethod.GET)
+    public Booking booking(@PathVariable int id) {
+        return bookingRepository.findOne((long) id);
     }
 }
