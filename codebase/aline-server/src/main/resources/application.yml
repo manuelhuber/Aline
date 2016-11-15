@@ -22,9 +22,11 @@ logging:
 token:
   secret: foobar123
   header: X-Auth-Token
-  expiration: 604800
+#  86400000 = 1 day
+  expiration: 86400000
 route:
-  authentication: auth
-  protected: protected
-  refresh: refresh
-  logout: logout
+  authentication:
+    base: auth
+    login: login
+    refresh: refresh
+    logout: logout

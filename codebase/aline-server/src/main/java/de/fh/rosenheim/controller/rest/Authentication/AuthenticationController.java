@@ -1,4 +1,4 @@
-package de.fh.rosenheim.controller.rest;
+package de.fh.rosenheim.controller.rest.Authentication;
 
 import de.fh.rosenheim.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.model.json.response.AuthenticationResponse;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import static de.fh.rosenheim.util.UserUtil.getAuthorityStringsAsArray;
 
 @RestController
-@RequestMapping("${route.authentication}")
+@RequestMapping("${route.authentication.base}")
 public class AuthenticationController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -46,7 +46,7 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "${route.authentication.login}", method = RequestMethod.POST)
     public ResponseEntity<AuthenticationResponse> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest)
             throws AuthenticationException {
 
@@ -70,7 +70,7 @@ public class AuthenticationController {
     /**
      * Sends a new token, if the old one is valid without the need for username & password
      */
-    @RequestMapping(value = "${route.refresh}", method = RequestMethod.GET)
+    @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
     public ResponseEntity<AuthenticationResponse> authenticationRequest(HttpServletRequest request) {
         String token = request.getHeader(this.tokenHeader);
         String username = this.tokenUtils.getUsernameFromToken(token);
@@ -86,7 +86,7 @@ public class AuthenticationController {
     /**
      * Logs the user out, making all tokens granted before the logout invalid
      */
-    @RequestMapping(value = "${route.logout}", method = RequestMethod.POST)
+    @RequestMapping(value = "${route.authentication.logout}", method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpServletRequest request) {
         String token = request.getHeader(this.tokenHeader);
         String username = this.tokenUtils.getUsernameFromToken(token);
@@ -98,5 +98,4 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
 }
