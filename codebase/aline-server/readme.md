@@ -7,8 +7,11 @@ This Project uses Lombok which auto-generates boilerplate code (like getter and 
 Spring Boot uses by default (if nothing else is configured) a embedded H2 database.
 You can access the DB console via `${serveraddress}/${contextPath}/console `. Default JDBC URL is `jdbc:h2:mem:testdb`, user is `sa` with empty password
 
+##### Swagger
+Url: ${serveraddress}/${contextPath}/swagger-ui.html
+
 ##### Project structure:
-- Swagger Url: ${serveraddress}/${contextPath}/swagger-ui.html
+
 
 
     |-- java
