@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "bookings")
@@ -15,19 +17,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
-@IdClass(BookingKey.class)
 public class Booking {
 
-    @ManyToOne
-    @JoinColumn(name = "seminar_id")
-    @Id
-    private Seminar seminar;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @Id
-    private User user;
-
+    @EmbeddedId
+    private BookingKey bookingKey;
     private BookingStatus status;
-
 }
