@@ -14,6 +14,9 @@ public class AlineServerApplication {
     }
 
     @Bean
+    /**
+     * Allows the inspection of the h2 database via browser
+     */
     public ServletRegistrationBean h2servletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
         registration.addUrlMappings("/console/*");

@@ -90,7 +90,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // disabled for production
         httpSecurity.headers().frameOptions().disable();
 
-
         // Custom JWT based authentication
         httpSecurity
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
