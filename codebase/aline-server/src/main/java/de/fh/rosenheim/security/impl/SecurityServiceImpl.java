@@ -1,5 +1,6 @@
 package de.fh.rosenheim.security.impl;
 
+import de.fh.rosenheim.model.security.SecurityUser;
 import de.fh.rosenheim.security.interfaces.SecurityService;
 import de.fh.rosenheim.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,5 +20,16 @@ public class SecurityServiceImpl implements SecurityService {
     public Boolean hasProtectedAccess() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
+    }
+
+    /**
+     * Users only get access to own data
+     * Division Heads get access in generall
+     */
+    public boolean divisionHeadOrSelf(SecurityUser currentUser, Long userId) {
+        System.out.println(currentUser.getAuthorities().toString());
+        return currentUser != null
+                && (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD))
+                || currentUser.getId().equals(userId));
     }
 }

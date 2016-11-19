@@ -41,8 +41,8 @@ public class ProtectedController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    @PostAuthorize("returnObject==null?false:returnObject.id == principal.id")
-//    @PreAuthorize("@securityService.hasProtectedAccess()")
+    @PreAuthorize("@securityService.divisionHeadOrSelf(principal, #id)")
+    @PostAuthorize("returnObject.division == principal.division")
     public User user(@PathVariable int id) {
         return userRepository.findOne((long) id);
     }

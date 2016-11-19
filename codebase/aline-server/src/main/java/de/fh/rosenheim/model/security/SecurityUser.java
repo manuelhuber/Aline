@@ -16,6 +16,7 @@ public class SecurityUser implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private String division;
     private Date lastPasswordReset;
     private Date lastLogout;
     private Collection<? extends GrantedAuthority> authorities;
@@ -27,12 +28,14 @@ public class SecurityUser implements UserDetails {
     public SecurityUser(Long id,
                         String username,
                         String password,
+                        String division,
                         Date lastPasswordReset,
                         Date lastLogout,
                         Collection<? extends GrantedAuthority> authorities) {
         this.setId(id);
         this.setUsername(username);
         this.setPassword(password);
+        this.setDivision(division);
         this.setLastPasswordReset(lastPasswordReset);
         this.setLastLogout(lastLogout);
         this.setAuthorities(authorities);
