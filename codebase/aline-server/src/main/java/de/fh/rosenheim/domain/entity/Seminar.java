@@ -1,17 +1,22 @@
 package de.fh.rosenheim.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.fh.rosenheim.domain.base.DomainBase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "seminars")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"bookings" })
+@EqualsAndHashCode(callSuper = true, exclude = {"bookings" })
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
@@ -43,4 +48,16 @@ public class Seminar extends DomainBase {
     private String regularCycle;
     private String dates;
     private Date creationDate;
+
+    @Getter(onMethod = @__(@JsonIgnore))
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seminar", orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Booking> bookings = new HashSet<>();
+
+    public void addBooking(Booking booking) {
+        if (this.bookings == null) {
+            this.bookings = new HashSet<>();
+        }
+        this.bookings.add(booking);
+    }
 }

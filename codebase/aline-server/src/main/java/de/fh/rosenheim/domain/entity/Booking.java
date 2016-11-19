@@ -1,25 +1,32 @@
 package de.fh.rosenheim.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import de.fh.rosenheim.domain.base.DomainBase;
+import lombok.*;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "bookings")
-@Data
+@Getter
+@Setter
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
-public class Booking {
+public class Booking extends DomainBase {
 
-    @EmbeddedId
-    private BookingKey bookingKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USERID", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SEMINARID", nullable = false)
+    private Seminar seminar;
+
     private BookingStatus status;
 }

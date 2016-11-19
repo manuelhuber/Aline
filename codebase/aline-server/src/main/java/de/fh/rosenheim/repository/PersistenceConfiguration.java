@@ -1,6 +1,9 @@
 package de.fh.rosenheim.repository;
 
-import de.fh.rosenheim.domain.entity.*;
+import de.fh.rosenheim.domain.entity.Booking;
+import de.fh.rosenheim.domain.entity.BookingStatus;
+import de.fh.rosenheim.domain.entity.Seminar;
+import de.fh.rosenheim.domain.entity.User;
 import de.fh.rosenheim.security.utils.Authorities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -72,7 +75,6 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .lastPasswordReset(date)
                 .build();
 
-        userRepository.save(asList(losStaff, fitStaff, fitDivisonHead, expired, front_office));
         Seminar seminar1 = Seminar.builder()
                 .name("Programmieren 101")
                 .description("Alles was man wissen muss")
@@ -85,21 +87,25 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .trainer("Peter")
                 .build();
 
-        seminarRepository.save(asList(seminar1, seminar2));
 
         Booking booking1 = Booking.builder()
-                .bookingKey(BookingKey.builder().seminar(seminar1).user(losStaff).build())
-                .status(BookingStatus.REQUESTED)
-                .build();
-        Booking booking2 = Booking.builder()
-                .bookingKey(BookingKey.builder().seminar(seminar2).user(losStaff).build())
-                .status(BookingStatus.REQUESTED)
-                .build();
-        Booking booking3 = Booking.builder()
-                .bookingKey(BookingKey.builder().seminar(seminar1).user(fitStaff).build())
+                .seminar(seminar1)
+                .user(losStaff)
                 .status(BookingStatus.REQUESTED)
                 .build();
 
+        Booking booking2 = Booking.builder()
+                .seminar(seminar2).user(losStaff)
+                .status(BookingStatus.REQUESTED)
+                .build();
+
+        Booking booking3 = Booking.builder()
+                .seminar(seminar1).user(fitStaff)
+                .status(BookingStatus.REQUESTED)
+                .build();
+
+        seminarRepository.save(asList(seminar1, seminar2));
+        userRepository.save(asList(losStaff, fitStaff, fitDivisonHead, expired, front_office));
         bookingRepository.save(asList(booking1, booking2, booking3));
     }
 }
