@@ -30,3 +30,5 @@ route:
     login: login
     refresh: refresh
     logout: logout
+  seminar:
+    base: seminar
