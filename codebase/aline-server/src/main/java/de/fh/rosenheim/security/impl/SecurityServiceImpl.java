@@ -17,7 +17,7 @@ public class SecurityServiceImpl implements SecurityService {
     /**
      * This is a rather trivial example that could easily be done with annotations on the request.
      */
-    public Boolean isDivisionHead() {
+    public boolean isDivisionHead() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
     }
