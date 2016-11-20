@@ -35,7 +35,7 @@ public class ProtectedController {
      **/
     @RequestMapping(method = RequestMethod.GET)
 //    @PreAuthorize("hasAuthority('DIVISION_HEAD')")
-    @PreAuthorize("@securityService.hasProtectedAccess()")
+    @PreAuthorize("@securityService.isDivisionHead()")
     public ResponseEntity<?> protectedStuff() {
         return ResponseEntity.ok(":O");
     }

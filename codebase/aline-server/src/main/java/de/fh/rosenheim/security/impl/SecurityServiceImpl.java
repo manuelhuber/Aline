@@ -17,7 +17,7 @@ public class SecurityServiceImpl implements SecurityService {
     /**
      * This is a rather trivial example that could easily be done with annotations on the request.
      */
-    public Boolean hasProtectedAccess() {
+    public Boolean isDivisionHead() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
     }
@@ -27,7 +27,6 @@ public class SecurityServiceImpl implements SecurityService {
      * Division Heads get access in generall
      */
     public boolean divisionHeadOrSelf(SecurityUser currentUser, Long userId) {
-        System.out.println(currentUser.getAuthorities().toString());
         return currentUser != null
                 && (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD))
                 || currentUser.getId().equals(userId));
