@@ -1,5 +1,11 @@
 ##Development:
 
+##### Layers
+`Repositories - Database access  
+Services - Business logic  
+Controller - HTTP endpoints (and authorization)`  
+Layers should not be skipped. A controller should use a repository
+
 ##### Lombok
 This Project uses Lombok which auto-generates boilerplate code (like getter and setter). The dependency is in the gradle file but you also need a IDE plugin. There is one for every major IDE and a quick google search will give you all the infos you need to get Lombok running for your IDE of joice. 
 

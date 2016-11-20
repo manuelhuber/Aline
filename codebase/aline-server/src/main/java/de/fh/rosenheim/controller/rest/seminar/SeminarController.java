@@ -1,8 +1,9 @@
 package de.fh.rosenheim.controller.rest.seminar;
 
-import com.google.common.collect.Iterables;
 import de.fh.rosenheim.domain.entity.Seminar;
-import de.fh.rosenheim.repository.SeminarRepository;
+import de.fh.rosenheim.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.model.json.response.ErrorResponse;
+import de.fh.rosenheim.service.SeminarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,36 +14,35 @@ import org.springframework.web.bind.annotation.*;
 public class SeminarController {
 
     @Autowired
-    SeminarRepository seminarRepository;
+    SeminarService seminarService;
 
+    /**
+     * @return All seminars
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Seminar[]> getAllSeminars() {
-        return ResponseEntity.ok(Iterables.toArray(seminarRepository.findAll(), Seminar.class));
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Seminar> getSeminarById(@PathVariable long id) {
-        return ResponseEntity.ok(seminarRepository.findOne(id));
-    }
-
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-    public ResponseEntity<?> deleteSeminar(@PathVariable long id) {
-        try {
-            seminarRepository.delete(id);
-            return ResponseEntity.ok(null);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Iterable<Seminar> getAllSeminars() {
+        return seminarService.getAllSeminars();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> add(@RequestBody Seminar seminar) {
-        try {
-            // Even if the id is set in the JSON body, we ignore it and create a new seminar
-            seminar.setId(null);
-            return new ResponseEntity<>(seminarRepository.save(seminar), HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Seminar addSeminar(@RequestBody Seminar seminar) {
+        return seminarService.createNewSeminar(seminar);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Seminar getSeminarById(@PathVariable long id) throws NoObjectForIdException {
+        return seminarService.getSeminar(id);
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteSeminarById(@PathVariable long id) throws NoObjectForIdException {
+        return seminarService.deleteSeminar(id) ? ResponseEntity.ok(null) : ResponseEntity.badRequest().body(null);
+    }
+
+    @ExceptionHandler(NoObjectForIdException.class)
+    public ResponseEntity<ErrorResponse> noObjectException(NoObjectForIdException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse("No seminar with id=" + ex.getId()),
+                HttpStatus.NOT_FOUND);
     }
 }
