@@ -8,7 +8,6 @@ public class SecurityUserFactory {
 
     public static SecurityUser create(User user) {
         return new SecurityUser(
-                user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getDivision(),

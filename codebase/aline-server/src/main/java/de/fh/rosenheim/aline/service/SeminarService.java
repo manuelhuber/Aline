@@ -20,6 +20,9 @@ public class SeminarService {
         this.seminarRepository = seminarRepository;
     }
 
+    /**
+     * Returns the seminar with the given ID
+     */
     public Seminar getSeminar(long id) throws NoObjectForIdException {
         Seminar seminar = seminarRepository.findOne(id);
         if (seminar == null) {
@@ -28,32 +31,42 @@ public class SeminarService {
         return seminar;
     }
 
+    /**
+     * Returns all available seminars
+     */
     public Iterable<Seminar> getAllSeminars() {
         return seminarRepository.findAll();
     }
 
+    /**
+     * Deletes seminar with the given ID
+     */
     public void deleteSeminar(long id) throws NoObjectForIdException {
         try {
             seminarRepository.delete(id);
-            log.info(getUserName() + " deleted seminar with id " + id + "successfully");
+            log.info(currentUser() + "deleted seminar with id=" + id + " successfully");
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            log.info(getUserName() + " tried to deleted non existing seminar with id " + id);
+            log.info(currentUser() + "tried to deleted non existing seminar with id=" + id);
             throw new NoObjectForIdException(id);
         } catch (Exception e) {
-            log.error(getUserName() + " tried to deleted seminar with id " + id + " but it failed.", e);
+            log.error(currentUser() + "tried to deleted seminar with id=" + id + " but it failed.", e);
             throw e;
         }
     }
 
+    /**
+     * Creates a new seminar
+     * Will always create a new seminar, even if the given seminar already has an ID
+     */
     public Seminar createNewSeminar(Seminar seminar) {
         // Even if the id is set in the JSON body, we ignore it and create a new seminar
         seminar.setId(null);
         Seminar newSeminar = seminarRepository.save(seminar);
-        log.info(getUserName() + " created a new seminar with id " + newSeminar.getId());
+        log.info(currentUser() + "created a new seminar with id " + newSeminar.getId());
         return newSeminar;
     }
 
-    private String getUserName() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    private String currentUser() {
+        return "User with name '" + SecurityContextHolder.getContext().getAuthentication().getName() + "' ";
     }
 }

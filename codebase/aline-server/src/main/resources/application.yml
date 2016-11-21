@@ -25,6 +25,7 @@ token:
 #  86400000 = 1 day
   expiration: 86400000
 route:
+  delete: delete
   authentication:
     base: auth
     login: login

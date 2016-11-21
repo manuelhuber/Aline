@@ -26,13 +26,13 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     private String tokenHeader;
 
     /**
-     * We can't inject this via constructor since we need to manually instantiate this filter in the web config
+     * We can't inject this via constructor injection here since we need to manually instantiate this filter in the web config
      */
     @Autowired
     private TokenUtils tokenUtils;
 
     /**
-     * We can't inject this via constructor since we need to manually instantiate this filter in the web config
+     * We can't inject this via constructor injection here since we need to manually instantiate this filter in the web config
      */
     @Autowired
     private UserDetailsService userDetailsService;

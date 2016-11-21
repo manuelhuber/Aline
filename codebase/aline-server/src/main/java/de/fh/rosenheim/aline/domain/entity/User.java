@@ -27,8 +27,6 @@ public class User extends DomainBase {
     private static final long serialVersionUID = 2353528370345499815L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String username;
     @Getter(onMethod = @__(@JsonIgnore))
     private String password;

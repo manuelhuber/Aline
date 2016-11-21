@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public class SecurityUser implements UserDetails {
 
-    private Long id;
     private String username;
     private String password;
     private String division;
@@ -25,14 +24,12 @@ public class SecurityUser implements UserDetails {
     private Boolean credentialsNonExpired = true;
     private Boolean enabled = true;
 
-    public SecurityUser(Long id,
-                        String username,
+    public SecurityUser(String username,
                         String password,
                         String division,
                         Date lastPasswordReset,
                         Date lastLogout,
                         Collection<? extends GrantedAuthority> authorities) {
-        this.setId(id);
         this.setUsername(username);
         this.setPassword(password);
         this.setDivision(division);

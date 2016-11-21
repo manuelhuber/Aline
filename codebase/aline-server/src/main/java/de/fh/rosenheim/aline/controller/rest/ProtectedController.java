@@ -39,11 +39,10 @@ public class ProtectedController {
         return ResponseEntity.ok(":O");
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    @PreAuthorize("@securityService.divisionHeadOrSelf(principal, #id)")
-    @PostAuthorize("returnObject.division == principal.division")
-    public User user(@PathVariable int id) {
-        return userRepository.findOne((long) id);
+    @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
+    @PostAuthorize("@securityService.divisionHeadOrSelf(principal, returnObject)")
+    public User user(@PathVariable String name) {
+        return userRepository.findByUsername(name);
     }
 
     @RequestMapping(value = "/booking/{id}", method = RequestMethod.GET)
