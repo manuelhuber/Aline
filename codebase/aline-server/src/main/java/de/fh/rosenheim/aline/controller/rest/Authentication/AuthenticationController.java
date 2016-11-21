@@ -33,7 +33,7 @@ public class AuthenticationController {
      */
     @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
     public AuthenticationResponse authenticationRequest(HttpServletRequest request) {
-        return authenticationService.refreshToken(request.getHeader(this.tokenHeader));
+        return authenticationService.refreshToken(getToken(request));
     }
 
     /**
@@ -41,7 +41,7 @@ public class AuthenticationController {
      */
     @RequestMapping(value = "${route.authentication.logout}", method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        authenticationService.logoutUser(request.getHeader(this.tokenHeader));
+        authenticationService.logoutUser(getToken(request));
         return ResponseEntity.ok(null);
     }
 
@@ -50,5 +50,15 @@ public class AuthenticationController {
         return new ResponseEntity<>(
                 new ErrorResponse(ex.getMessage()),
                 HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Gets the token from the request header
+     *
+     * @param request HTTP request
+     * @return Token
+     */
+    private String getToken(HttpServletRequest request) {
+        return request.getHeader(this.tokenHeader);
     }
 }

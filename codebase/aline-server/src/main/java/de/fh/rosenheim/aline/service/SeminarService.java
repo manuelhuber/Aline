@@ -30,17 +30,15 @@ public class SeminarService {
         return seminarRepository.findAll();
     }
 
-    public boolean deleteSeminar(long id) throws NoObjectForIdException {
+    public void deleteSeminar(long id) throws NoObjectForIdException {
         try {
             seminarRepository.delete(id);
             log.info(getUserName() + " deleted seminar with id " + id + "successfully");
-            return true;
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             log.info(getUserName() + " tried to deleted non existing seminar with id " + id);
             throw new NoObjectForIdException(id);
         } catch (Exception e) {
             log.error(getUserName() + " tried to deleted seminar with id " + id + " but it failed.", e);
-            return false;
         }
     }
 

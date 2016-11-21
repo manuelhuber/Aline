@@ -36,7 +36,8 @@ public class SeminarController {
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     public ResponseEntity<?> deleteSeminarById(@PathVariable long id) throws NoObjectForIdException {
-        return seminarService.deleteSeminar(id) ? ResponseEntity.ok(null) : ResponseEntity.badRequest().body(null);
+        seminarService.deleteSeminar(id);
+        return ResponseEntity.ok(null);
     }
 
     @ExceptionHandler(NoObjectForIdException.class)
