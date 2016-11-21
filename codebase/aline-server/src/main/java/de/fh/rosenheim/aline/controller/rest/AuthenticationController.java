@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.controller.rest.Authentication;
+package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;

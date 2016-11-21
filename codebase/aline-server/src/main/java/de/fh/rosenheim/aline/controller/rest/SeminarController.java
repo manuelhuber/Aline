@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.controller.rest.seminar;
+package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.domain.entity.Seminar;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
@@ -40,6 +40,15 @@ public class SeminarController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Seminar getSeminarById(@PathVariable long id) throws NoObjectForIdException {
         return seminarService.getSeminar(id);
+    }
+
+    /**
+     * Update a seminar, not including bookings
+     * Properties that are not set will be set to null/0
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public Seminar updateSeminar(@PathVariable long id, @RequestBody Seminar seminar) throws NoObjectForIdException {
+        return seminarService.updateSeminar(id, seminar);
     }
 
     /**
