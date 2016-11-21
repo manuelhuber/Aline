@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.controller.configuration;
+package de.fh.rosenheim.aline.controller.filter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

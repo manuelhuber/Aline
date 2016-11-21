@@ -1,10 +1,11 @@
-package de.fh.rosenheim.aline.controller.configuration;
+package de.fh.rosenheim.aline.controller.handler;
 
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -24,5 +25,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("Something very unexpected happened"));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<?> authorizationError(Exception exception) {
+        log.error("Unhandled exception: ", exception);
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("You do not have access."));
     }
 }
