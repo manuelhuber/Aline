@@ -23,11 +23,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private SecurityServiceImpl securityService;
+    private final SecurityServiceImpl securityService;
+
+    public WebSecurityConfiguration(UserDetailsService userDetailsService, SecurityServiceImpl securityService) {
+        this.userDetailsService = userDetailsService;
+        this.securityService = securityService;
+    }
 
     /**
      * Adds our UserDetailsService to the AuthenticationManagerBuilder. This way the AuthenticationManager can
@@ -59,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SecurityServiceImpl securityService() {
+    public SecurityServiceImpl securityServicef() {
         return this.securityService;
     }
 

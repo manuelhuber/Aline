@@ -7,7 +7,6 @@ import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
 import de.fh.rosenheim.aline.service.UserService;
 import de.fh.rosenheim.aline.util.UserUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,17 +22,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private TokenUtils tokenUtils;
+    private final TokenUtils tokenUtils;
+
+    public AuthenticationService(UserService userService, TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+        this.userService = userService;
+        this.tokenUtils = tokenUtils;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+    }
 
     /**
      * Takes the login data and returns a

@@ -4,7 +4,6 @@ import de.fh.rosenheim.aline.domain.entity.Seminar;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${route.seminar.base}")
 public class SeminarController {
 
-    @Autowired
-    SeminarService seminarService;
+    private final SeminarService seminarService;
+
+    public SeminarController(SeminarService seminarService) {
+        this.seminarService = seminarService;
+    }
 
     /**
      * @return All seminars

@@ -5,7 +5,6 @@ import de.fh.rosenheim.aline.domain.entity.User;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("protected")
 public class ProtectedController {
 
-    @Autowired
-    SecurityServiceImpl securityService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final BookingRepository bookingRepository;
 
-    @Autowired
-    BookingRepository bookingRepository;
+    public ProtectedController(UserRepository userRepository, BookingRepository bookingRepository, SecurityServiceImpl securityService) {
+        this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
+    }
 
     /**
      * This is an example of some different kinds of granular restriction for endpoints. You can use the built-in SPEL

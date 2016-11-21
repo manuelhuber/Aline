@@ -5,7 +5,6 @@ import de.fh.rosenheim.aline.domain.entity.BookingStatus;
 import de.fh.rosenheim.aline.domain.entity.Seminar;
 import de.fh.rosenheim.aline.domain.entity.User;
 import de.fh.rosenheim.aline.security.utils.Authorities;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension;
@@ -23,14 +22,17 @@ import static java.util.Arrays.asList;
 @EnableJpaRepositories("de.fh.rosenheim.aline.repository")
 public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private SeminarRepository seminarRepository;
+    private final SeminarRepository seminarRepository;
 
-    @Autowired
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
+
+    public PersistenceConfiguration(UserRepository userRepository, BookingRepository bookingRepository, SeminarRepository seminarRepository) {
+        this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
+        this.seminarRepository = seminarRepository;
+    }
 
     /**
      * Add dummy data

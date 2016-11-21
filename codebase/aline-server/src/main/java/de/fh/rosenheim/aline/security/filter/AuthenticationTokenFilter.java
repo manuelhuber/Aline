@@ -25,9 +25,15 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     @Value("${token.header}")
     private String tokenHeader;
 
+    /**
+     * We can't inject this via constructor since we need to manually instantiate this filter in the web config
+     */
     @Autowired
     private TokenUtils tokenUtils;
 
+    /**
+     * We can't inject this via constructor since we need to manually instantiate this filter in the web config
+     */
     @Autowired
     private UserDetailsService userDetailsService;
 

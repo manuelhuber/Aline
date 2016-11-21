@@ -5,7 +5,6 @@ import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,11 @@ public class SeminarService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    SeminarRepository seminarRepository;
+    private final SeminarRepository seminarRepository;
+
+    public SeminarService(SeminarRepository seminarRepository) {
+        this.seminarRepository = seminarRepository;
+    }
 
     public Seminar getSeminar(long id) throws NoObjectForIdException {
         Seminar seminar = seminarRepository.findOne(id);
