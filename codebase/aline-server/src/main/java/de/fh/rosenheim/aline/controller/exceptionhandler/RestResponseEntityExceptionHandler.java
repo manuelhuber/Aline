@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.controller.handler;
+package de.fh.rosenheim.aline.controller.exceptionhandler;
 
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import org.slf4j.Logger;
