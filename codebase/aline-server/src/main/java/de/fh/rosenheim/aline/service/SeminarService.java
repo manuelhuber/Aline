@@ -41,6 +41,7 @@ public class SeminarService {
             throw new NoObjectForIdException(id);
         } catch (Exception e) {
             log.error(getUserName() + " tried to deleted seminar with id " + id + " but it failed.", e);
+            throw e;
         }
     }
 
