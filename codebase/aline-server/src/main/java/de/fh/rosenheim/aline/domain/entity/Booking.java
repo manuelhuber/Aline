@@ -21,11 +21,11 @@ public class Booking extends DomainBase {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USERID", nullable = false)
+    @JoinColumn(name = "USERNAME", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SEMINARID", nullable = false)
+    @JoinColumn(name = "SEMINAR_ID", nullable = false)
     private Seminar seminar;
 
     private BookingStatus status;
