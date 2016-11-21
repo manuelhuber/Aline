@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
  * Configuration for persistence, like creating dummy data
  */
 @Configuration
-@EnableJpaRepositories("de.fh.rosenheim.repository")
+@EnableJpaRepositories("de.fh.rosenheim.aline.repository")
 public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
 
     @Autowired
@@ -86,7 +86,6 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .description("Wenig reden, viel sagen")
                 .trainer("Peter")
                 .build();
-
 
         Booking booking1 = Booking.builder()
                 .seminar(seminar1)
