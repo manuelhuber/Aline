@@ -30,6 +30,7 @@ Url: ${serveraddress}/${contextPath}/swagger-ui.html
         |-- service                      <- Buisness Logic
     |-- resources
         |-- application.yml              <- Configuration
+The content of "security" could have been split between the other packages (i.e. services under "service" etc.) but I liked having all of the security code separate from the domain / business code. Only exception is the AuthenticationController since Swagger wants all of the controllers to be in the same package. 
 
 ##Production:
 - Change the secret in the properties

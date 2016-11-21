@@ -26,7 +26,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("de.fh.rosenheim.controller.rest"))
+                .apis(RequestHandlerSelectors.basePackage("de.fh.rosenheim.aline.controller.rest"))
                 .paths(PathSelectors.any())
                 .build()
                 .genericModelSubstitutes(ResponseEntity.class)
