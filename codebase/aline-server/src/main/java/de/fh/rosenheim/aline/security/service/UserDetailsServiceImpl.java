@@ -20,6 +20,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Authenticates the users by checking the user repository for matching entries
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findByUsername(username);

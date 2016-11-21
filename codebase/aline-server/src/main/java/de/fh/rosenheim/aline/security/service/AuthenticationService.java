@@ -16,32 +16,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by Manuel on 21.11.2016.
- */
 @Service
 public class AuthenticationService {
 
     private final UserService userService;
-
     private final AuthenticationManager authenticationManager;
-
     private final UserDetailsService userDetailsService;
-
     private final TokenUtils tokenUtils;
 
-    public AuthenticationService(UserService userService, TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
-        this.userService = userService;
-        this.tokenUtils = tokenUtils;
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
+    public AuthenticationService(UserService u, TokenUtils t, AuthenticationManager a, UserDetailsService ud) {
+        this.userService = u;
+        this.tokenUtils = t;
+        this.authenticationManager = a;
+        this.userDetailsService = ud;
     }
 
     /**
-     * Takes the login data and returns a
+     * Authenticates the user in the SecurityContext
      *
-     * @param request
-     * @return AuthenticationResponse
+     * @param request Username & Password
+     * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException if login data is invalid
      */
     public AuthenticationResponse loginUser(AuthenticationRequest request) throws AuthenticationException {
@@ -61,6 +55,13 @@ public class AuthenticationService {
         return new AuthenticationResponse(token, UserUtil.getAuthorityStringsAsArray(userDetails));
     }
 
+    /**
+     * Returns a fresh token if the given one is valid
+     *
+     * @param token
+     * @return AuthenticationResponse Token & Authorities
+     * @throws AuthenticationException If the token is no longer valid
+     */
     public AuthenticationResponse refreshToken(String token) throws AuthenticationException {
         SecurityUser user;
 
