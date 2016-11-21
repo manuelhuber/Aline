@@ -16,6 +16,7 @@ import java.util.Map;
 @Component
 public class TokenUtils {
 
+    private static final String CREATED = "created";
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Value("${token.secret}")
@@ -23,6 +24,40 @@ public class TokenUtils {
 
     @Value("${token.expiration}")
     private Long expiration;
+
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", userDetails.getUsername());
+        claims.put(CREATED, this.generateCurrentDate());
+        return this.generateToken(claims);
+    }
+
+    public Boolean canTokenBeRefreshed(String token, UserDetails userDetails) {
+        return validateToken(token, userDetails);
+    }
+
+    public String refreshToken(String token) {
+        String refreshedToken;
+        try {
+            final Claims claims = this.getClaimsFromToken(token);
+            claims.put(CREATED, this.generateCurrentDate());
+            refreshedToken = this.generateToken(claims);
+        } catch (Exception e) {
+            refreshedToken = null;
+        }
+        return refreshedToken;
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        SecurityUser user = (SecurityUser) userDetails;
+        final String username = this.getUsernameFromToken(token);
+        final Date created = this.getCreatedDateFromToken(token);
+        return (username.equals(user.getUsername()) &&
+                !this.isTokenExpired(token) &&
+                !this.isCreatedBeforeLastPasswordReset(created, user.getLastPasswordReset()) &&
+                !this.isCreatedBeforeLastLogout(created, user.getLastLogout()));
+    }
 
     public String getUsernameFromToken(String token) {
         String username;
@@ -39,7 +74,7 @@ public class TokenUtils {
         Date created;
         try {
             final Claims claims = this.getClaimsFromToken(token);
-            created = new Date((Long) claims.get("created"));
+            created = new Date((Long) claims.get(CREATED));
         } catch (Exception e) {
             created = null;
         }
@@ -91,44 +126,11 @@ public class TokenUtils {
         return (lastLogout != null && created.before(lastLogout));
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("sub", userDetails.getUsername());
-        claims.put("created", this.generateCurrentDate());
-        return this.generateToken(claims);
-    }
-
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(this.generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
-    }
-
-    public Boolean canTokenBeRefreshed(String token, UserDetails userDetails) {
-        return validateToken(token, userDetails);
-    }
-
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = this.getClaimsFromToken(token);
-            claims.put("created", this.generateCurrentDate());
-            refreshedToken = this.generateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
-    }
-
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        SecurityUser user = (SecurityUser) userDetails;
-        final String username = this.getUsernameFromToken(token);
-        final Date created = this.getCreatedDateFromToken(token);
-        return (username.equals(user.getUsername()) &&
-                !this.isTokenExpired(token) &&
-                !this.isCreatedBeforeLastPasswordReset(created, user.getLastPasswordReset()) &&
-                !this.isCreatedBeforeLastLogout(created, user.getLastLogout()));
     }
 }

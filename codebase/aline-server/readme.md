@@ -33,6 +33,7 @@ Url: ${serveraddress}/${contextPath}/swagger-ui.html
 The content of "security" could have been split between the other packages (i.e. services under "service" etc.) but I liked having all of the security code separate from the domain / business code. Only exception is the AuthenticationController since Swagger wants all of the controllers to be in the same package. 
 
 ##Production:
+- The token received from the login endpoint has to be put in the header of requests with the key "X-Auth-Token".
 - Change the secret in the properties
 - Add CORS urls as necessary in the corsConfigurer function
 - The PersistenceConfiguration adds dummy data - You probably don't want that going live
