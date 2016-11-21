@@ -62,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SecurityServiceImpl securityServicef() {
+    public SecurityServiceImpl securityService() {
         return this.securityService;
     }
 
