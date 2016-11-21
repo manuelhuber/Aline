@@ -1,5 +1,7 @@
-package de.fh.rosenheim.aline.security.impl;
+package de.fh.rosenheim.aline.security.config;
 
+import de.fh.rosenheim.aline.security.filter.AuthenticationTokenFilter;
+import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

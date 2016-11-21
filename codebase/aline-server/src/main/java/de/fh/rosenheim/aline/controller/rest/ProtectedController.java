@@ -4,7 +4,7 @@ import de.fh.rosenheim.aline.domain.entity.Booking;
 import de.fh.rosenheim.aline.domain.entity.User;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.repository.UserRepository;
-import de.fh.rosenheim.aline.security.impl.SecurityServiceImpl;
+import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;

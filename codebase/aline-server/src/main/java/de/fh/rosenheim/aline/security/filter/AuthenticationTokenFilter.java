@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.security.impl;
+package de.fh.rosenheim.aline.security.filter;
 
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
