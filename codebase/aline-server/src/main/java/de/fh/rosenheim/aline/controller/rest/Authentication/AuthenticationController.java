@@ -2,13 +2,13 @@ package de.fh.rosenheim.aline.controller.rest.Authentication;
 
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
-import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +25,9 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    /**
+     * Validates the username & password and returns a token & authorities for the user
+     */
     @RequestMapping(value = "${route.authentication.login}", method = RequestMethod.POST)
     public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
         return authenticationService.loginUser(authenticationRequest);
@@ -45,13 +48,6 @@ public class AuthenticationController {
     public ResponseEntity<?> logout(HttpServletRequest request) {
         authenticationService.logoutUser(getToken(request));
         return ResponseEntity.ok(null);
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponse> invalidLogin(AuthenticationException ex) {
-        return new ResponseEntity<>(
-                new ErrorResponse(ex.getMessage()),
-                HttpStatus.UNAUTHORIZED);
     }
 
     /**

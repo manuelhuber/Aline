@@ -32,6 +32,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<?> authorizationError(RuntimeException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponse("You do not have access."));
+                .body(new ErrorResponse(exception.getMessage()));
     }
 }
