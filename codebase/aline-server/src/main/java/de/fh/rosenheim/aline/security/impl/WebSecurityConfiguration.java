@@ -22,9 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private EntryPointUnauthorizedHandler unauthorizedHandler;
-
-    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -68,8 +65,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler)
-                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
