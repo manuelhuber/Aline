@@ -2,25 +2,14 @@ package de.fh.rosenheim.aline.controller.rest.Authentication;
 
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
-import de.fh.rosenheim.aline.model.security.SecurityUser;
-import de.fh.rosenheim.aline.security.utils.TokenUtils;
-import de.fh.rosenheim.aline.service.UserService;
-import de.fh.rosenheim.aline.util.UserUtil;
-import org.apache.log4j.Logger;
+import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
+import de.fh.rosenheim.aline.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,58 +17,23 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("${route.authentication.base}")
 public class AuthenticationController {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
-
     @Value("${token.header}")
     private String tokenHeader;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private TokenUtils tokenUtils;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private UserService userService;
+    private AuthenticationService authenticationService;
 
     @RequestMapping(value = "${route.authentication.login}", method = RequestMethod.POST)
-    public ResponseEntity<AuthenticationResponse> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest)
-            throws AuthenticationException {
-
-        // Perform the authentication
-        Authentication authentication = this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Reload password post-authentication so we can generate token
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        String token = this.tokenUtils.generateToken(userDetails);
-
-        // Return the token
-        return ResponseEntity.ok(new AuthenticationResponse(token, UserUtil.getAuthorityStringsAsArray(userDetails)));
+    public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
+        return authenticationService.loginUser(authenticationRequest);
     }
 
     /**
      * Sends a new token, if the old one is valid without the need for username & password
      */
     @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
-    public ResponseEntity<AuthenticationResponse> authenticationRequest(HttpServletRequest request) {
-        String token = request.getHeader(this.tokenHeader);
-        String username = this.tokenUtils.getUsernameFromToken(token);
-        SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
-        if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
-            String refreshedToken = this.tokenUtils.refreshToken(token);
-            return ResponseEntity.ok(new AuthenticationResponse(refreshedToken, UserUtil.getAuthorityStringsAsArray(user)));
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public AuthenticationResponse authenticationRequest(HttpServletRequest request) {
+        return authenticationService.refreshToken(request.getHeader(this.tokenHeader));
     }
 
     /**
@@ -87,14 +41,14 @@ public class AuthenticationController {
      */
     @RequestMapping(value = "${route.authentication.logout}", method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        String token = request.getHeader(this.tokenHeader);
-        String username = this.tokenUtils.getUsernameFromToken(token);
-        SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
-        if (this.tokenUtils.validateToken(token, user)) {
-            this.userService.logout(username);
-            return ResponseEntity.ok(null);
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
+        authenticationService.logoutUser(request.getHeader(this.tokenHeader));
+        return ResponseEntity.ok(null);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> invalidLogin(AuthenticationException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse(ex.getMessage()),
+                HttpStatus.UNAUTHORIZED);
     }
 }
