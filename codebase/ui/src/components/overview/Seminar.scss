@@ -1,14 +1,22 @@
 $seminar-background: #D7EB05;
 $button-color: #EB0564;
-
-.seminar-list{
-  .seminar{
-    background-color: $seminar-background;
+.seminar-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  .seminar-tile a{
+    color: $black;
+    display: inline-block;
     padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .seminar-button{
-    background-color: $button-color;
+    height: 150px;
+    width: 150px;
+    background-color: $overlayBackground;
+    box-shadow: $tileShadow;
+    margin: $spacing / 2;
+    text-align: center;
+    vertical-align: middle;
+    &:hover{
+      box-shadow: $tileShadowHover;
+      cursor: pointer;
+    }
   }
 }

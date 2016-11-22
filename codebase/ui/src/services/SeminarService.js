@@ -12,7 +12,8 @@ module.exports = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': StorageService.getUserToken()
-            }
+            },
+            body: {}
         }).then(parseJson).then(result => {
             return result
         })

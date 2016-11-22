@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'whatwg-fetch'; //Github fetch
 import {Router, Route, Link, IndexRedirect, hashHistory} from 'react-router'
-import LoginService from './services/AuthService';
+import AuthService from './services/AuthService';
 
 require('./App.scss');
 
@@ -18,7 +18,7 @@ class App extends React.Component {
 }
 
 function redirectToLogin(nextState, replace) {
-    if (!LoginService.isLoggedIn()) {
+    if (!AuthService.isLoggedIn()) {
         replace({
             pathname: '/login',
             state: {nextPathname: nextState.location.pathname}
