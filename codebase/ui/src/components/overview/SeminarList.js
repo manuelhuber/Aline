@@ -7,15 +7,24 @@ export class SeminarList extends React.Component {
     constructor() {
         super();
         this.renderSeminar = this.renderSeminar.bind(this);
+        this.saveSeminars = this.saveSeminars.bind(this);
         this.state = {
             seminars: []
         }
     }
 
     componentDidMount() {
+        let seminars = SeminarService.getAllSeminars();
+        seminars.then(
+            result => {
+                this.saveSeminars(result)
+            }
+        );
+    }
+
+    saveSeminars(result){
         this.setState({
-            //seminars: SeminarService.getAllSeminars()
-            seminars: ['Lesen', 'Javascript', 'Agiles Arbeiten', 'Foo', 'Bar', 'Bliblablubb Scharupp Didupp', 'Laber laber laber', 'So ein tolles Seminar, buche mich', 'Stuff']
+            seminars: result
         })
     }
 
@@ -32,6 +41,6 @@ export class SeminarList extends React.Component {
 
     renderSeminar(currentSeminar) {
         return <SeminarListItem seminar={currentSeminar}
-                                key={currentSeminar}/>;
+                                key={currentSeminar.id}/>;
     }
 }

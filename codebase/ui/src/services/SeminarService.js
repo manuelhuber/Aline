@@ -5,31 +5,36 @@ import StorageService from "./StorageService";
 
 module.exports = {
 
+    /**
+     * @returns {*|Promise.<TResult>} all available seminars as a promise
+     */
     getAllSeminars() {
-        fetch('http://localhost:8008/api/seminar', {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminar', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-Auth-Token': StorageService.getUserToken()
+                'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson).then(result => {
-            return result
-        })
+        }).then(parseJson)
     },
 
+    /**
+     * @param seminarId the id of the seminar to get
+     * @returns {*|Promise.<TResult>} The seminar with the given ID as a promise
+     */
     getSeminarById(seminarId){
-        fetch('http://localhost:8008/api/seminar/' + seminarId, {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminar/' + seminarId, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-Auth-Token': StorageService.getUserToken()
+                'X-Auth-Token': token
             }
-        }).then(parseJson).then(result => {
-            return result
-        })
+        }).then(parseJson)
     },
 
     addSeminar(seminar){

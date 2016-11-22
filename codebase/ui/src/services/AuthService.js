@@ -30,24 +30,8 @@ module.exports = {
         })
     },
 
-    //todo
     logoutUser(){
-        StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Auth-Token': StorageService.getUserToken()
-            },
-            body: {}
-        }).then(checkStatus).then(parseJson).then(function (data) {
-            StorageService.deleteLocalUserInformation();
-            return true;
-        }).catch(function (error) {
-            console.log('request failed', error);
-            return false;
-        })
+        sessionStorage.clear();
     },
 
     /**

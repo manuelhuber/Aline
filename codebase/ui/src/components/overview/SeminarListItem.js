@@ -9,16 +9,12 @@ export class SeminarListItem extends React.Component {
     render() {
         return (
             <div className="seminar-tile">
-                <Link to={`seminars/${this.props.seminar}`}>
+                <Link to={`seminars/${this.props.seminar.id}`}>
                     <div className="name">
-                        <output type="text">{this.props.seminar}</output>
+                        <output type="text">{this.props.seminar.name}</output>
                     </div>
                 </Link>
             </div>
         );
     }
 }
-SeminarListItem.propTypes = {
-    seminar: React.PropTypes.string
-};
-

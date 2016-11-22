@@ -33,12 +33,8 @@ export class Header extends React.Component {
     }
 
     logOut() {
-        if (AuthService.logoutUser()) {
-            hashHistory.push('/');
-        }
-        else {
-            alert('Sry. Nicht geklappt.');
-        }
+        AuthService.logoutUser();
+        location.reload();
     }
 
     render() {
