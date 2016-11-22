@@ -62,7 +62,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
 
         User front_office = User.builder()
                 .username("front")
-                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // admin
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
                 .authorities(Authorities.EMPLOYEE + ',' + Authorities.FRONT_OFFICE)
                 .division("FOO")
                 .build();
