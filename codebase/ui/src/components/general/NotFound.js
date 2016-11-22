@@ -8,7 +8,8 @@ export class NotFound extends React.Component {
     render() {
         return (
             <div className="not-found">
-                <h2>Sorry. Cannot be found.</h2>
+                <h3>Entschuldige. Die von dir angeforderte Seite konnte nicht gefunden werden.
+                </h3>
             </div>
         );
     }

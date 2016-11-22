@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginService from '../../services/LoginService';
+import LoginService from '../../services/AuthService';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -30,6 +30,7 @@ export class Login extends React.Component {
         return (
             <form onSubmit={this.handleSubmit} className="login-form">
                 <h2>Aline</h2>
+                <img src={require("../../assets/aline_500x500.png")} alt="Aline Logo"/>
                 <div>
                     <label htmlFor="loginName">Login Name:</label>
                     <input ref="loginName" placeholder="Login Name" id="loginName"/>

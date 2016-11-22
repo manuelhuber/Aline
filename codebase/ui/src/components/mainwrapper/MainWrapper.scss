@@ -1,0 +1,90 @@
+.header {
+  padding: $spacing $spacing 0 $spacing;
+  background-color: $primaryColor;
+  box-shadow: $headerShadow;
+  //The navigation links
+  .navlink a {
+    color: $white;
+    opacity: $lowerOpacity;
+    text-transform: uppercase;
+    &.active {
+      border-bottom: 3px solid $accentColor;
+      padding-bottom: 7px;
+      opacity: $fullOpacity;
+    }
+  }
+  //The profile button
+  .profile {
+    float: right;
+    position: relative;
+    &:hover {
+      cursor: pointer;
+    }
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 38px;
+      text-align: center;
+      box-shadow: $tileShadow;
+      background-color: $white;
+      .user-name {
+        font-weight: 400;
+        &:hover {
+          cursor: default;
+        }
+      }
+      p {
+        padding: $spacing;
+        margin: 0;
+        white-space: nowrap;
+      }
+      .open-profile,
+      .log-out {
+        &:hover {
+          background-color: $primaryColor;
+          color: $white;
+        }
+      }
+      //Visible or not
+      &.invisible {
+        display: none;
+      }
+      //The dropdown caret
+      &:before {
+        content: "";
+        position: absolute;
+        top: -21px;
+        left: 60px;
+        border: 15px solid transparent;
+        border-bottom-color: #fff;
+        display: block;
+        width: 0;
+      }
+    }
+  }
+  div {
+    display: inline-block;
+  }
+  i, a {
+    vertical-align: middle;
+  }
+  div + div {
+    margin-left: 20px;
+  }
+}
+
+.content {
+  padding: $spacing;
+  a {
+    color: $accentColor;
+  }
+}
+
+.material-icons {
+  &.md-36 {
+    font-size: 36px;
+  }
+  &.md-light {
+    color: $white;
+  }
+}
