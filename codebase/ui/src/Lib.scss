@@ -5,6 +5,7 @@ $headerFont: 'Roboto Slab', serif;
 //Colors. For more infos see https://material.google.com/style/color.html#color-color-schemes
 $white: #fff;
 $black: #212121;
+$gray: #b3b3b3;
 
 $searchBackground: #F5F5F5; //Background for the search view
 $mainBackground: #FAFAFA; //The general background color of the sites
@@ -20,6 +21,7 @@ $inactiveIconOpacity: 38%;
 
 //General
 $spacing: 10px;
+$inlineElementWidth: 25%;
 
 //Material Design Stuff
 $headerShadow: 0 2px 5px rgba(0, 0, 0, 0.26); //box-shadow

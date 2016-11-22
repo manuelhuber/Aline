@@ -22,7 +22,7 @@ export class SeminarList extends React.Component {
         );
     }
 
-    saveSeminars(result){
+    saveSeminars(result) {
         this.setState({
             seminars: result
         })
@@ -31,7 +31,7 @@ export class SeminarList extends React.Component {
     render() {
         return (
             <div>
-                <SearchBar/>
+                <SearchBar searchBarType="overview"/>
                 <main className="seminar-tiles">
                     { this.state.seminars.map(this.renderSeminar) }
                 </main>

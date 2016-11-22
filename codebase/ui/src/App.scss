@@ -44,11 +44,17 @@ button {
     cursor: pointer;
   }
   &:focus {
-    outline: none;
     //todo bisschen dunkleres grün
   }
   &:active {
     //todo heftiger shadow
   }
   //todo disabled
+}
+
+button, input, select{
+  font-size: 13px;
+  &:focus {
+    outline: none;
+  }
 }

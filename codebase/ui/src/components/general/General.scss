@@ -18,3 +18,41 @@
   padding: $spacing;
   background-color: $searchBackground;
 }
+
+.text-search{
+  display: inline-block;
+  width: $inlineElementWidth;
+  margin-right: 20px;
+  input{
+    width: 90%;
+    border: none;
+    border-bottom: 2px solid $gray;
+  }
+  button.searchbutton{
+    height: auto;
+    background: none;
+    box-shadow: none;
+    color: $black;
+    padding: 0;
+    i{
+      vertical-align: bottom;
+    }
+  }
+}
+
+.dropdown{
+  display: inline-block;
+  width: $inlineElementWidth;
+  select, option{
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid $gray;
+    border-radius: 0;
+    -webkit-appearance: initial;
+    background: url(assets/dropdown_arrow.svg) no-repeat right;
+    cursor: pointer;
+    &.placeholder-option{
+      color: $gray;
+    }
+  }
+}
