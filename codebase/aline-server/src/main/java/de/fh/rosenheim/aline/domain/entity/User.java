@@ -6,7 +6,10 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +18,8 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString(exclude = {"bookings" })
-@EqualsAndHashCode(callSuper = true, exclude = {"bookings" })
+@ToString(exclude = {"bookings"})
+@EqualsAndHashCode(callSuper = true, exclude = {"bookings"})
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
@@ -37,8 +40,7 @@ public class User extends DomainBase {
     private Date lastLogout;
     private String authorities;
 
-    @Getter(onMethod = @__(@JsonIgnore))
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Booking> bookings = new HashSet<>();
 

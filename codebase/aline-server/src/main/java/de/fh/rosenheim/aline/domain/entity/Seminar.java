@@ -1,6 +1,5 @@
 package de.fh.rosenheim.aline.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.fh.rosenheim.aline.domain.base.DomainBase;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -15,8 +14,8 @@ import java.util.Set;
 @Table(name = "seminars")
 @Getter
 @Setter
-@ToString(exclude = {"bookings" })
-@EqualsAndHashCode(callSuper = true, exclude = {"bookings" })
+@ToString(exclude = {"bookings"})
+@EqualsAndHashCode(callSuper = true, exclude = {"bookings"})
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
@@ -49,8 +48,7 @@ public class Seminar extends DomainBase {
     private String dates;
     private Date creationDate;
 
-    @Getter(onMethod = @__(@JsonIgnore))
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seminar", orphanRemoval = true)
+    @OneToMany(mappedBy = "seminar", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Booking> bookings = new HashSet<>();
 
@@ -59,5 +57,9 @@ public class Seminar extends DomainBase {
             this.bookings = new HashSet<>();
         }
         this.bookings.add(booking);
+    }
+
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
     }
 }
