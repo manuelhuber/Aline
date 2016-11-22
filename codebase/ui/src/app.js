@@ -26,6 +26,16 @@ function redirectToLogin(nextState, replace) {
     }
 }
 
+function redirectToLogin(nextState, replace) {
+    console.log('LoginService: ' + LoginService.isLoggedIn());
+    if (!LoginService.isLoggedIn()) {
+        replace({
+            pathname: '/login',
+            state: {nextPathname: nextState.location.pathname}
+        });
+    }
+}
+
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/login" component={Login}/>
