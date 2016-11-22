@@ -55,8 +55,9 @@ export class Header extends React.Component {
                 </div>
                 }
                 <div className="profile">
-                    <i className="material-icons md-light md-36" title="Profil und Logout"
-                       onClick={this.toggleVisibility}>account_box</i>
+                    <div onClick={this.toggleVisibility}>
+                        <i className="material-icons md-light md-36" title="Profil und Logout">account_box</i>
+                    </div>
                     <div id="profileDropdown" className="dropdown invisible">
                         <p className="user-name">Fritz</p>
                         <p className="open-profile" onClick={this.navigateToProfile}>Öffne Profil</p>

@@ -23,7 +23,7 @@
     .dropdown {
       position: absolute;
       right: 0;
-      top: 38px;
+      top: 39px;
       text-align: center;
       box-shadow: $tileShadow;
       background-color: $white;
@@ -53,12 +53,15 @@
       &:before {
         content: "";
         position: absolute;
-        top: -21px;
-        left: 60px;
-        border: 15px solid transparent;
-        border-bottom-color: #fff;
-        display: block;
         width: 0;
+        height: 0;
+        right: 0;
+        box-sizing: border-box;
+        border: 5px solid $white;
+        border-color: transparent transparent $white $white;
+        transform-origin: 0 0;
+        transform: rotate(135deg);
+
       }
     }
   }
