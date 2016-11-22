@@ -18,4 +18,7 @@ export class SeminarListItem extends React.Component {
         );
     }
 }
+SeminarListItem.propTypes = {
+    seminar: React.PropTypes.string
+};
 

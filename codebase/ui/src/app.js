@@ -1,44 +1,37 @@
+import {MainWrapper} from './components/mainwrapper/MainWrapper';
 import {SeminarList} from './components/overview/SeminarList';
 import {SeminarDetail} from './components/detail/SeminarDetail';
-import {NotFound} from './components/NotFound';
+import {NotFound} from './components/general/NotFound';
+import {Login} from './components/general/Login';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'whatwg-fetch'; //Github fetch
-import {Router, Route, Link, IndexRoute} from 'react-router'
-import BrowserHistory from 'react-router/lib/BrowserHistory';
-import {loginUser, seminarService} from "./services/LoginService";
+import {Router, Route, Link, IndexRedirect, hashHistory} from 'react-router'
+import LoginService from './services/AuthService';
 
-require("./App.scss");
-var url = require("./assets/aline_500x500.png");
+require('./App.scss');
 
 class App extends React.Component {
     constructor() {
         super();
-        this.state = {hello: 'Hello, I am Aline.'};
-        //loginUser('admin', 'admin');
-        //window.setTimeout(seminarService, 5000);
     }
+}
 
-    render() {
-        return (
-            <div>
-                <h1>{this.state.hello}</h1>
-                <img src={url} alt="Aline Logo" className="aline-logo"/>
-                <header>
-                    <div><Link to="/" activeClassName="active-nav">Seminarübersicht</Link></div>
-                </header>
-                <main>
-                    {this.props.children}
-                </main>
-            </div>
-        );
+function redirectToLogin(nextState, replace) {
+    if (!LoginService.isLoggedIn()) {
+        replace({
+            pathname: '/login',
+            state: {nextPathname: nextState.location.pathname}
+        });
     }
 }
 
 ReactDOM.render(
-    <Router history={BrowserHistory}>
-        <Route path="/" component={App}>
-            <IndexRoute component={SeminarList}/> {/* Default/At the beginning shown component */}
+    <Router history={hashHistory}>
+        <Route path="/login" component={Login}/>
+        <Route path="/" component={MainWrapper} onEnter={redirectToLogin}>
+            <IndexRedirect to="/seminars"/>
+            <Route path="seminars" component={SeminarList}/>
             <Route path="seminars/:seminarName" component={SeminarDetail}/>
             <Route path="*" component={NotFound}/>
         </Route>

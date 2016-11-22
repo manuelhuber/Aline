@@ -1,20 +1,27 @@
 //Import all .scss files here
+@import "Lib";
 @import "components/overview/Seminar";
-
-$default-font: 'Roboto', sans-serif;
-$header-font: 'Roboto Slab', serif;
-$font-color: #05EB8C;
+@import "components/general/General";
+@import "components/mainwrapper/MainWrapper";
 
 body {
-  margin: 20px;
-  font-family: $default-font;
+  margin: 0;
+  font-family: $defaultFont;
+  font-weight: 300;
+  background-color: $mainBackground;
+  color: $black;
 }
 
 h1, h2, h3, h4 {
-  color: $font-color;
-  font-family: $header-font;
+  font-family: $headerFont;
+  color: $primaryColor;
 }
 
-.aline-logo{
+.aline-logo {
   height: 300px;
+}
+
+a{
+  color: $black;
+  text-decoration: none;
 }

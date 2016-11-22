@@ -1,0 +1,19 @@
+.login-form{
+  label{
+    width: 100px;
+    display: inline-block;
+  }
+}
+
+.login-error {
+  color: $errorColor;
+  border-top: 1px solid $errorColor;
+  margin-top: $spacing;
+  &.invisible {
+    display: none;
+  }
+}
+
+button{
+  background-color: $accentColor;
+}
