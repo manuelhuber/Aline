@@ -6,8 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,7 +25,9 @@ import java.util.Set;
 public class Seminar extends SeminarBasics {
 
     private static final long serialVersionUID = 2353528359632158741L;
+    @CreationTimestamp
     private Date created;
+    @UpdateTimestamp
     private Date updated;
 
     @Id
@@ -49,15 +53,5 @@ public class Seminar extends SeminarBasics {
 
     public void removeBooking(Booking booking) {
         this.bookings.remove(booking);
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        created = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 }

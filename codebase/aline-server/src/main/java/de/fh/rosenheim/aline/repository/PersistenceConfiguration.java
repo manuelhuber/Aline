@@ -91,19 +91,16 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .seminar(seminar1)
                 .user(losStaff)
                 .status(BookingStatus.REQUESTED)
-                .creationDate(new Date())
                 .build();
 
         Booking booking2 = Booking.builder()
                 .seminar(seminar2).user(losStaff)
                 .status(BookingStatus.REQUESTED)
-                .creationDate(new Date())
                 .build();
 
         Booking booking3 = Booking.builder()
                 .seminar(seminar1).user(fitStaff)
                 .status(BookingStatus.REQUESTED)
-                .creationDate(new Date())
                 .build();
 
         seminarRepository.save(asList(seminar1, seminar2));
