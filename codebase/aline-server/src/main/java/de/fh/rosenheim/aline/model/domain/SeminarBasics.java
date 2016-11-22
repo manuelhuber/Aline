@@ -7,16 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
-import java.util.Date;
 
-/**
- * Created by Manuel on 22.11.2016.
- */
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
+/**
+ * The basics of a seminar that can easily be changed
+ */
 public class SeminarBasics extends DomainBase {
 
     private String name;
@@ -36,8 +35,10 @@ public class SeminarBasics extends DomainBase {
     private int duration;
     private String regularCycle;
     private String dates;
-    private Date creationDate;
 
+    /**
+     * Easy way to copy basic data
+     */
     public void copyBasics(SeminarBasics newData) {
         name = newData.getName();
         description = newData.getDescription();
@@ -56,6 +57,5 @@ public class SeminarBasics extends DomainBase {
         duration = newData.getDuration();
         regularCycle = newData.getRegularCycle();
         dates = newData.getDates();
-        creationDate = newData.getCreationDate();
     }
 }
