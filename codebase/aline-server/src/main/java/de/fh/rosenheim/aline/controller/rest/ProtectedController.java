@@ -40,7 +40,7 @@ public class ProtectedController {
     }
 
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
-    @PostAuthorize("@securityService.divisionHeadOrSelf(principal, returnObject)")
+    @PostAuthorize("@securityService.canAccessUserData(principal, returnObject)")
     public User user(@PathVariable String name) {
         return userRepository.findByUsername(name);
     }
