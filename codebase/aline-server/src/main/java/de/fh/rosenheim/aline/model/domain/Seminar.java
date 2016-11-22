@@ -1,5 +1,7 @@
 package de.fh.rosenheim.aline.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -21,6 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Seminar extends DomainBase {
 
     private static final long serialVersionUID = 2353528359632158741L;

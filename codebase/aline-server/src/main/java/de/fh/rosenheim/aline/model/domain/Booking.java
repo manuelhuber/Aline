@@ -1,8 +1,7 @@
 package de.fh.rosenheim.aline.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 
@@ -25,14 +24,14 @@ public class Booking extends DomainBase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
     @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("username")
     @ManyToOne()
     @JoinColumn(name = "USERNAME", nullable = false)
     private User user;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("seminarId")
     @ManyToOne()
     @JoinColumn(name = "SEMINAR_ID", nullable = false)
     private Seminar seminar;
