@@ -3,6 +3,7 @@ $button-color: #EB0564;
 .seminar-tiles {
   display: flex;
   flex-wrap: wrap;
+  margin: 0 5px 0 5px;
   .seminar-tile a{
     color: $black;
     display: inline-block;

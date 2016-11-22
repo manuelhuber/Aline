@@ -12,6 +12,10 @@ body {
   color: $black;
 }
 
+html, body, #content {
+  height: 100%;
+}
+
 h1, h2, h3, h4 {
   font-family: $headerFont;
   color: $primaryColor;
@@ -39,11 +43,11 @@ button {
   &:hover {
     cursor: pointer;
   }
-  &:focus{
+  &:focus {
     outline: none;
     //todo bisschen dunkleres grün
   }
-  &:active{
+  &:active {
     //todo heftiger shadow
   }
   //todo disabled
