@@ -26,7 +26,7 @@ public class Booking extends DomainBase {
     private Long id;
 
     // Swagger doesn't recognize JsonIdentityReference, so we have to set the type manually
-    @ApiModelProperty(dataType = "java.lang.String")
+    @ApiModelProperty(required = true, dataType = "java.lang.String")
     // When serializing, only use reference
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty(value = "username", required = true)
@@ -35,7 +35,7 @@ public class Booking extends DomainBase {
     private User user;
 
     // Swagger doesn't recognize JsonIdentityReference, so we have to set the type manually
-    @ApiModelProperty(dataType = "java.lang.Long")
+    @ApiModelProperty(required = true, dataType = "java.lang.Long")
     // When serializing, only use reference
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty(value = "seminarId", required = true)
