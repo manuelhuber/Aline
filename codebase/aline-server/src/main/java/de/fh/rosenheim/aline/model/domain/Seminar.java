@@ -2,13 +2,14 @@ package de.fh.rosenheim.aline.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import de.fh.rosenheim.aline.model.base.DomainBase;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,38 +19,18 @@ import java.util.Set;
 @Setter
 @ToString(exclude = {"bookings"})
 @EqualsAndHashCode(callSuper = true, of = {"id"})
-@Builder()
-// Needed for Hibernate
-@NoArgsConstructor
-// Needed for builder
-@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Seminar extends DomainBase {
+public class Seminar extends SeminarBasics {
 
     private static final long serialVersionUID = 2353528359632158741L;
+
+    public Seminar() {
+        super();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String name;
-    private String description;
-    private String trainer;
-    private String agenda;
-    private boolean bookable;
-    private String targetAudiance;
-    private String requirements;
-    private String reporting;
-    private String contactPerson;
-    private String trainingType;
-    private int maximumParticipants;
-    private int costsPerParticipant;
-    private String bookingTimelog;
-    private String planedAdvancement;
-    private int duration;
-    private String regularCycle;
-    private String dates;
-    private Date creationDate;
 
     @OneToMany(mappedBy = "seminar", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)

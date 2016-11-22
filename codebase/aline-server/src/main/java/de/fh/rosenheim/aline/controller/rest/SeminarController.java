@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;
@@ -32,7 +33,7 @@ public class SeminarController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "create new seminar", notes = "Field 'id' and 'bookings' will be ignored (and aren't required)")
-    public Seminar addSeminar(@RequestBody Seminar seminar) {
+    public Seminar addSeminar(@RequestBody SeminarBasics seminar) {
         return seminarService.createNewSeminar(seminar);
     }
 
@@ -50,7 +51,7 @@ public class SeminarController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "update seminar", notes = "Field 'id' and 'bookings' will be ignored (and aren't required)")
-    public Seminar updateSeminar(@PathVariable long id, @RequestBody Seminar seminar) throws NoObjectForIdException {
+    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException {
         return seminarService.updateSeminar(id, seminar);
     }
 

@@ -77,17 +77,15 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .lastPasswordReset(date)
                 .build();
 
-        Seminar seminar1 = Seminar.builder()
-                .name("Programmieren 101")
-                .description("Alles was man wissen muss")
-                .trainer("Joe")
-                .build();
+        Seminar seminar1 = new Seminar();
+        seminar1.setName("Programmieren 101");
+        seminar1.setDescription("Alles was man wissen muss");
+        seminar1.setTrainer("Joe");
 
-        Seminar seminar2 = Seminar.builder()
-                .name("Kundengespräche führen")
-                .description("Wenig reden, viel sagen")
-                .trainer("Peter")
-                .build();
+        Seminar seminar2 = new Seminar();
+        seminar2.setName("Kundengespräche führen");
+        seminar2.setDescription("Wenig reden, viel sagen");
+        seminar2.setTrainer("Peter");
 
         Booking booking1 = Booking.builder()
                 .seminar(seminar1)
