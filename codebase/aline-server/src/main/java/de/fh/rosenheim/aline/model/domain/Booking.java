@@ -13,6 +13,7 @@ import java.util.Date;
 @Table(name = "bookings")
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true, of = {"id"})
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor

@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = {"bookings"})
-@EqualsAndHashCode(callSuper = true, exclude = {"bookings"})
+@EqualsAndHashCode(callSuper = true, of = {"id"})
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
