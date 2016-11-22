@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.service;
 
-import de.fh.rosenheim.aline.domain.entity.Seminar;
+import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import org.slf4j.Logger;

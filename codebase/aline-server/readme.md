@@ -21,13 +21,12 @@ Url: ${serveraddress}/${contextPath}/swagger-ui.html
 
 
     |-- java
-        |-- AlineServerApplication.java  <- Main
-        |-- controller                   <- Rest Endpoints   
-        |-- domain                       <- Domain models
-        |-- model                        <- Technical models
-        |-- repository                   <- Data access
-        |-- security                     <- Authentication/Authorication
-        |-- service                      <- Buisness Logic
+        |-- AlineServerApplication.java  <- main
+        |-- controller                   <- HTTP config / endpoints   
+        |-- model                        <- domain & technical models
+        |-- repository                   <- data access
+        |-- security                     <- authentication / authorication
+        |-- service                      <- buisness Logic
     |-- resources
         |-- application.yml              <- Configuration
 The content of "security" could have been split between the other packages (i.e. services under "service" etc.) but I liked having all of the security code separate from the domain / business code. Only exception is the AuthenticationController since Swagger wants all of the controllers to be in the same package. 

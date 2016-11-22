@@ -1,9 +1,9 @@
 package de.fh.rosenheim.aline.repository;
 
-import de.fh.rosenheim.aline.domain.entity.Booking;
-import de.fh.rosenheim.aline.domain.entity.BookingStatus;
-import de.fh.rosenheim.aline.domain.entity.Seminar;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.domain.BookingStatus;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

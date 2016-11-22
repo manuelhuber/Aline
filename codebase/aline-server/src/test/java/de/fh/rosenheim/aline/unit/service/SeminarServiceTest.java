@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.unit.service;
 
-import de.fh.rosenheim.aline.domain.entity.Seminar;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import de.fh.rosenheim.aline.service.SeminarService;

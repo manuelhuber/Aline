@@ -1,9 +1,9 @@
-package de.fh.rosenheim.aline.domain.entity;
+package de.fh.rosenheim.aline.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import de.fh.rosenheim.aline.domain.base.DomainBase;
+import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 
 import javax.persistence.*;

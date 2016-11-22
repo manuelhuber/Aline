@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.domain.entity.Seminar;
+import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;

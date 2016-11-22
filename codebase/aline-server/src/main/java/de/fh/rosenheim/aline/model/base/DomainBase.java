@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.domain.base;
+package de.fh.rosenheim.aline.model.base;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 

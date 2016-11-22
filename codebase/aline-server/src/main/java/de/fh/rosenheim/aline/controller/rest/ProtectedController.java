@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.domain.entity.Booking;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;

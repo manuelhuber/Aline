@@ -1,6 +1,6 @@
-package de.fh.rosenheim.aline.domain.entity;
+package de.fh.rosenheim.aline.model.domain;
 
-import de.fh.rosenheim.aline.domain.base.DomainBase;
+import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
