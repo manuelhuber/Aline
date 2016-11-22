@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.unit.service;
 
-import de.fh.rosenheim.aline.domain.entity.Seminar;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import de.fh.rosenheim.aline.service.SeminarService;
@@ -56,14 +56,18 @@ public class SeminarServiceTest {
 
     @Test
     public void getSeminar() throws NoObjectForIdException {
-        Seminar seminar = Seminar.builder().name("foo").description("bar").build();
+        Seminar seminar = new Seminar();
+        seminar.setName("foo");
+        seminar.setDescription("bar");
         given(seminarRepository.findOne((long) 1)).willReturn(seminar);
         assertThat(seminarService.getSeminar(1)).isEqualTo(seminar);
     }
 
     @Test
     public void getAllSeminars() throws NoObjectForIdException {
-        Seminar seminar = Seminar.builder().name("foo").description("bar").build();
+        Seminar seminar = new Seminar();
+        seminar.setName("foo");
+        seminar.setDescription("bar");
         final Iterable<Seminar> list = new LinkedList<>(Arrays.asList(seminar));
         given(seminarRepository.findAll()).willReturn(list);
         assertThat(seminarService.getAllSeminars()).isEqualTo(list);
@@ -91,8 +95,14 @@ public class SeminarServiceTest {
 
     @Test
     public void createNewSeminar() {
-        Seminar newSeminar = Seminar.builder().id((long) 5).name("foo").description("bar").build();
-        Seminar actualSeminar = Seminar.builder().id((long) 10).name("foo").description("bar").build();
+        Seminar newSeminar = new Seminar();
+        newSeminar.setId((long) 5);
+        newSeminar.setName("foo");
+        newSeminar.setDescription("bar");
+        Seminar actualSeminar = new Seminar();
+        actualSeminar.setId((long) 10);
+        actualSeminar.setName("foo");
+        actualSeminar.setDescription("bar");
         given(seminarRepository.save(newSeminar)).willReturn(actualSeminar);
 
         seminarService.createNewSeminar(newSeminar);

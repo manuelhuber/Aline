@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.security.service;
 
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,10 +26,21 @@ public class SecurityServiceImpl implements SecurityService {
      * Users only get access to own data
      * Division Heads get access in generall
      */
-    public boolean divisionHeadOrSelf(SecurityUser securityUser, User user) {
-        return securityUser != null && user != null
-                && ((securityUser.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
-                securityUser.getDivision().equals(user.getDivision()))
-                || securityUser.getUsername().equals(user.getUsername()));
+    public boolean canAccessUserData(SecurityUser principal, User data) {
+        return principal != null && data != null &&
+                (isDivisionHeadForUser(principal, data) || isSelf(principal, data) || isFrontOffice(principal));
+    }
+
+    private boolean isDivisionHeadForUser(SecurityUser principal, User data) {
+        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
+                principal.getDivision().equals(data.getDivision());
+    }
+
+    private boolean isSelf(SecurityUser principal, User data) {
+        return principal.getUsername().equals(data.getUsername());
+    }
+
+    private boolean isFrontOffice(SecurityUser principal) {
+        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
     }
 }

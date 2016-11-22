@@ -1,11 +1,11 @@
 package de.fh.rosenheim.aline.service;
 
-import de.fh.rosenheim.aline.domain.entity.Seminar;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -59,10 +59,10 @@ public class SeminarService {
      * Creates a new seminar
      * Will always create a new seminar, even if the given seminar already has an ID
      */
-    public Seminar createNewSeminar(Seminar seminar) {
-        // Even if the id is set in the JSON body, we ignore it and create a new seminar
-        seminar.setId(null);
-        Seminar newSeminar = seminarRepository.save(seminar);
+    public Seminar createNewSeminar(SeminarBasics basics) {
+        Seminar wrappedBasics = new Seminar();
+        wrappedBasics.copyBasics(basics);
+        Seminar newSeminar = seminarRepository.save(wrappedBasics);
         log.info(currentUser() + "created a new seminar with id " + newSeminar.getId());
         return newSeminar;
     }
@@ -71,14 +71,12 @@ public class SeminarService {
      * Updates the seminar with the given ID with the given data
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
-    public Seminar updateSeminar(long id, Seminar newSeminar) throws NoObjectForIdException {
+    public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException {
         Seminar oldSeminar = seminarRepository.findOne(id);
         if (oldSeminar == null) {
             throw new NoObjectForIdException(id);
         }
-
-        BeanUtils.copyProperties(newSeminar, oldSeminar, "id", "bookings");
-        // Make sure we overwrite the
+        oldSeminar.copyBasics(newSeminar);
         Seminar savedSeminar = seminarRepository.save(oldSeminar);
         log.info(currentUser() + "updated seminar with id " + savedSeminar.getId());
         return savedSeminar;

@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.service;
 
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,17 @@
-package de.fh.rosenheim.aline.domain.entity;
+package de.fh.rosenheim.aline.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.fh.rosenheim.aline.domain.base.DomainBase;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,13 +20,14 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString(exclude = {"bookings" })
-@EqualsAndHashCode(callSuper = true, exclude = {"bookings" })
+@ToString(exclude = {"bookings"})
+@EqualsAndHashCode(callSuper = true, of = {"username"})
 @Builder()
 // Needed for Hibernate
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class User extends DomainBase {
 
     private static final long serialVersionUID = 2353528370345499815L;
@@ -37,8 +43,7 @@ public class User extends DomainBase {
     private Date lastLogout;
     private String authorities;
 
-    @Getter(onMethod = @__(@JsonIgnore))
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Booking> bookings = new HashSet<>();
 

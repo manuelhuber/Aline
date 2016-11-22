@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.model.factory;
 
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import org.springframework.security.core.authority.AuthorityUtils;
 

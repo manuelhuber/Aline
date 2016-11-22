@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.domain.entity.Booking;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;
@@ -40,7 +40,7 @@ public class ProtectedController {
     }
 
     @RequestMapping(value = "/user/{name}", method = RequestMethod.GET)
-    @PostAuthorize("@securityService.divisionHeadOrSelf(principal, returnObject)")
+    @PostAuthorize("@securityService.canAccessUserData(principal, returnObject)")
     public User user(@PathVariable String name) {
         return userRepository.findByUsername(name);
     }

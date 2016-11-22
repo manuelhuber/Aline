@@ -12,6 +12,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.List;
+
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @Configuration
@@ -35,6 +37,8 @@ public class SwaggerConfig {
                 .alternateTypeRules(
                         newRule(typeResolver.resolve(DeferredResult.class,
                                 typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
-                                typeResolver.resolve(WildcardType.class)));
+                                typeResolver.resolve(WildcardType.class)),
+                        newRule(typeResolver.resolve(Iterable.class, WildcardType.class),
+                                typeResolver.resolve(List.class, WildcardType.class)));
     }
 }

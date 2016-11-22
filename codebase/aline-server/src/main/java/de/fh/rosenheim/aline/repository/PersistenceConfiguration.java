@@ -1,9 +1,9 @@
 package de.fh.rosenheim.aline.repository;
 
-import de.fh.rosenheim.aline.domain.entity.Booking;
-import de.fh.rosenheim.aline.domain.entity.BookingStatus;
-import de.fh.rosenheim.aline.domain.entity.Seminar;
-import de.fh.rosenheim.aline.domain.entity.User;
+import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.domain.BookingStatus;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -77,32 +77,33 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .lastPasswordReset(date)
                 .build();
 
-        Seminar seminar1 = Seminar.builder()
-                .name("Programmieren 101")
-                .description("Alles was man wissen muss")
-                .trainer("Joe")
-                .build();
+        Seminar seminar1 = new Seminar();
+        seminar1.setName("Programmieren 101");
+        seminar1.setDescription("Alles was man wissen muss");
+        seminar1.setTrainer("Joe");
 
-        Seminar seminar2 = Seminar.builder()
-                .name("Kundengespräche führen")
-                .description("Wenig reden, viel sagen")
-                .trainer("Peter")
-                .build();
+        Seminar seminar2 = new Seminar();
+        seminar2.setName("Kundengespräche führen");
+        seminar2.setDescription("Wenig reden, viel sagen");
+        seminar2.setTrainer("Peter");
 
         Booking booking1 = Booking.builder()
                 .seminar(seminar1)
                 .user(losStaff)
                 .status(BookingStatus.REQUESTED)
+                .creationDate(new Date())
                 .build();
 
         Booking booking2 = Booking.builder()
                 .seminar(seminar2).user(losStaff)
                 .status(BookingStatus.REQUESTED)
+                .creationDate(new Date())
                 .build();
 
         Booking booking3 = Booking.builder()
                 .seminar(seminar1).user(fitStaff)
                 .status(BookingStatus.REQUESTED)
+                .creationDate(new Date())
                 .build();
 
         seminarRepository.save(asList(seminar1, seminar2));
