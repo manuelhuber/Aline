@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${route.seminar.base}")
-public class SeminarController {
+public class SeminarsController {
 
     private final SeminarService seminarService;
 
-    public SeminarController(SeminarService seminarService) {
+    public SeminarsController(SeminarService seminarService) {
         this.seminarService = seminarService;
     }
 

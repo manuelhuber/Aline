@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${route.booking.base}")
-public class BookingController {
+public class BookingsController {
 
     private final BookingService bookingService;
 
-    public BookingController(BookingService bookingService) {
+    public BookingsController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 

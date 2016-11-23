@@ -24,6 +24,7 @@ token:
   header: X-Auth-Token
 #  864000000 = 10 day
   expiration: 864000000
+
 route:
   delete: delete
   authentication:
@@ -32,11 +33,11 @@ route:
     refresh: refresh
     logout: logout
   seminar:
-    base: seminar
+    base: seminars
   user:
-    base: user
+    base: users
     all: all
   booking:
-    base: booking
+    base: bookings
     grant: grant
     deny: deny

@@ -19,12 +19,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${route.user.base}")
-public class UserController {
+public class UsersController {
 
     private final UserService userService;
     private final ControllerUtil controllerUtil;
 
-    public UserController(UserService userService, ControllerUtil controllerUtil) {
+    public UsersController(UserService userService, ControllerUtil controllerUtil) {
         this.userService = userService;
         this.controllerUtil = controllerUtil;
     }
