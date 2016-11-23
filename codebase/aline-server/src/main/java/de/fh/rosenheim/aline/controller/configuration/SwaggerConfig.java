@@ -15,6 +15,7 @@ import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Date;
 import java.util.List;
 
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
@@ -39,6 +40,9 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .genericModelSubstitutes(ResponseEntity.class)
+                // We return dates in ms
+                // Date[] are for some reason displayed as String[] ...
+                .directModelSubstitute(Date.class, long.class)
                 .alternateTypeRules(
                         // ResponseEntity<Foo> should be display as Foo
                         newRule(typeResolver.resolve(DeferredResult.class,
