@@ -59,12 +59,15 @@ dependencies {
     // Boilerplate setter/getter/constructors via annotations
     compile('org.projectlombok:lombok')
 
-    // SWAG
-    compile("io.springfox:springfox-swagger2:2.0.2")
-    compile("io.springfox:springfox-swagger-ui:2.0.2")
+    // SWAGGER
+    compile("io.springfox:springfox-swagger2:2.5.0")
+    compile("io.springfox:springfox-swagger-ui:2.5.0")
 
     // https://mvnrepository.com/artifact/com.h2database/h2
     compile group: 'com.h2database', name: 'h2', version: '1.0.60'
+
+    // Utils
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
 
     runtime('org.hsqldb:hsqldb')
     testCompile('org.springframework.boot:spring-boot-starter-test')
