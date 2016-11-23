@@ -22,6 +22,13 @@ import java.util.Date;
 @AllArgsConstructor
 public class Booking extends DomainBase {
 
+    /**
+     * I couldn't get a composite primary key working exactly the way I wanted in a reasonable amount of time.
+     * It should only save the reference via ID in the database, have the full object in Code, only use ID when
+     * serializing to JSON and automatically be deleted if either seminar or user is deleted.
+     * So I'm going the not so pretty route of giving it a seperate ID and checking (when necessary) if the
+     * seminar / user booking already exists manually.
+     */
     @Id
     @Setter
     @GeneratedValue(strategy = GenerationType.AUTO)

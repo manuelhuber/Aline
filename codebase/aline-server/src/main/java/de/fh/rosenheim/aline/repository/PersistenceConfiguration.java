@@ -60,7 +60,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         User fitDivisonHead = User.builder()
                 .username("admin")
                 .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi") // admin
-                .authorities(Authorities.EMPLOYEE + ',' + Authorities.DIVISION_HEAD)
+                .authorities(Authorities.EMPLOYEE + ',' + Authorities.DIVISION_HEAD + ',' + Authorities.TOP_DOG)
                 .division("FIT")
                 .build();
 
