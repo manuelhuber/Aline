@@ -1,10 +1,12 @@
 package de.fh.rosenheim.aline.security.service;
 
+import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,12 +16,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityService {
 
-    /**
-     * This is a rather trivial example that could easily be done with annotations on the request.
-     */
-    public boolean isDivisionHead() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
+    private final UserDetailsService userDetailsService;
+
+    public SecurityService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     /**
@@ -30,6 +30,12 @@ public class SecurityService {
     public boolean canAccessUserData(SecurityUser principal, User data) {
         return principal != null && data != null &&
                 (isDivisionHeadForUser(principal, data) || isSelf(principal, data) || isFrontOffice(principal));
+    }
+
+    public boolean canCurrentUserChangeBookingStatus(Booking data) {
+        SecurityUser principal = getCurrentUser();
+        return principal != null && data != null &&
+                (isDivisionHeadForUser(principal, data.getUser()) || isFrontOffice(principal));
     }
 
     public boolean isDivisionHeadForUser(SecurityUser principal, User data) {
@@ -43,5 +49,11 @@ public class SecurityService {
 
     public boolean isFrontOffice(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
+    }
+
+    private SecurityUser getCurrentUser() {
+        return (SecurityUser) this.userDetailsService.loadUserByUsername(
+                SecurityContextHolder.getContext().getAuthentication().getName()
+        );
     }
 }

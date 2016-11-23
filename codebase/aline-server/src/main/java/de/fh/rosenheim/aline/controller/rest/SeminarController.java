@@ -20,7 +20,7 @@ public class SeminarController {
     }
 
     /**
-     * @return All seminars
+     * Get all seminars
      */
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Seminar> getAllSeminars() {
@@ -44,7 +44,7 @@ public class SeminarController {
     }
 
     /**
-     * Update a seminar, not including bookings
+     * Update basic info of a seminar (no ID, creation date, update date or bookings)
      * Properties that are not set will be set to null/0
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

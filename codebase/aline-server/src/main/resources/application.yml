@@ -22,8 +22,8 @@ logging:
 token:
   secret: foobar123
   header: X-Auth-Token
-#  86400000 = 1 day
-  expiration: 86400000
+#  864000000 = 10 day
+  expiration: 864000000
 route:
   delete: delete
   authentication:
@@ -35,3 +35,8 @@ route:
     base: seminar
   user:
     base: user
+    all: all
+  booking:
+    base: booking
+    grant: grant
+    deny: deny
