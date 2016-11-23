@@ -81,6 +81,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Swagger
                 .antMatchers("/configuration/**").permitAll()
                 // Swagger
+                .antMatchers("/swagger-resources/**").permitAll()
+                // Swagger
                 .antMatchers("/v2/**").permitAll()
                 // H2 database web interface
                 .antMatchers("/console/**").permitAll()
