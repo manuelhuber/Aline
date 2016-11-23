@@ -61,11 +61,10 @@ public class SeminarService {
      * Will always create a new seminar, even if the given seminar already has an ID
      */
     public Seminar createNewSeminar(SeminarBasics basics) {
-        Seminar wrappedBasics = new Seminar();
-        wrappedBasics.copyBasics(basics);
-        Seminar newSeminar = seminarRepository.save(wrappedBasics);
-        log.info(currentUser() + "created a new seminar with id " + newSeminar.getId());
-        return newSeminar;
+        Seminar seminar = new Seminar(basics);
+        seminarRepository.save(seminar);
+        log.info(currentUser() + "created a new seminar with id " + seminar.getId());
+        return seminar;
     }
 
     /**
@@ -73,11 +72,10 @@ public class SeminarService {
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
     public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException {
-        Seminar oldSeminar = getSeminar(id);
-        oldSeminar.copyBasics(newSeminar);
-        Seminar savedSeminar = seminarRepository.save(oldSeminar);
-        log.info(currentUser() + "updated seminar with id " + savedSeminar.getId());
-        return savedSeminar;
+        Seminar seminar = getSeminar(id);
+        seminar.copyBasics(newSeminar);
+        seminarRepository.save(seminar);
+        log.info(currentUser() + "updated seminar with id " + seminar.getId());
+        return seminar;
     }
-
 }

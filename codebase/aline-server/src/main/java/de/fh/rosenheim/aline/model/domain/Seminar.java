@@ -44,6 +44,11 @@ public class Seminar extends SeminarBasics {
         super();
     }
 
+    public Seminar(SeminarBasics basics) {
+        super();
+        copyBasics(basics);
+    }
+
     public void addBooking(Booking booking) {
         if (this.bookings == null) {
             this.bookings = new HashSet<>();
