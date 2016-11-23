@@ -31,8 +31,10 @@ public class CorsFilter implements Filter {
     }
 
     public void init(FilterConfig filterConfig) {
+        // We don't need to do anything during this lifecycle phase
     }
 
     public void destroy() {
+        // We don't need to do anything during this lifecycle phase
     }
 }

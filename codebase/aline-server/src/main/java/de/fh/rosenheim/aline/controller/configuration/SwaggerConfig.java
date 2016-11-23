@@ -20,6 +20,9 @@ import java.util.List;
 
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
+/**
+ * Configuration of Swagger & Swagger UI
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -44,7 +47,7 @@ public class SwaggerConfig {
                 // Date[] are for some reason displayed as String[] ...
                 .directModelSubstitute(Date.class, long.class)
                 .alternateTypeRules(
-                        // ResponseEntity<Foo> should be display as Foo
+                        // ResponseEntity<Foo> should be displayed as Foo
                         newRule(typeResolver.resolve(DeferredResult.class,
                                 typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
                                 typeResolver.resolve(WildcardType.class)),
@@ -56,7 +59,7 @@ public class SwaggerConfig {
 
     @Bean
     SecurityConfiguration security() {
-        // This is copied from the springfox docu. We only need to change the header key
+        // This is copied from the springfox documentation. We only need to change the header key
         return new SecurityConfiguration(
                 "test-app-client-id",
                 "test-app-client-secret",

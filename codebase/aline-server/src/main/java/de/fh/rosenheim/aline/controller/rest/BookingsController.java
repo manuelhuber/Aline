@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * All HTTP endpoints related to booking
+ */
 @RestController
 @RequestMapping("${route.booking.base}")
 public class BookingsController {
@@ -28,6 +31,16 @@ public class BookingsController {
         this.controllerUtil = controllerUtil;
     }
 
+    /**
+     * Books the given user or if no name is given the owner of the X-Auth-Token to the given Seminar
+     *
+     * @param seminarId The ID of the seminar
+     * @param queryName the username of the person who wants to attend the seminar
+     * @param request   needed to access the X-Auth-Token
+     * @return The booking
+     * @throws NoObjectForIdException if ID or username are not valid
+     * @throws BookingException       if the booking could not be created (reasons in the message)
+     */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.canBookForUser(principal, #queryName)")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
@@ -41,6 +54,10 @@ public class BookingsController {
 
     /**
      * Get a single booking
+     *
+     * @param id of the booking
+     * @return the booking
+     * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Booking getBookingById(@PathVariable long id) throws NoObjectForIdException {
@@ -48,7 +65,11 @@ public class BookingsController {
     }
 
     /**
-     * Grant a booking
+     * Set the booking status to GRANTED
+     *
+     * @param id of the booking
+     * @return The updated booking
+     * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
     public Booking grantBooking(@PathVariable long id) throws NoObjectForIdException {
@@ -56,7 +77,11 @@ public class BookingsController {
     }
 
     /**
-     * Grant a booking
+     * Set the booking status to DENIED
+     *
+     * @param id of the booking
+     * @return The updated booking
+     * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
     public Booking denyBooking(@PathVariable long id) throws NoObjectForIdException {
@@ -64,7 +89,11 @@ public class BookingsController {
     }
 
     /**
-     * Delete a booking
+     * Delete the booking
+     *
+     * @param id of the booking
+     * @return
+     * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteBookingById(@PathVariable long id) throws NoObjectForIdException {
