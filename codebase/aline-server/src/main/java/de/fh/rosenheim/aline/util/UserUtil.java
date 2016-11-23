@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserUtil {
 
-    public static String[] getAuthorityStringsAsArray(UserDetails userDetails) {
+    public static String[] getAuthoritiesAsStringArray(UserDetails userDetails) {
         List<String> authoritiesList = new ArrayList<>();
         userDetails.getAuthorities().forEach(o -> authoritiesList.add(o.getAuthority()));
         String[] authoritiesArray = new String[authoritiesList.size()];

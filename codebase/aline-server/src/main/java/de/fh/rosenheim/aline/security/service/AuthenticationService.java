@@ -39,7 +39,7 @@ public class AuthenticationService {
      * @throws AuthenticationException if login data is invalid
      */
     public AuthenticationResponse loginUser(AuthenticationRequest request) throws AuthenticationException {
-        // Perform the authentication
+        // Perform authentication
         Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -48,11 +48,10 @@ public class AuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Reload password post-authentication so we can generate token
+        // Generate token
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
         String token = this.tokenUtils.generateToken(userDetails);
-        // Return the token
-        return new AuthenticationResponse(token, UserUtil.getAuthorityStringsAsArray(userDetails));
+        return new AuthenticationResponse(token, UserUtil.getAuthoritiesAsStringArray(userDetails));
     }
 
     /**
@@ -74,7 +73,7 @@ public class AuthenticationService {
 
         if (this.tokenUtils.canTokenBeRefreshed(token, user)) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return new AuthenticationResponse(refreshedToken, UserUtil.getAuthorityStringsAsArray(user));
+            return new AuthenticationResponse(refreshedToken, UserUtil.getAuthoritiesAsStringArray(user));
         } else throw invalidToken();
     }
 
