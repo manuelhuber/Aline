@@ -33,6 +33,16 @@ public class SecurityService {
     }
 
     /**
+     * Users can book for themselves
+     * Front Office can book for everybody
+     *
+     * @return true if principal is allowed to book or username is null
+     */
+    public boolean canBookForUser(SecurityUser principal, String username) {
+        return (username == null || principal.getUsername().equals(username) || isFrontOffice(principal));
+    }
+
+    /**
      * Division Heads can change data of everybody in their division
      * Front Office can change everything
      */
@@ -70,16 +80,32 @@ public class SecurityService {
     /**
      * Checks if the given principal has front office authorities
      */
+    public boolean isCurrentUserFrontOffice() {
+        return isFrontOffice(getCurrentUser());
+    }
+
+    /**
+     * Checks if the given principal has front office authorities
+     */
     public boolean isFrontOffice(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
+    }
+
+    /**
+     * Checks if the given principal has TOP_DOG authorities
+     */
+    public boolean isTopDog(String username) {
+        return getUser(username).getAuthorities().contains(new SimpleGrantedAuthority(Authorities.TOP_DOG));
     }
 
     /**
      * Loads the data of the user in the current securityContext
      */
     private SecurityUser getCurrentUser() {
-        return (SecurityUser) this.userDetailsService.loadUserByUsername(
-                SecurityContextHolder.getContext().getAuthentication().getName()
-        );
+        return getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    private SecurityUser getUser(String username) {
+        return (SecurityUser) this.userDetailsService.loadUserByUsername(username);
     }
 }

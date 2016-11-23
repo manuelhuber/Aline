@@ -2,6 +2,9 @@ package de.fh.rosenheim.aline.service;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.domain.BookingStatus;
+import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.User;
+import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.security.service.SecurityService;
@@ -11,6 +14,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
 @Component
@@ -19,10 +24,29 @@ public class BookingService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final BookingRepository bookingRepository;
     private final SecurityService securityService;
+    private final SeminarService seminarService;
+    private final UserService userService;
 
-    public BookingService(BookingRepository bookingRepository, SecurityService securityService) {
+    public BookingService(BookingRepository bookingRepository, SecurityService securityService, SeminarService seminarService, UserService userService) {
         this.bookingRepository = bookingRepository;
         this.securityService = securityService;
+        this.seminarService = seminarService;
+        this.userService = userService;
+    }
+
+    public Booking book(Long seminarId, String username) throws BookingException {
+        try {
+            Seminar seminar = seminarService.getSeminar(seminarId);
+            if (!seminar.isBookable()) {
+                throw new BookingException("This seminar is not bookable");
+            }
+            Booking booking = getValidBookingForUser(seminar, userService.getUserByName(username));
+            bookingRepository.save(booking);
+            log.info(currentUser() + "booked seminar with id=" + seminarId + " for user with username=" + username);
+            return booking;
+        } catch (NoObjectForIdException e) {
+            throw new BookingException("One of the given IDs was not valid: " + e.getId());
+        }
     }
 
     public Booking getBooking(long id) throws NoObjectForIdException {
@@ -59,6 +83,44 @@ public class BookingService {
                 throw e;
             }
         } else throw deny();
+    }
+
+    /**
+     * Checks if the user has already booked the seminar.
+     * If there is no booking it will create a new booking.
+     * If there already is a DENIED booking, it will return the old booking but with status REQUESTED, otherwise it will
+     * throw a exception
+     *
+     * @return The booking with the appropriate status
+     * @throws BookingException if there already exists a non-denied booking for this seminar/user combination
+     */
+    private Booking getValidBookingForUser(Seminar seminar, User user) throws BookingException {
+        Booking booking;
+
+        Optional<Booking> oldBooking = user.getBookings().stream()
+                .filter(b -> b.getSeminar().equals(seminar)).findAny();
+
+        if (oldBooking.isPresent()) {
+            booking = oldBooking.get();
+            // Reopen a denied booking
+            if (booking.getStatus().equals(BookingStatus.DENIED)) {
+                booking.setStatus(BookingStatus.REQUESTED);
+                log.info(currentUser() + "reopened the request user with username=" + user.getUsername() + "to book seminar with id=" + seminar.getId());
+            } else throw new BookingException(
+                    "This booking already exists. Id=" + booking.getId() + " status=" + booking.getStatus().toString());
+        } else {
+            booking = new Booking();
+            booking.setStatus(BookingStatus.REQUESTED);
+            booking.setSeminar(seminar);
+            booking.setUser(user);
+        }
+
+        // If the booking is for a TOP_DOG or made by the front office automatically grant the booking
+        if (securityService.isTopDog(user.getUsername()) || securityService.isCurrentUserFrontOffice()) {
+            booking.setStatus(BookingStatus.GRANTED);
+        }
+
+        return booking;
     }
 
     private AccessDeniedException deny() {
