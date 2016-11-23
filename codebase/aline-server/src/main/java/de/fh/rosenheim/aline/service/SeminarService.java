@@ -7,8 +7,9 @@ import de.fh.rosenheim.aline.repository.SeminarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
 @Service
 public class SeminarService {
@@ -79,7 +80,4 @@ public class SeminarService {
         return savedSeminar;
     }
 
-    private String currentUser() {
-        return "User with name '" + SecurityContextHolder.getContext().getAuthentication().getName() + "' ";
-    }
 }
