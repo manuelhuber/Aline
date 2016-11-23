@@ -1,11 +1,12 @@
 package de.fh.rosenheim.aline.security.service;
 
+import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
+import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
-import de.fh.rosenheim.aline.service.UserService;
 import de.fh.rosenheim.aline.util.UserUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,16 +17,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class AuthenticationService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final TokenUtils tokenUtils;
 
-    public AuthenticationService(UserService u, TokenUtils t, AuthenticationManager a, UserDetailsService ud) {
-        this.userService = u;
+    public AuthenticationService(UserRepository u, TokenUtils t, AuthenticationManager a, UserDetailsService ud) {
+        this.userRepository = u;
         this.tokenUtils = t;
         this.authenticationManager = a;
         this.userDetailsService = ud;
@@ -79,17 +82,18 @@ public class AuthenticationService {
 
     public void logoutUser(String token) throws AuthenticationException {
         String username = this.tokenUtils.getUsernameFromToken(token);
-        SecurityUser user;
+        SecurityUser securityUser;
 
         try {
-            user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
+            securityUser = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
+            if (this.tokenUtils.validateToken(token, securityUser)) {
+                User user = this.userRepository.findByUsername(username);
+                user.setLastLogout(new Date());
+                this.userRepository.save(user);
+            } else throw invalidToken();
         } catch (AuthenticationException e) {
             throw invalidToken();
         }
-
-        if (this.tokenUtils.validateToken(token, user)) {
-            this.userService.logout(username);
-        } else throw invalidToken();
     }
 
     private AuthenticationException invalidToken() {
