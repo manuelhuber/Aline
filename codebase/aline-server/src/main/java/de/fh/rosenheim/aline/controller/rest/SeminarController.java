@@ -5,7 +5,6 @@ import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,6 @@ public class SeminarController {
      * Add a new seminar
      */
     @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "create new seminar", notes = "Field 'id' and 'bookings' will be ignored (and aren't required)")
     public Seminar addSeminar(@RequestBody SeminarBasics seminar) {
         return seminarService.createNewSeminar(seminar);
     }
@@ -50,7 +48,6 @@ public class SeminarController {
      * Properties that are not set will be set to null/0
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "update seminar", notes = "Field 'id' and 'bookings' will be ignored (and aren't required)")
     public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException {
         return seminarService.updateSeminar(id, seminar);
     }
