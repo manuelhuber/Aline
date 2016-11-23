@@ -33,3 +33,5 @@ route:
     logout: logout
   seminar:
     base: seminar
+  user:
+    base: user

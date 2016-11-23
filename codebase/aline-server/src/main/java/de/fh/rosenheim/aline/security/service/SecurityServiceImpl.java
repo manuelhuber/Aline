@@ -24,7 +24,8 @@ public class SecurityServiceImpl implements SecurityService {
 
     /**
      * Users only get access to own data
-     * Division Heads get access in generall
+     * Division Heads can access data of everybody in their division
+     * Front Office can access everything
      */
     public boolean canAccessUserData(SecurityUser principal, User data) {
         return principal != null && data != null &&
