@@ -7,6 +7,7 @@ import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +32,7 @@ public class SeminarsController {
      * Add a new seminar
      */
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
     public Seminar addSeminar(@RequestBody SeminarBasics seminar) {
         return seminarService.createNewSeminar(seminar);
     }
@@ -48,6 +50,7 @@ public class SeminarsController {
      * Properties that are not set will be set to null/0
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
     public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException {
         return seminarService.updateSeminar(id, seminar);
     }
@@ -56,9 +59,10 @@ public class SeminarsController {
      * Delete a single seminar
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
     public ResponseEntity<?> deleteSeminarById(@PathVariable long id) throws NoObjectForIdException {
         seminarService.deleteSeminar(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 
     /**
