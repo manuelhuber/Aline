@@ -1,7 +1,6 @@
 package de.fh.rosenheim.aline.security.config;
 
 import de.fh.rosenheim.aline.security.filter.AuthenticationTokenFilter;
-import de.fh.rosenheim.aline.security.service.SecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +24,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
-    private final SecurityServiceImpl securityService;
-
-    public WebSecurityConfiguration(UserDetailsService userDetailsService, SecurityServiceImpl securityService) {
+    public WebSecurityConfiguration(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.securityService = securityService;
     }
 
     /**
@@ -59,11 +55,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter();
         authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationTokenFilter;
-    }
-
-    @Bean
-    public SecurityServiceImpl securityService() {
-        return this.securityService;
     }
 
     @Override
