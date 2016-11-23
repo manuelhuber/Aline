@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.unit.service;
 
 import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +21,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -95,18 +99,21 @@ public class SeminarServiceTest {
 
     @Test
     public void createNewSeminar() {
-        Seminar newSeminar = new Seminar();
-        newSeminar.setId((long) 5);
+        SeminarBasics newSeminar = new SeminarBasics();
         newSeminar.setName("foo");
         newSeminar.setDescription("bar");
         Seminar actualSeminar = new Seminar();
         actualSeminar.setId((long) 10);
         actualSeminar.setName("foo");
         actualSeminar.setDescription("bar");
-        given(seminarRepository.save(newSeminar)).willReturn(actualSeminar);
+        given(seminarRepository.save(any(Seminar.class))).willReturn(actualSeminar);
 
-        seminarService.createNewSeminar(newSeminar);
-        assertThat(newSeminar.getId()).isEqualTo(null);
-        verify(seminarRepository).save(newSeminar);
+        Seminar returnValue = seminarService.createNewSeminar(newSeminar);
+
+        assertEquals(returnValue, actualSeminar);
+        ArgumentCaptor<Seminar> argument = ArgumentCaptor.forClass(Seminar.class);
+        verify(seminarRepository).save(argument.capture());
+        assertEquals("foo", argument.getValue().getName());
+        assertEquals("bar", argument.getValue().getDescription());
     }
 }
