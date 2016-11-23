@@ -33,8 +33,8 @@ public class SeminarsController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public Seminar addSeminar(@RequestBody SeminarBasics seminar) {
-        return seminarService.createNewSeminar(seminar);
+    public ResponseEntity<Seminar> addSeminar(@RequestBody SeminarBasics seminar) {
+        return new ResponseEntity<>(seminarService.createNewSeminar(seminar), HttpStatus.CREATED);
     }
 
     /**
