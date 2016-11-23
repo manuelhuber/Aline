@@ -1,9 +1,6 @@
 package de.fh.rosenheim.aline.repository;
 
-import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.domain.BookingStatus;
-import de.fh.rosenheim.aline.model.domain.Seminar;
-import de.fh.rosenheim.aline.model.domain.User;
+import de.fh.rosenheim.aline.model.domain.*;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,10 +27,13 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
 
     private final BookingRepository bookingRepository;
 
-    public PersistenceConfiguration(UserRepository userRepository, BookingRepository bookingRepository, SeminarRepository seminarRepository) {
+    private final CategoryRepository categoryRepository;
+
+    public PersistenceConfiguration(UserRepository userRepository, SeminarRepository seminarRepository, BookingRepository bookingRepository, CategoryRepository categoryRepository) {
         this.userRepository = userRepository;
-        this.bookingRepository = bookingRepository;
         this.seminarRepository = seminarRepository;
+        this.bookingRepository = bookingRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -41,6 +41,15 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
      */
     @PostConstruct
     private void addData() throws ParseException {
+
+        categoryRepository.save(new Category("Software Engineering"));
+        categoryRepository.save(new Category("IT Consulting"));
+        categoryRepository.save(new Category("Testmanagement"));
+        categoryRepository.save(new Category("Management"));
+        categoryRepository.save(new Category("Vertrieb"));
+        categoryRepository.save(new Category("Softskill"));
+        categoryRepository.save(new Category("Sonstige"));
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         User fitStaff = User.builder()

@@ -3,6 +3,7 @@ package de.fh.rosenheim.aline.controller.rest;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.SeminarService;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class SeminarsController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public ResponseEntity<Seminar> addSeminar(@RequestBody SeminarBasics seminar) {
+    public ResponseEntity<Seminar> addSeminar(@RequestBody SeminarBasics seminar) throws UnkownCategoryException {
         return new ResponseEntity<>(seminarService.createNewSeminar(seminar), HttpStatus.CREATED);
     }
 
@@ -51,7 +52,7 @@ public class SeminarsController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException {
+    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException, UnkownCategoryException {
         return seminarService.updateSeminar(id, seminar);
     }
 
@@ -72,6 +73,16 @@ public class SeminarsController {
     public ResponseEntity<ErrorResponse> noObjectException(NoObjectForIdException ex) {
         return new ResponseEntity<>(
                 new ErrorResponse("No seminar with id=" + ex.getId()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Custom response if no Seminar for the given ID exists
+     */
+    @ExceptionHandler(UnkownCategoryException.class)
+    public ResponseEntity<ErrorResponse> categoryNotFoundException(UnkownCategoryException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse("You entered an invalid category. Allowed values are:" + ex.getAllowedCategories().toString()),
                 HttpStatus.NOT_FOUND);
     }
 }

@@ -10,22 +10,25 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
+/**
+ * The basics of a seminar that can easily be changed
+ */
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-/**
- * The basics of a seminar that can easily be changed
- */
 public class SeminarBasics extends DomainBase {
 
     private String name;
-    @Column( length = 100000 )
+    @Column(length = 100000)
     private String description;
-    @Column( length = 100000 )
+    @Column(length = 100000)
     private String agenda;
     private boolean bookable;
+    // This is just a string and not a Category object for simplicity sake, i.e. while (de-)serializing.
+    // We check the validity of the string in the SeminarService when creating & updating a seminar
+    private String category;
     // The employees are grouped in 5 levels, depending on skill in their field
     private int[] targetLevel;
     private String requirements;
@@ -51,6 +54,7 @@ public class SeminarBasics extends DomainBase {
         trainer = newData.getTrainer();
         agenda = newData.getAgenda();
         bookable = newData.isBookable();
+        category = newData.getCategory();
         targetLevel = newData.getTargetLevel();
         requirements = newData.getRequirements();
         reporting = newData.getReporting();

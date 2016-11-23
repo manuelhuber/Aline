@@ -1,11 +1,15 @@
 package de.fh.rosenheim.aline.unit.service;
 
+import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
+import de.fh.rosenheim.aline.repository.CategoryRepository;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import de.fh.rosenheim.aline.service.SeminarService;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,12 +28,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class SeminarServiceTest {
 
     private SeminarRepository seminarRepository;
+    private CategoryRepository categoryRepository;
     private SeminarService seminarService;
 
     @Rule
@@ -38,7 +42,8 @@ public class SeminarServiceTest {
     @Before
     public void createService() {
         seminarRepository = mock(SeminarRepository.class);
-        seminarService = new SeminarService(seminarRepository);
+        categoryRepository = mock(CategoryRepository.class);
+        seminarService = new SeminarService(seminarRepository, categoryRepository);
     }
 
     @Before
@@ -96,19 +101,23 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void createNewSeminar() {
+    public void createNewSeminarWithInvalidCategory() throws UnkownCategoryException {
+        given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
+        exception.expect(UnkownCategoryException.class);
+        seminarService.createNewSeminar(new SeminarBasics());
+        verify(seminarRepository, times(0)).save(any(Seminar.class));
+    }
+
+    @Test
+    public void createNewSeminar() throws UnkownCategoryException {
         SeminarBasics newSeminar = new SeminarBasics();
         newSeminar.setName("foo");
         newSeminar.setDescription("bar");
-        Seminar actualSeminar = new Seminar();
-        actualSeminar.setId((long) 10);
-        actualSeminar.setName("foo");
-        actualSeminar.setDescription("bar");
-        given(seminarRepository.save(any(Seminar.class))).willReturn(actualSeminar);
+        newSeminar.setCategory("Hello World");
+        given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
 
         Seminar returnValue = seminarService.createNewSeminar(newSeminar);
 
-        assertEquals(returnValue, actualSeminar);
         ArgumentCaptor<Seminar> argument = ArgumentCaptor.forClass(Seminar.class);
         verify(seminarRepository).save(argument.capture());
         assertEquals("foo", argument.getValue().getName());
@@ -116,7 +125,7 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void updateNonExistingSeminar() throws NoObjectForIdException {
+    public void updateNonExistingSeminar() throws NoObjectForIdException, UnkownCategoryException {
         SeminarBasics seminarUpdate = new SeminarBasics();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");
@@ -127,10 +136,27 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void updateSeminar() throws NoObjectForIdException {
+    public void updateSeminarWithInvalidCategory() throws NoObjectForIdException, UnkownCategoryException {
+
+        Seminar actualSeminar = new Seminar();
+        actualSeminar.setId((long) 10);
+        actualSeminar.setName("hello");
+        actualSeminar.setDescription("world");
+
+        given(seminarRepository.findOne((long) 10)).willReturn(actualSeminar);
+        given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
+
+        exception.expect(UnkownCategoryException.class);
+        seminarService.updateSeminar(10, new SeminarBasics());
+        verify(seminarRepository, times(0)).save(any(Seminar.class));
+    }
+
+    @Test
+    public void updateSeminar() throws NoObjectForIdException, UnkownCategoryException {
         SeminarBasics seminarUpdate = new SeminarBasics();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");
+        seminarUpdate.setCategory("Hello World");
 
         Seminar actualSeminar = new Seminar();
         actualSeminar.setId((long) 10);
@@ -139,6 +165,7 @@ public class SeminarServiceTest {
 
         given(seminarRepository.findOne((long) 10)).willReturn(actualSeminar);
         given(seminarRepository.save(actualSeminar)).willReturn(actualSeminar);
+        given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
 
         Seminar returnValue = seminarService.updateSeminar(10, seminarUpdate);
 
