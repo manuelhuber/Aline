@@ -2,8 +2,8 @@ package de.fh.rosenheim.aline.unit.service;
 
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
-import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import de.fh.rosenheim.aline.service.SeminarService;
 import org.junit.Before;
@@ -43,16 +43,14 @@ public class SeminarServiceTest {
 
     @Before
     public void mockSecurityContext() {
-        User user = new User();
-        user.setUsername("John");
+        SecurityUser user = new SecurityUser("John", null, null, null, null, null);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null);
-
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     @Test
-    public void seminarNotFound() throws NoObjectForIdException {
+    public void getNonExistingSeminar() throws NoObjectForIdException {
         given(seminarRepository.findOne((long) 1)).willReturn(null);
         exception.expect(NoObjectForIdException.class);
         seminarService.getSeminar(1);
@@ -109,6 +107,40 @@ public class SeminarServiceTest {
         given(seminarRepository.save(any(Seminar.class))).willReturn(actualSeminar);
 
         Seminar returnValue = seminarService.createNewSeminar(newSeminar);
+
+        assertEquals(returnValue, actualSeminar);
+        ArgumentCaptor<Seminar> argument = ArgumentCaptor.forClass(Seminar.class);
+        verify(seminarRepository).save(argument.capture());
+        assertEquals("foo", argument.getValue().getName());
+        assertEquals("bar", argument.getValue().getDescription());
+    }
+
+    @Test
+    public void updateNonExistingSeminar() throws NoObjectForIdException {
+        SeminarBasics seminarUpdate = new SeminarBasics();
+        seminarUpdate.setName("foo");
+        seminarUpdate.setDescription("bar");
+
+        given(seminarRepository.save(any(Seminar.class))).willReturn(null);
+        exception.expect(NoObjectForIdException.class);
+        seminarService.updateSeminar(1, seminarUpdate);
+    }
+
+    @Test
+    public void updateSeminar() throws NoObjectForIdException {
+        SeminarBasics seminarUpdate = new SeminarBasics();
+        seminarUpdate.setName("foo");
+        seminarUpdate.setDescription("bar");
+
+        Seminar actualSeminar = new Seminar();
+        actualSeminar.setId((long) 10);
+        actualSeminar.setName("hello");
+        actualSeminar.setDescription("world");
+
+        given(seminarRepository.findOne((long) 10)).willReturn(actualSeminar);
+        given(seminarRepository.save(actualSeminar)).willReturn(actualSeminar);
+
+        Seminar returnValue = seminarService.updateSeminar(10, seminarUpdate);
 
         assertEquals(returnValue, actualSeminar);
         ArgumentCaptor<Seminar> argument = ArgumentCaptor.forClass(Seminar.class);
