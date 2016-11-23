@@ -11,9 +11,11 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("${route.user.base}")
@@ -35,6 +37,12 @@ public class UserController {
             HttpServletRequest request) throws NoObjectForIdException {
         String name = queryName != null ? queryName : controllerUtil.getUsername(request);
         return userService.getUserByName(name);
+    }
+
+    @RequestMapping(value = "${route.user.all}", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
+    public List<String> getAllUsernames() {
+        return userService.getAllUsernames();
     }
 
     /**

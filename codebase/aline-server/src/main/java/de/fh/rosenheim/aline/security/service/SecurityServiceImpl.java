@@ -32,16 +32,16 @@ public class SecurityServiceImpl implements SecurityService {
                 (isDivisionHeadForUser(principal, data) || isSelf(principal, data) || isFrontOffice(principal));
     }
 
-    private boolean isDivisionHeadForUser(SecurityUser principal, User data) {
+    public boolean isDivisionHeadForUser(SecurityUser principal, User data) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
                 principal.getDivision().equals(data.getDivision());
     }
 
-    private boolean isSelf(SecurityUser principal, User data) {
+    public boolean isSelf(SecurityUser principal, User data) {
         return principal.getUsername().equals(data.getUsername());
     }
 
-    private boolean isFrontOffice(SecurityUser principal) {
+    public boolean isFrontOffice(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
     }
 }
