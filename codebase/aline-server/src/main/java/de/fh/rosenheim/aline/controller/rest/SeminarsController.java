@@ -55,7 +55,7 @@ public class SeminarsController {
     /**
      * Delete a single seminar
      */
-    @RequestMapping(value = "${route.delete}/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteSeminarById(@PathVariable long id) throws NoObjectForIdException {
         seminarService.deleteSeminar(id);
         return ResponseEntity.ok(null);

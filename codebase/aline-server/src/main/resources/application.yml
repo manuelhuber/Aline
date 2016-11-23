@@ -26,7 +26,6 @@ token:
   expiration: 864000000
 
 route:
-  delete: delete
   authentication:
     base: auth
     login: login
