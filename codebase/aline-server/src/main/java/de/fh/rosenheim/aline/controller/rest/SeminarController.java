@@ -38,7 +38,7 @@ public class SeminarController {
     /**
      * Get a single seminar
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public Seminar getSeminarById(@PathVariable long id) throws NoObjectForIdException {
         return seminarService.getSeminar(id);
     }
@@ -47,7 +47,7 @@ public class SeminarController {
      * Update a seminar, not including bookings
      * Properties that are not set will be set to null/0
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException {
         return seminarService.updateSeminar(id, seminar);
     }
@@ -55,7 +55,7 @@ public class SeminarController {
     /**
      * Delete a single seminar
      */
-    @RequestMapping(value = "/${route.delete}/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "${route.delete}/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> deleteSeminarById(@PathVariable long id) throws NoObjectForIdException {
         seminarService.deleteSeminar(id);
         return ResponseEntity.ok(null);
