@@ -23,7 +23,7 @@ public class SecurityService {
     }
 
     /**
-     * Users only get access to own data
+     * Users can access own data
      * Division Heads can access data of everybody in their division
      * Front Office can access everything
      */
@@ -32,25 +32,51 @@ public class SecurityService {
                 (isDivisionHeadForUser(principal, data) || isSelf(principal, data) || isFrontOffice(principal));
     }
 
+    /**
+     * Division Heads can change data of everybody in their division
+     * Front Office can change everything
+     */
     public boolean canCurrentUserChangeBookingStatus(Booking data) {
         SecurityUser principal = getCurrentUser();
         return principal != null && data != null &&
                 (isDivisionHeadForUser(principal, data.getUser()) || isFrontOffice(principal));
     }
 
+    /**
+     * Users can delete their own bookings
+     * Front Office can delete everything
+     */
+    public boolean canCurrentUserDeleteBooking(Booking data) {
+        SecurityUser principal = getCurrentUser();
+        return principal != null && data != null &&
+                (isSelf(principal, data.getUser()) || isFrontOffice(principal));
+    }
+
+    /**
+     * Is the given principal the division head of the given user
+     */
     public boolean isDivisionHeadForUser(SecurityUser principal, User data) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
                 principal.getDivision().equals(data.getDivision());
     }
 
+    /**
+     * Does the user data belong to the given principal
+     */
     public boolean isSelf(SecurityUser principal, User data) {
         return principal.getUsername().equals(data.getUsername());
     }
 
+    /**
+     * Checks if the given principal has front office authorities
+     */
     public boolean isFrontOffice(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
     }
 
+    /**
+     * Loads the data of the user in the current securityContext
+     */
     private SecurityUser getCurrentUser() {
         return (SecurityUser) this.userDetailsService.loadUserByUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName()

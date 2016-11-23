@@ -43,6 +43,15 @@ public class BookingsController {
     }
 
     /**
+     * Delete a booking
+     */
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteBookingById(@PathVariable long id) throws NoObjectForIdException {
+        bookingService.deleteBooking(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * Custom response if no Booking for the given id exists
      */
     @ExceptionHandler(NoObjectForIdException.class)
