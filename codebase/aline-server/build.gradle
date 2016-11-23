@@ -13,6 +13,8 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+// Testcoverage plugin - default config is fine for us
+apply plugin: 'jacoco'
 
 jar {
     baseName = 'aline-server'

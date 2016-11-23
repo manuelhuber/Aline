@@ -16,6 +16,10 @@ You can access the DB console via `${serveraddress}/${contextPath}/console `. De
 ##### Swagger
 Url: ${serveraddress}/${contextPath}/swagger-ui.html
 
+#### Tests
+Execute the gradle jacocoTestReport task to generate test coverage. It can be found under  
+ `build\reports\jacoco\test\html\index.html`
+
 ##### Project structure:
 
 
