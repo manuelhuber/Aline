@@ -72,10 +72,7 @@ public class SeminarService {
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
     public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException {
-        Seminar oldSeminar = seminarRepository.findOne(id);
-        if (oldSeminar == null) {
-            throw new NoObjectForIdException(id);
-        }
+        Seminar oldSeminar = getSeminar(id);
         oldSeminar.copyBasics(newSeminar);
         Seminar savedSeminar = seminarRepository.save(oldSeminar);
         log.info(currentUser() + "updated seminar with id " + savedSeminar.getId());
