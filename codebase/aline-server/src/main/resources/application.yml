@@ -22,7 +22,8 @@ logging:
 token:
   secret: foobar123
   header: X-Auth-Token
-#  864000000 = 10 day
+#  Time in ms
+#  864000000ms = 10 day
   expiration: 864000000
 
 route:

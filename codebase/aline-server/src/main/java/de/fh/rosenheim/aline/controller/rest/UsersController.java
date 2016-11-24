@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * All HTTP endpoints related to user
+ */
 @RestController
 @RequestMapping("${route.user.base}")
 public class UsersController {

@@ -31,6 +31,8 @@ public class BookingsController {
         this.controllerUtil = controllerUtil;
     }
 
+    // ------------------------------------------------------------------------------------------------- Booking Handler
+
     /**
      * Books the given user or if no name is given the owner of the X-Auth-Token to the given Seminar
      *
@@ -101,13 +103,15 @@ public class BookingsController {
         return ResponseEntity.noContent().build();
     }
 
+    // ----------------------------------------------------------------------------------------------- Exception Handler
+
     /**
      * Custom response if no Booking for the given id exists
      */
     @ExceptionHandler(NoObjectForIdException.class)
     public ResponseEntity<ErrorResponse> noObjectException(NoObjectForIdException ex) {
         return new ResponseEntity<>(
-                new ErrorResponse("No booking with id=" + ex.getId()),
+                new ErrorResponse("No " + ex.getObject().getName() + " with id='" + ex.getId() + "'"),
                 HttpStatus.NOT_FOUND);
     }
 

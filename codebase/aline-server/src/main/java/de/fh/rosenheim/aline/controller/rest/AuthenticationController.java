@@ -27,8 +27,13 @@ public class AuthenticationController {
         this.controllerUtil = controllerUtil;
     }
 
+    // ------------------------------------------------------------------------------------------ Authentication Handler
+
     /**
      * Validates the username & password and returns a token & authorities for the user
+     *
+     * @param authenticationRequest username & password
+     * @return A token & all authorities of the user
      */
     @RequestMapping(value = "${route.authentication.login}", method = RequestMethod.POST)
     public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -37,6 +42,8 @@ public class AuthenticationController {
 
     /**
      * Sends a new token, if the old one is valid without the need for username & password
+     *
+     * @return A token & all authorities of the user
      */
     @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
     public AuthenticationResponse authenticationRequest(HttpServletRequest request) {
