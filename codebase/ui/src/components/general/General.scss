@@ -1,7 +1,19 @@
-.login-form{
-  label{
+.login-form {
+  h1{
+    margin: 0;
+  }
+  img{
+    height: 300px;
+    margin: 10px 0 10px 0;
+  }
+  text-align: center;
+  label {
     width: 100px;
     display: inline-block;
+    text-align: left;
+  }
+  .button-wrapper {
+    margin-top: 10px;
   }
 }
 
@@ -14,36 +26,41 @@
   }
 }
 
-.search-bar{
+.search-bar {
   padding: $spacing;
   background-color: $searchBackground;
 }
 
-.text-search{
+.text-search {
   display: inline-block;
   width: $inlineElementWidth;
   margin-right: 20px;
-  input{
+  position: relative;
+  input {
     width: 90%;
     border: none;
     border-bottom: 2px solid $gray;
+    background: none;
+    padding-right: 24px;
   }
-  button.searchbutton{
+  button.searchbutton {
+    position: absolute;
+    right: 0;
     height: auto;
     background: none;
     box-shadow: none;
     color: $black;
     padding: 0;
-    i{
+    i {
       vertical-align: bottom;
     }
   }
 }
 
-.dropdown{
+.dropdown {
   display: inline-block;
   width: $inlineElementWidth;
-  select, option{
+  select, option {
     width: 100%;
     border: none;
     border-bottom: 2px solid $gray;
@@ -51,8 +68,16 @@
     -webkit-appearance: initial;
     background: url(assets/dropdown_arrow.svg) no-repeat right;
     cursor: pointer;
-    &.placeholder-option{
+    &.placeholder-option {
       color: $gray;
     }
+  }
+}
+
+.checkbox-wrapper {
+  display: inline-block;
+  vertical-align: bottom;
+  label, input {
+    cursor: pointer;
   }
 }

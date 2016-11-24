@@ -29,17 +29,21 @@ export class Login extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit} className="login-form">
-                <h2>Aline</h2>
+                <h1>Aline</h1>
                 <img src={require("../../assets/aline_500x500.png")} alt="Aline Logo"/>
-                <div>
-                    <label htmlFor="loginName">Login Name:</label>
-                    <input ref="loginName" placeholder="Login Name" id="loginName"/>
+                <div className="input-wrapper">
+                    <div>
+                        <label htmlFor="loginName">Login Name:</label>
+                        <input type="text" ref="loginName" placeholder="Login Name" id="loginName"/>
+                    </div>
+                    <div>
+                        <label htmlFor="password">Passwort:</label>
+                        <input ref="password" placeholder="Passwort" type="password" id="password"/>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="password">Passwort:</label>
-                    <input ref="password" placeholder="Passwort" type="password" id="password"/>
+                <div className="button-wrapper">
+                    <button type="submit">Einloggen</button>
                 </div>
-                <button type="submit">Einloggen</button>
                 <div id="loginError" className="login-error invisible">
                     Daten nicht korrekt.
                 </div>

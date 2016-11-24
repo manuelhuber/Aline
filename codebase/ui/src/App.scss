@@ -8,6 +8,7 @@ body {
   margin: 0;
   font-family: $defaultFont;
   font-weight: 300;
+  font-size: 14px;
   background-color: $mainBackground;
   color: $black;
 }
@@ -52,9 +53,18 @@ button {
   //todo disabled
 }
 
-button, input, select{
-  font-size: 13px;
+button, input, select {
+  font-size: 14px;
   &:focus {
     outline: none;
   }
+}
+
+input , input:-webkit-autofill{
+    border: none;
+    border-bottom: 2px solid $gray;
+    background: none !important;
+    //background-color: rgb(0,0,0) !important;
+    -webkit-appearance: none;
+
 }

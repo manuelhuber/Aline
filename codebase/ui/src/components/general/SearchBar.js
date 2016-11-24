@@ -1,14 +1,26 @@
 import React from 'react';
+import AuthService from '../../services/AuthService';
 require('../../assets/dropdown_arrow.svg');
+
+var DEFAULT_DROPDOWN_VALUE = 'Bitte wählen...';
 
 export class SearchBar extends React.Component {
     constructor() {
         super();
         this.state = {
-            textSearchInput: ''
+            textSearchInput: '',
+            isFrontOffice: false,
+            dropdownValue : ''
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
+        this.chooseDropdownValue = this.chooseDropdownValue.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({
+            isFrontOffice: AuthService.isFrontOffice()
+        })
     }
 
     handleTextSearch(event) {
@@ -19,7 +31,13 @@ export class SearchBar extends React.Component {
     }
 
     searchForText() {
+        //todo
+    }
 
+    chooseDropdownValue(event){
+        this.setState({
+            dropdownValue: event.target.value
+        })
     }
 
     render() {
@@ -36,17 +54,24 @@ export class SearchBar extends React.Component {
                     <div className="text-search">
                         <input type="search" placeholder="Volltextsuche" value={this.state.textSearchInput}
                                onChange={this.handleTextSearch}/>
-                        <button className="searchbutton" onClick={this.searchForText}><i className="material-icons">search</i></button>
+                        <button className="searchbutton" onClick={this.searchForText}><i className="material-icons">search</i>
+                        </button>
                     </div>
                     <div className="dropdown">
-                        <select>
-                            <option value="" disabled selected className="placeholder-option">Kategorie wählen...</option>
-                            <option value="blubb">Blubb</option>
-                            <option value="Blah">Blah</option>
-                            <option value="42">42</option>
-                            <option value="foo">foo</option>
+                        <select value={this.state.dropdownValue} onChange={this.chooseDropdownValue}>
+                            <option disabled>{DEFAULT_DROPDOWN_VALUE}</option>
+                            <option>Blubb</option>
+                            <option>Blah</option>
+                            <option>42</option>
+                            <option>foo</option>
                         </select>
                     </div>
+                    {this.state.isFrontOffice &&
+                    <div className="checkbox-wrapper">
+                        <input type="checkbox" value="true" id="showOldSeminarsCheckbox"/>
+                        <label htmlFor="showOldSeminarsCheckbox">Nur in der Vergangenheit liegende Seminare anzeigen</label>
+                    </div>
+                    }
                 </div>
             );
         }
