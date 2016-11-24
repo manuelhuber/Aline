@@ -2,7 +2,7 @@ import React from 'react';
 import AuthService from '../../services/AuthService';
 require('../../assets/dropdown_arrow.svg');
 
-var DEFAULT_DROPDOWN_VALUE = 'Bitte wählen...';
+var DEFAULT_DROPDOWN_VALUE = 'Bitte wähle';
 
 export class SearchBar extends React.Component {
     constructor() {
@@ -10,11 +10,13 @@ export class SearchBar extends React.Component {
         this.state = {
             textSearchInput: '',
             isFrontOffice: false,
-            dropdownValue : ''
+            categoryDropdownValue: '',
+            tierDropdownValue: ''
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
-        this.chooseDropdownValue = this.chooseDropdownValue.bind(this);
+        this.chooseCategory = this.chooseCategory.bind(this);
+        this.chooseTier = this.chooseTier.bind(this);
     }
 
     componentDidMount() {
@@ -34,9 +36,15 @@ export class SearchBar extends React.Component {
         //todo
     }
 
-    chooseDropdownValue(event){
+    chooseCategory(event) {
         this.setState({
-            dropdownValue: event.target.value
+            categoryDropdownValue: event.target.value
+        })
+    }
+
+    chooseTier(event) {
+        this.setState({
+            tierDropdownValue: event.target.value
         })
     }
 
@@ -58,18 +66,28 @@ export class SearchBar extends React.Component {
                         </button>
                     </div>
                     <div className="dropdown">
-                        <select value={this.state.dropdownValue} onChange={this.chooseDropdownValue}>
-                            <option disabled>{DEFAULT_DROPDOWN_VALUE}</option>
+                        <select value={this.state.categoryDropdownValue} onChange={this.chooseCategory}>
+                            <option disabled>{DEFAULT_DROPDOWN_VALUE} eine Kategorie zum Filtern</option>
                             <option>Blubb</option>
                             <option>Blah</option>
                             <option>42</option>
                             <option>foo</option>
                         </select>
                     </div>
+                    <div className="dropdown">
+                        <select value={this.state.tierDropdownValue} onChange={this.chooseTier}>
+                            <option disabled>{DEFAULT_DROPDOWN_VALUE} eine Stufe zum Filtern</option>
+                            <option>SE1</option>
+                            <option>SE2</option>
+                            <option>Tester</option>
+                            <option>FO</option>
+                        </select>
+                    </div>
                     {this.state.isFrontOffice &&
                     <div className="checkbox-wrapper">
                         <input type="checkbox" value="true" id="showOldSeminarsCheckbox"/>
-                        <label htmlFor="showOldSeminarsCheckbox">Nur in der Vergangenheit liegende Seminare anzeigen</label>
+                        <label htmlFor="showOldSeminarsCheckbox">Nur in der Vergangenheit liegende Seminare
+                            anzeigen</label>
                     </div>
                     }
                 </div>
