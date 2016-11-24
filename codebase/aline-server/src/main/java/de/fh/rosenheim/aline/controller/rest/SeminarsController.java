@@ -11,6 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * All HTTP enpoints related to seminars
+ */
 @RestController
 @RequestMapping("${route.seminar.base}")
 public class SeminarsController {
@@ -23,6 +28,8 @@ public class SeminarsController {
 
     /**
      * Get all seminars
+     *
+     * @return a Iterable over all Seminars (which will be serialized as array in JSON)
      */
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Seminar> getAllSeminars() {
@@ -31,6 +38,10 @@ public class SeminarsController {
 
     /**
      * Add a new seminar
+     *
+     * @param seminar The basic info about the seminar
+     * @return The complete newly created seminar
+     * @throws UnkownCategoryException If the
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
@@ -39,7 +50,21 @@ public class SeminarsController {
     }
 
     /**
+     * Get all categories
+     *
+     * @return A list of all category names
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public List<String> getAllCategories() {
+        return seminarService.getAllCategories();
+    }
+
+    /**
      * Get a single seminar
+     *
+     * @param id of the Seminar
+     * @return the complete seminar
+     * @throws NoObjectForIdException if there is no seminar for the given ID
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public Seminar getSeminarById(@PathVariable long id) throws NoObjectForIdException {
@@ -48,7 +73,14 @@ public class SeminarsController {
 
     /**
      * Update basic info of a seminar (no ID, creation date, update date or bookings)
-     * Properties that are not set will be set to null/0
+     * Properties that are not set in the seminar parameter will be set to null/0
+     *
+     * @param id      of the seminar that should be updated
+     * @param seminar the basic data that will be set
+     * @return The updated Seminar
+     * @throws NoObjectForIdException  if there is no seminar for the given ID
+     * @throws UnkownCategoryException if the category is not a known category (all categories will be listed in the
+     *                                 response
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
@@ -58,6 +90,10 @@ public class SeminarsController {
 
     /**
      * Delete a single seminar
+     *
+     * @param id of the seminar that should be deleted
+     * @return
+     * @throws NoObjectForIdException if there is no seminar for the given ID
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
@@ -82,7 +118,8 @@ public class SeminarsController {
     @ExceptionHandler(UnkownCategoryException.class)
     public ResponseEntity<ErrorResponse> categoryNotFoundException(UnkownCategoryException ex) {
         return new ResponseEntity<>(
-                new ErrorResponse("You entered an invalid category. Allowed values are:" + ex.getAllowedCategories().toString()),
+                new ErrorResponse(
+                        "You entered an invalid category. Allowed values are:" + ex.getAllowedCategories().toString()),
                 HttpStatus.NOT_FOUND);
     }
 }

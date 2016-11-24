@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
@@ -92,16 +93,26 @@ public class SeminarService {
     }
 
     /**
+     * Returns all available Categories
+     *
+     * @return A list of categories
+     */
+    public List<String> getAllCategories() {
+        return Lists.newArrayList(this.categoryRepository.findAll().iterator())
+                .stream().map(Category::getName).collect(Collectors.toList());
+    }
+
+    /**
      * Checks the given category against the data from the database
      *
-     * @param category
+     * @param category The name of the category
      * @throws UnkownCategoryException if the given category is unknown
      */
     private void checkCategory(String category) throws UnkownCategoryException {
-        List<Category> categories = Lists.newArrayList(categoryRepository.findAll());
-        Optional<Category> match = categories.stream().filter(c -> c.getName().equals(category)).findAny();
-        if (!match.isPresent()) {
-            throw new UnkownCategoryException(categories.stream().map(Category::getName).collect(Collectors.toList()));
+        List<String> categories = getAllCategories();
+        if (categories.contains(category)) {
+            throw new UnkownCategoryException(categories);
+
         }
     }
 }
