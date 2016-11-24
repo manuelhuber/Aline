@@ -39,7 +39,7 @@ public class SeminarService {
     public Seminar getSeminar(long id) throws NoObjectForIdException {
         Seminar seminar = seminarRepository.findOne(id);
         if (seminar == null) {
-            throw new NoObjectForIdException(id);
+            throw new NoObjectForIdException(Seminar.class, id);
         }
         return seminar;
     }
@@ -60,7 +60,7 @@ public class SeminarService {
             log.info(currentUser() + "deleted seminar with id=" + id + " successfully");
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             log.info(currentUser() + "tried to deleted non existing seminar with id=" + id);
-            throw new NoObjectForIdException(id);
+            throw new NoObjectForIdException(Seminar.class, id);
         } catch (Exception e) {
             log.error(currentUser() + "tried to deleted seminar with id=" + id + " but it failed.", e);
             throw e;
@@ -100,6 +100,15 @@ public class SeminarService {
     public List<String> getAllCategories() {
         return Lists.newArrayList(this.categoryRepository.findAll().iterator())
                 .stream().map(Category::getName).collect(Collectors.toList());
+    }
+
+    public void addCategory(Category category) {
+        categoryRepository.save(category);
+        log.info(currentUser() + "created a new seminar with id " + category.getName());
+    }
+
+    public void deleteCategory(String categoryName) {
+        categoryRepository.delete(categoryName);
     }
 
     /**

@@ -33,6 +33,7 @@ route:
     logout: logout
   seminar:
     base: seminars
+    category: categories
   user:
     base: users
     all: all

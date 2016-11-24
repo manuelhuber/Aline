@@ -21,7 +21,7 @@ public class UserService {
     public User getUserByName(String name) throws NoObjectForIdException {
         User user = userRepository.findByUsername(name);
         if (user == null) {
-            throw new NoObjectForIdException(name);
+            throw new NoObjectForIdException(User.class, name);
         }
         return user;
     }

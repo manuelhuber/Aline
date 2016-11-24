@@ -1,5 +1,6 @@
 package de.fh.rosenheim.aline.controller.rest;
 
+import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
@@ -26,6 +27,8 @@ public class SeminarsController {
         this.seminarService = seminarService;
     }
 
+    // ------------------------------------------------------------------------------------------------- Seminar Handler
+
     /**
      * Get all seminars
      *
@@ -47,16 +50,6 @@ public class SeminarsController {
     @PreAuthorize("@securityService.isFrontOffice(principal)")
     public ResponseEntity<Seminar> addSeminar(@RequestBody SeminarBasics seminar) throws UnkownCategoryException {
         return new ResponseEntity<>(seminarService.createNewSeminar(seminar), HttpStatus.CREATED);
-    }
-
-    /**
-     * Get all categories
-     *
-     * @return A list of all category names
-     */
-    @RequestMapping(method = RequestMethod.GET)
-    public List<String> getAllCategories() {
-        return seminarService.getAllCategories();
     }
 
     /**
@@ -84,7 +77,8 @@ public class SeminarsController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar) throws NoObjectForIdException, UnkownCategoryException {
+    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar)
+            throws NoObjectForIdException, UnkownCategoryException {
         return seminarService.updateSeminar(id, seminar);
     }
 
@@ -102,13 +96,50 @@ public class SeminarsController {
         return ResponseEntity.noContent().build();
     }
 
+    // ------------------------------------------------------------------------------------------------ Category Handler
+
+    /**
+     * Get all categories
+     *
+     * @return A list of all category names
+     */
+    @RequestMapping(value = "${route.seminar.category}", method = RequestMethod.GET)
+    public List<String> getAllCategories() {
+        return seminarService.getAllCategories();
+    }
+
+    /**
+     * Add a category
+     *
+     * @return A updated list of all category names
+     */
+    @RequestMapping(value = "${route.seminar.category}", method = RequestMethod.POST)
+    public List<String> addCategory(@RequestBody Category category) {
+        seminarService.addCategory(category);
+        return seminarService.getAllCategories();
+    }
+
+
+    /**
+     * Delete a category
+     *
+     * @return A updated list of all category names
+     */
+    @RequestMapping(value = "${route.seminar.category}", method = RequestMethod.DELETE)
+    public List<String> deleteCategory(@RequestParam String categoryName) {
+        seminarService.deleteCategory(categoryName);
+        return seminarService.getAllCategories();
+    }
+
+    // ----------------------------------------------------------------------------------------------- Exception Handler
+
     /**
      * Custom response if no Seminar for the given ID exists
      */
     @ExceptionHandler(NoObjectForIdException.class)
     public ResponseEntity<ErrorResponse> noObjectException(NoObjectForIdException ex) {
         return new ResponseEntity<>(
-                new ErrorResponse("No seminar with id=" + ex.getId()),
+                new ErrorResponse("No " + ex.getObject().getName() + " with id=" + ex.getId()),
                 HttpStatus.NOT_FOUND);
     }
 

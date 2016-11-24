@@ -52,7 +52,7 @@ public class BookingService {
     public Booking getBooking(long id) throws NoObjectForIdException {
         Booking booking = bookingRepository.findOne(id);
         if (booking == null) {
-            throw new NoObjectForIdException(id);
+            throw new NoObjectForIdException(Booking.class, id);
         }
         return booking;
     }
