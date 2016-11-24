@@ -9,5 +9,9 @@ import lombok.Setter;
 @Setter
 public class NoObjectForIdException extends Exception {
 
-    private long id;
+    private String id;
+
+    public NoObjectForIdException(long id) {
+        this.id = String.valueOf(id);
+    }
 }

@@ -1,14 +1,23 @@
 package de.fh.rosenheim.aline.service;
 
+import com.google.common.collect.Lists;
+import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
+import de.fh.rosenheim.aline.repository.CategoryRepository;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
 @Service
 public class SeminarService {
@@ -16,9 +25,11 @@ public class SeminarService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final SeminarRepository seminarRepository;
+    private final CategoryRepository categoryRepository;
 
-    public SeminarService(SeminarRepository seminarRepository) {
+    public SeminarService(SeminarRepository seminarRepository, CategoryRepository categoryRepository) {
         this.seminarRepository = seminarRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -59,30 +70,38 @@ public class SeminarService {
      * Creates a new seminar
      * Will always create a new seminar, even if the given seminar already has an ID
      */
-    public Seminar createNewSeminar(SeminarBasics basics) {
-        Seminar wrappedBasics = new Seminar();
-        wrappedBasics.copyBasics(basics);
-        Seminar newSeminar = seminarRepository.save(wrappedBasics);
-        log.info(currentUser() + "created a new seminar with id " + newSeminar.getId());
-        return newSeminar;
+    public Seminar createNewSeminar(SeminarBasics basics) throws UnkownCategoryException {
+        Seminar seminar = new Seminar(basics);
+        checkCategory(seminar.getCategory());
+        seminarRepository.save(seminar);
+        log.info(currentUser() + "created a new seminar with id " + seminar.getId());
+        return seminar;
     }
 
     /**
      * Updates the seminar with the given ID with the given data
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
-    public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException {
-        Seminar oldSeminar = seminarRepository.findOne(id);
-        if (oldSeminar == null) {
-            throw new NoObjectForIdException(id);
-        }
-        oldSeminar.copyBasics(newSeminar);
-        Seminar savedSeminar = seminarRepository.save(oldSeminar);
-        log.info(currentUser() + "updated seminar with id " + savedSeminar.getId());
-        return savedSeminar;
+    public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException, UnkownCategoryException {
+        Seminar seminar = getSeminar(id);
+        seminar.copyBasics(newSeminar);
+        checkCategory(seminar.getCategory());
+        seminarRepository.save(seminar);
+        log.info(currentUser() + "updated seminar with id " + seminar.getId());
+        return seminar;
     }
 
-    private String currentUser() {
-        return "User with name '" + SecurityContextHolder.getContext().getAuthentication().getName() + "' ";
+    /**
+     * Checks the given category against the data from the database
+     *
+     * @param category
+     * @throws UnkownCategoryException if the given category is unknown
+     */
+    private void checkCategory(String category) throws UnkownCategoryException {
+        List<Category> categories = Lists.newArrayList(categoryRepository.findAll());
+        Optional<Category> match = categories.stream().filter(c -> c.getName().equals(category)).findAny();
+        if (!match.isPresent()) {
+            throw new UnkownCategoryException(categories.stream().map(Category::getName).collect(Collectors.toList()));
+        }
     }
 }

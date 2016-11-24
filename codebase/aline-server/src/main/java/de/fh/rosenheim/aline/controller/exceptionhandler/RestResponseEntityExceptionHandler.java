@@ -13,13 +13,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * Global exception handling
- * These methods are called when there is in uncaught exception to create a sensible REST conform HTTP Response
+ * These methods are called when there is in uncaught exception and create a sensible REST conform HTTP Response
+ * More specific exception handling can be defined in the controllers.
  */
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The highest level handler that will only be called if no other handler fits
+     */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> genericError(Exception exception) {
         log.error("Unhandled exception: ", exception);
@@ -28,6 +32,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .body(new ErrorResponse("Something very unexpected happened"));
     }
 
+    /**
+     * Generic Autentication / Authorization response.
+     * Note: SpringSecurity will in some cases (like @PreAuthorization) send it's own response
+     */
     @ExceptionHandler(value = {AuthenticationException.class, AccessDeniedException.class})
     protected ResponseEntity<?> authorizationError(RuntimeException exception) {
         return ResponseEntity

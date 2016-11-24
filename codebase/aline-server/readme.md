@@ -15,6 +15,11 @@ You can access the DB console via `${serveraddress}/${contextPath}/console `. De
 
 ##### Swagger
 Url: ${serveraddress}/${contextPath}/swagger-ui.html
+Use the login endpoint to generate a token. Enter this token at the top right into the api_key field to automatically attach it to every call.
+
+#### Tests
+Execute the gradle jacocoTestReport task to generate test coverage. It can be found under  
+ `build\reports\jacoco\test\html\index.html`
 
 ##### Project structure:
 

@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.controller.configuration;
 
 import com.fasterxml.classmate.TypeResolver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +11,25 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.WildcardType;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.ApiKeyVehicle;
+import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Date;
 import java.util.List;
 
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
+/**
+ * Configuration of Swagger & Swagger UI
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
     private final TypeResolver typeResolver;
+    @Value("${token.header}")
+    private String tokenHeader;
 
     public SwaggerConfig(TypeResolver typeResolver) {
         this.typeResolver = typeResolver;
@@ -34,11 +43,31 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .genericModelSubstitutes(ResponseEntity.class)
+                // We return dates in ms
+                // Date[] are for some reason displayed as String[] ...
+                .directModelSubstitute(Date.class, long.class)
                 .alternateTypeRules(
+                        // ResponseEntity<Foo> should be displayed as Foo
                         newRule(typeResolver.resolve(DeferredResult.class,
                                 typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
                                 typeResolver.resolve(WildcardType.class)),
+                        // Iterable<Foo> should be displayed as List<Foo> since Spring Boot automatically serializes
+                        // Iterables as List/Array
                         newRule(typeResolver.resolve(Iterable.class, WildcardType.class),
                                 typeResolver.resolve(List.class, WildcardType.class)));
+    }
+
+    @Bean
+    SecurityConfiguration security() {
+        // This is copied from the springfox documentation. We only need to change the header key
+        return new SecurityConfiguration(
+                "test-app-client-id",
+                "test-app-client-secret",
+                "test-app-realm",
+                "test-app",
+                "",
+                ApiKeyVehicle.HEADER,
+                tokenHeader,
+                "," /*scope separator*/);
     }
 }

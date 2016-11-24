@@ -3,7 +3,7 @@ package de.fh.rosenheim.aline.controller.rest;
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Value;
+import de.fh.rosenheim.aline.util.ControllerUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,17 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * All HTTP enpoints related to authentication
+ */
 @RestController
 @RequestMapping("${route.authentication.base}")
 public class AuthenticationController {
 
-    @Value("${token.header}")
-    private String tokenHeader;
-
     private final AuthenticationService authenticationService;
+    private final ControllerUtil controllerUtil;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, ControllerUtil controllerUtil) {
         this.authenticationService = authenticationService;
+        this.controllerUtil = controllerUtil;
     }
 
     /**
@@ -38,7 +40,7 @@ public class AuthenticationController {
      */
     @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
     public AuthenticationResponse authenticationRequest(HttpServletRequest request) {
-        return authenticationService.refreshToken(getToken(request));
+        return authenticationService.refreshToken(controllerUtil.getToken(request));
     }
 
     /**
@@ -46,17 +48,7 @@ public class AuthenticationController {
      */
     @RequestMapping(value = "${route.authentication.logout}", method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        authenticationService.logoutUser(getToken(request));
+        authenticationService.logoutUser(controllerUtil.getToken(request));
         return ResponseEntity.ok(null);
-    }
-
-    /**
-     * Gets the token from the request header
-     *
-     * @param request HTTP request
-     * @return Token
-     */
-    private String getToken(HttpServletRequest request) {
-        return request.getHeader(this.tokenHeader);
     }
 }
