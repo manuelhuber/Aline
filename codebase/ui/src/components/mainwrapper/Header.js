@@ -42,21 +42,21 @@ export class Header extends React.Component {
             <header className="header">
                 <div className="navlink">
                     <Link to="/seminars" activeClassName="active">
-                        <i className="material-icons md-light md-36">list</i>
+                        <i className="material-icons md-light">list</i>
                         Seminarübersicht
                     </Link>
                 </div>
                 {this.state.isDivisionHead &&
                 <div className="navlink">
                     <Link to="/bereichuebersicht" activeClassName="active">
-                        <i className="material-icons md-light md-36">group</i>
+                        <i className="material-icons md-light">group</i>
                         Mein Bereich
                     </Link>
                 </div>
                 }
                 <div className="profile">
                     <div onClick={this.toggleVisibility}>
-                        <i className="material-icons md-light md-36" title="Profil und Logout">account_box</i>
+                        <i className="material-icons md-light" title="Profil und Logout">account_box</i>
                     </div>
                     <div id="profileDropdown" className="dropdown invisible">
                         <p className="user-name">Fritz</p>

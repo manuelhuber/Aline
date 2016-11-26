@@ -53,7 +53,10 @@ export class SeminarList extends React.Component {
                 <main className="seminar-tiles">
                     { this.state.filteredSeminars.map(this.renderSeminar) }
                     { this.state.filteredSeminars.length < 1 &&
-                    <div className="no-seminar-found">Keine Seminare vorhanden.</div>}
+                    <div className="no-seminar-found">
+                        <i className="material-icons md-36">sentiment_neutral</i>
+                        <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
+                    </div>}
                 </main>
             </div>
         );

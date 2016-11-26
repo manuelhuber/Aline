@@ -27,6 +27,12 @@ $button-color: #EB0564;
     }
   }
   .no-seminar-found{
-    margin: 20px 5px 0 5px;
+    margin: 5px 5px 0 5px;
+    i{
+      position: absolute
+    }
+    p{
+      padding-left: 38px;
+    }
   }
 }
