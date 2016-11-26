@@ -4,20 +4,26 @@ $button-color: #EB0564;
   display: flex;
   flex-wrap: wrap;
   margin: 0 5px 0 5px;
-  .seminar-tile a{
-    color: $black;
-    display: inline-block;
-    padding: 10px;
+  .seminar-tile{
     height: 150px;
     width: 150px;
-    background-color: $overlayBackground;
-    box-shadow: $tileShadow;
+    box-sizing: border-box;
+    padding: 10px;
     margin: $spacing / 2;
-    text-align: center;
-    vertical-align: middle;
-    &:hover{
-      box-shadow: $tileShadowHover;
-      cursor: pointer;
+    display: inline-block;
+    a{
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+    .name{
+      color: $accentColor;
+      height: 40px;
+    }
+    .trainer{
+      height: 90px;
+      overflow: hidden;
+      word-wrap: break-word;
     }
   }
 }

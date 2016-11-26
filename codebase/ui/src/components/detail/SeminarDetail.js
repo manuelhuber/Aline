@@ -1,14 +1,20 @@
 import React from 'react';
 import SeminarService from '../../services/SeminarService';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 
 export class SeminarDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            seminar: {}
+            seminar: {},
+            bookingAlertOpen: false
         };
         this.handleBooking = this.handleBooking.bind(this);
         this.saveSeminar = this.saveSeminar.bind(this);
+        this.openBookingDialog = this.openBookingDialog.bind(this);
+        this.closeBookingDialog = this.closeBookingDialog.bind(this);
     }
 
     componentDidMount() {
@@ -28,9 +34,27 @@ export class SeminarDetail extends React.Component {
 
     handleBooking() {
         //todo
+        this.closeBookingDialog();
+    }
+
+    openBookingDialog() {
+        this.setState({
+            bookingAlertOpen: true
+        })
+    }
+
+    closeBookingDialog() {
+        this.setState({
+            bookingAlertOpen: false
+        })
     }
 
     render() {
+        const bookingActions = [
+            <FlatButton label="Abbrechen" onClick={this.closeBookingDialog}/>,
+            <FlatButton label="Buchen" primary={true} onClick={this.handleBooking}/>
+        ];
+
         return (
             <div className="seminar">
                 <div className="seminar-name">
@@ -45,9 +69,12 @@ export class SeminarDetail extends React.Component {
                     <label htmlFor="seminarTrainer">Typ: </label>
                     <output type="text" id="seminarTrainer">{this.state.seminar.trainer}</output>
                 </div>
-                <button className="seminar-button" onClick={this.handleBooking}
-                        disabled={this.state.seminar.booked}>Buchen
-                </button>
+                <RaisedButton label="Buchen" onClick={this.openBookingDialog}>
+                    <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
+                            onRequestClose={this.close}>
+                        Jetzt das Seminar {this.state.seminar.name} buchen?
+                    </Dialog>
+                </RaisedButton>
             </div>
         );
     }

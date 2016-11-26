@@ -1,8 +1,10 @@
 import React from 'react';
 import AuthService from '../../services/AuthService';
-require('../../assets/dropdown_arrow.svg');
-
-var DEFAULT_DROPDOWN_VALUE = 'Bitte wähle';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Toggle from 'material-ui/Toggle';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
 
 export class SearchBar extends React.Component {
     constructor() {
@@ -17,6 +19,7 @@ export class SearchBar extends React.Component {
         this.searchForText = this.searchForText.bind(this);
         this.chooseCategory = this.chooseCategory.bind(this);
         this.chooseTier = this.chooseTier.bind(this);
+        this.showPastSeminars = this.showPastSeminars.bind(this);
     }
 
     componentDidMount() {
@@ -36,15 +39,19 @@ export class SearchBar extends React.Component {
         //todo
     }
 
-    chooseCategory(event) {
+    showPastSeminars() {
+        //todo
+    }
+
+    chooseCategory(event, index, value) {
         this.setState({
-            categoryDropdownValue: event.target.value
+            categoryDropdownValue: value
         })
     }
 
-    chooseTier(event) {
+    chooseTier(event, index, value) {
         this.setState({
-            tierDropdownValue: event.target.value
+            tierDropdownValue: value
         })
     }
 
@@ -60,34 +67,32 @@ export class SearchBar extends React.Component {
             return (
                 <div className="search-bar">
                     <div className="text-search">
-                        <input type="search" placeholder="Volltextsuche" value={this.state.textSearchInput}
-                               onChange={this.handleTextSearch}/>
-                        <button className="searchbutton" onClick={this.searchForText}><i className="material-icons">search</i>
-                        </button>
+                        <TextField type="search" hintText="Volltextsuche" value={this.state.textSearchInput}
+                                   onChange={this.handleTextSearch}/>
+                        <IconButton onClick={this.searchForText} iconClassName="material-icons">search</IconButton>
                     </div>
                     <div className="dropdown">
-                        <select value={this.state.categoryDropdownValue} onChange={this.chooseCategory}>
-                            <option disabled>{DEFAULT_DROPDOWN_VALUE} eine Kategorie zum Filtern</option>
-                            <option>Blubb</option>
-                            <option>Blah</option>
-                            <option>42</option>
-                            <option>foo</option>
-                        </select>
+                        <SelectField hintText="Filterkategorie wählen"
+                                     value={this.state.categoryDropdownValue}
+                                     onChange={this.chooseCategory}>
+                            <MenuItem value={1} primaryText="Blubb"/>
+                            <MenuItem value={2} primaryText="Blah"/>
+                            <MenuItem value={3} primaryText="Gnah"/>
+                        </SelectField>
                     </div>
                     <div className="dropdown">
-                        <select value={this.state.tierDropdownValue} onChange={this.chooseTier}>
-                            <option disabled>{DEFAULT_DROPDOWN_VALUE} eine Stufe zum Filtern</option>
-                            <option>SE1</option>
-                            <option>SE2</option>
-                            <option>Tester</option>
-                            <option>FO</option>
-                        </select>
+                        <SelectField hintText="Filterstufe wählen"
+                                     value={this.state.tierDropdownValue}
+                                     onChange={this.chooseTier}>
+                            <MenuItem value={1} primaryText="SE1"/>
+                            <MenuItem value={2} primaryText="SE2"/>
+                            <MenuItem value={3} primaryText="SE3"/>
+                        </SelectField>
                     </div>
                     {this.state.isFrontOffice &&
                     <div className="checkbox-wrapper">
-                        <input type="checkbox" value="true" id="showOldSeminarsCheckbox"/>
-                        <label htmlFor="showOldSeminarsCheckbox">Nur in der Vergangenheit liegende Seminare
-                            anzeigen</label>
+                        <Toggle label="In der Vergangenheit liegende Seminare anzeigen"
+                                onToggle={this.showPastSeminars}/>
                     </div>
                     }
                 </div>

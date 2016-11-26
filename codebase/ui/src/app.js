@@ -8,6 +8,11 @@ import ReactDOM from 'react-dom';
 import 'whatwg-fetch'; //Github fetch
 import {Router, Route, Link, IndexRedirect, hashHistory} from 'react-router'
 import AuthService from './services/AuthService';
+//material-ui
+import injectTapEventPlugin from 'react-tap-event-plugin';
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 require('./App.scss');
 

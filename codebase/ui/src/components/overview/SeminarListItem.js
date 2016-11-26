@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router'
+import Paper from 'material-ui/Paper';
 
 export class SeminarListItem extends React.Component {
     constructor(props) {
@@ -8,13 +9,12 @@ export class SeminarListItem extends React.Component {
 
     render() {
         return (
-            <div className="seminar-tile">
-                <Link to={`seminars/${this.props.seminar.id}`}>
-                    <div className="name">
-                        <output type="text">{this.props.seminar.name}</output>
-                    </div>
-                </Link>
-            </div>
+            <Link to={`seminars/${this.props.seminar.id}`}>
+                <Paper className="seminar-tile" zDepth={1}>
+                    <div className="name">{this.props.seminar.name}</div>
+                    <div className="trainer">{this.props.seminar.trainer}</div>
+                </Paper>
+            </Link>
         );
     }
 }

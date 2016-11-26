@@ -10,7 +10,7 @@ module.exports = {
      */
     getAllSeminars() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminar', {
+        return fetch('http://localhost:8008/api/seminars', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -27,7 +27,7 @@ module.exports = {
      */
     getSeminarById(seminarId){
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminar/' + seminarId, {
+        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -38,7 +38,7 @@ module.exports = {
     },
 
     addSeminar(seminar){
-        fetch('http://localhost:8008/api/seminar', {
+        fetch('http://localhost:8008/api/seminars', {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

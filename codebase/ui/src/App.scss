@@ -3,14 +3,15 @@
 @import "components/overview/Seminar";
 @import "components/general/General";
 @import "components/mainwrapper/MainWrapper";
+@import "components/detail/SeminarDetail";
 
 body {
   margin: 0;
   font-family: $defaultFont;
   font-weight: 300;
   font-size: 14px;
-  background-color: $mainBackground;
-  color: $black;
+  background-color: $black;
+  color: $white;
 }
 
 html, body, #content {
@@ -27,44 +28,5 @@ h1, h2, h3, h4 {
 }
 
 a {
-  color: $black;
   text-decoration: none;
-}
-
-button {
-  background-color: $accentColor;
-  border: none;
-  border-radius: 2px;
-  box-shadow: $tileShadow;
-  height: 36px;
-  padding: 0 16px 0 16px;
-  color: $white;
-  text-transform: uppercase;
-  font-size: 13px;
-  &:hover {
-    cursor: pointer;
-  }
-  &:focus {
-    //todo bisschen dunkleres grün
-  }
-  &:active {
-    //todo heftiger shadow
-  }
-  //todo disabled
-}
-
-button, input, select {
-  font-size: 14px;
-  &:focus {
-    outline: none;
-  }
-}
-
-input , input:-webkit-autofill{
-    border: none;
-    border-bottom: 2px solid $gray;
-    background: none !important;
-    //background-color: rgb(0,0,0) !important;
-    -webkit-appearance: none;
-
 }

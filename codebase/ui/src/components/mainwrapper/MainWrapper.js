@@ -3,6 +3,10 @@
  */
 import React from 'react';
 import {Header} from './Header';
+//Material ui
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 export class MainWrapper extends React.Component {
     constructor(props) {
@@ -14,7 +18,9 @@ export class MainWrapper extends React.Component {
             <div className="main-wrapper">
                 <Header />
                 <div className="content">
-                    {this.props.children}
+                    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                        {this.props.children}
+                    </MuiThemeProvider>
                 </div>
             </div>
         );
