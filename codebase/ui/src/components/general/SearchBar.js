@@ -5,6 +5,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import SeminarService from '../../services/SeminarService';
 
 export class SearchBar extends React.Component {
     constructor() {
@@ -13,18 +16,34 @@ export class SearchBar extends React.Component {
             textSearchInput: '',
             isFrontOffice: false,
             categoryDropdownValue: '',
-            tierDropdownValue: ''
+            tierDropdownValue: '',
+            categories: [],
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
         this.chooseCategory = this.chooseCategory.bind(this);
         this.chooseTier = this.chooseTier.bind(this);
         this.showPastSeminars = this.showPastSeminars.bind(this);
+        this.saveCategories = this.saveCategories.bind(this);
+        this.clearFilter = this.clearFilter.bind(this);
     }
 
     componentDidMount() {
         this.setState({
             isFrontOffice: AuthService.isFrontOffice()
+        });
+
+        let categories = SeminarService.getAllCategories();
+        categories.then(
+            result => {
+                this.saveCategories(result)
+            }
+        );
+    }
+
+    saveCategories(result) {
+        this.setState({
+            categories: result
         })
     }
 
@@ -45,8 +64,9 @@ export class SearchBar extends React.Component {
 
     chooseCategory(event, index, value) {
         this.setState({
-            categoryDropdownValue: value
-        })
+            categoryDropdownValue: value,
+        });
+        this.props.filterSeminars(value);
     }
 
     chooseTier(event, index, value) {
@@ -55,8 +75,20 @@ export class SearchBar extends React.Component {
         })
     }
 
-    render() {
+    renderCategories(category) {
+        return (
+            <MenuItem value={category} primaryText={category} id={category}/>
+        )
+    }
 
+    clearFilter() {
+        this.setState({
+            categoryDropdownValue: '',
+        });
+        this.props.clearFilter();
+    }
+
+    render() {
         if (this.props.searchBarType == 'department') {
             return (
                 <div className="search-bar">
@@ -75,9 +107,7 @@ export class SearchBar extends React.Component {
                         <SelectField hintText="Filterkategorie wählen"
                                      value={this.state.categoryDropdownValue}
                                      onChange={this.chooseCategory}>
-                            <MenuItem value={1} primaryText="Blubb"/>
-                            <MenuItem value={2} primaryText="Blah"/>
-                            <MenuItem value={3} primaryText="Gnah"/>
+                            { this.state.categories.map(this.renderCategories) }
                         </SelectField>
                     </div>
                     <div className="dropdown">
@@ -95,6 +125,9 @@ export class SearchBar extends React.Component {
                                 onToggle={this.showPastSeminars}/>
                     </div>
                     }
+                    <FlatButton onClick={this.clearFilter} label="Filter löschen"
+                                icon={<FontIcon className="material-icons">clear</FontIcon>}
+                    />
                 </div>
             );
         }

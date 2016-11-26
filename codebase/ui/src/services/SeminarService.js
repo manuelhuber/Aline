@@ -22,6 +22,22 @@ module.exports = {
     },
 
     /**
+     * @returns {*|Promise.<TResult>} all available categories as a promise
+     */
+    getAllCategories() {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars/categories', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: {}
+        }).then(parseJson)
+    },
+
+    /**
      * @param seminarId the id of the seminar to get
      * @returns {*|Promise.<TResult>} The seminar with the given ID as a promise
      */

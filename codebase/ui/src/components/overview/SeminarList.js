@@ -8,8 +8,11 @@ export class SeminarList extends React.Component {
         super();
         this.renderSeminar = this.renderSeminar.bind(this);
         this.saveSeminars = this.saveSeminars.bind(this);
+        this.filterSeminars = this.filterSeminars.bind(this);
+        this.clearFilter = this.clearFilter.bind(this);
         this.state = {
-            seminars: []
+            seminars: [],
+            filteredSeminars: [],
         }
     }
 
@@ -20,20 +23,37 @@ export class SeminarList extends React.Component {
                 this.saveSeminars(result)
             }
         );
+
     }
 
     saveSeminars(result) {
         this.setState({
-            seminars: result
+            seminars: result,
+            filteredSeminars: result
+        })
+    }
+
+    filterSeminars(category) {
+        let filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+        this.setState({
+            filteredSeminars: filteredSeminars
+        })
+    }
+
+    clearFilter(){
+        this.setState({
+            filteredSeminars : this.state.seminars
         })
     }
 
     render() {
         return (
             <div>
-                <SearchBar searchBarType="overview"/>
+                <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars} clearFilter={this.clearFilter}/>
                 <main className="seminar-tiles">
-                    { this.state.seminars.map(this.renderSeminar) }
+                    { this.state.filteredSeminars.map(this.renderSeminar) }
+                    { this.state.filteredSeminars.length < 1 &&
+                    <div className="no-seminar-found">Keine Seminare vorhanden.</div>}
                 </main>
             </div>
         );
@@ -43,4 +63,5 @@ export class SeminarList extends React.Component {
         return <SeminarListItem seminar={currentSeminar}
                                 key={currentSeminar.id}/>;
     }
+
 }

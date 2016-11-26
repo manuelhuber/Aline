@@ -3,7 +3,7 @@ $button-color: #EB0564;
 .seminar-tiles {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 5px 0 5px;
+  margin: 0 15px 0 15px;
   .seminar-tile{
     height: 150px;
     width: 150px;
@@ -25,5 +25,8 @@ $button-color: #EB0564;
       overflow: hidden;
       word-wrap: break-word;
     }
+  }
+  .no-seminar-found{
+    margin: 20px 5px 0 5px;
   }
 }
