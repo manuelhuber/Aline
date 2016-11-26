@@ -14,9 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
@@ -119,7 +117,7 @@ public class SeminarService {
      */
     private void checkCategory(String category) throws UnkownCategoryException {
         List<String> categories = getAllCategories();
-        if (categories.contains(category)) {
+        if (!categories.contains(category)) {
             throw new UnkownCategoryException(categories);
 
         }
