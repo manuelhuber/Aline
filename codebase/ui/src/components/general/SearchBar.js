@@ -85,7 +85,8 @@ export class SearchBar extends React.Component {
     clearFilter() {
         this.setState({
             categoryDropdownValue: '',
-            tierDropdownValue: ''
+            tierDropdownValue: '',
+            textSearchInput : ''
         });
         this.props.clearFilter();
     }
