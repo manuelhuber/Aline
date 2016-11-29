@@ -1,7 +1,9 @@
 import React from 'react';
+import {Link} from 'react-router'
 import {SeminarListItem} from './SeminarListItem';
 import {SearchBar} from '../general/SearchBar';
 import SeminarService from '../../services/SeminarService';
+import AuthService from '../../services/AuthService';
 
 export class SeminarList extends React.Component {
     constructor() {
@@ -15,6 +17,7 @@ export class SeminarList extends React.Component {
         this.state = {
             seminars: [],
             filteredSeminars: [],
+            isFrontOffice: false,
         }
     }
 
@@ -25,7 +28,9 @@ export class SeminarList extends React.Component {
                 this.saveSeminars(result)
             }
         );
-
+        this.setState({
+            isFrontOffice: AuthService.isFrontOffice()
+        });
     }
 
     saveSeminars(result) {
@@ -68,6 +73,13 @@ export class SeminarList extends React.Component {
                 <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars} filterTiers={this.filterTiers}
                            clearFilter={this.clearFilter} searchForText={this.searchForText}/>
                 <main className="seminar-tiles">
+                    {this.state.isFrontOffice &&
+                    <div className="add-seminar-tile">
+                        <Link to={`seminars/create`}>
+                            <i className="material-icons">add</i>
+                        </Link>
+                    </div>
+                    }
                     { this.state.filteredSeminars.map(this.renderSeminar) }
                     { this.state.filteredSeminars.length < 1 &&
                     <div className="no-seminar-found">
