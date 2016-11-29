@@ -18,6 +18,7 @@ export class SearchBar extends React.Component {
             categoryDropdownValue: '',
             tierDropdownValue: '',
             categories: [],
+            availableTiers: ['1', '2', '3', '4', '5']
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
@@ -51,11 +52,10 @@ export class SearchBar extends React.Component {
         this.setState(
             {textSearchInput: event.target.value}
         );
-        //todo search functionality
     }
 
     searchForText() {
-        //todo
+        this.props.searchForText(this.state.textSearchInput);
     }
 
     showPastSeminars() {
@@ -72,18 +72,20 @@ export class SearchBar extends React.Component {
     chooseTier(event, index, value) {
         this.setState({
             tierDropdownValue: value
-        })
+        });
+        this.props.filterTiers(value);
     }
 
-    renderCategories(category) {
+    renderSelectMenuItems(value) {
         return (
-            <MenuItem value={category} primaryText={category} id={category}/>
+            <MenuItem value={value} primaryText={value} id={value}/>
         )
     }
 
     clearFilter() {
         this.setState({
             categoryDropdownValue: '',
+            tierDropdownValue: ''
         });
         this.props.clearFilter();
     }
@@ -107,27 +109,25 @@ export class SearchBar extends React.Component {
                         <SelectField hintText="Filterkategorie wählen"
                                      value={this.state.categoryDropdownValue}
                                      onChange={this.chooseCategory}>
-                            { this.state.categories.map(this.renderCategories) }
+                            { this.state.categories.map(this.renderSelectMenuItems) }
                         </SelectField>
                     </div>
                     <div className="dropdown">
                         <SelectField hintText="Filterstufe wählen"
                                      value={this.state.tierDropdownValue}
                                      onChange={this.chooseTier}>
-                            <MenuItem value={1} primaryText="SE1"/>
-                            <MenuItem value={2} primaryText="SE2"/>
-                            <MenuItem value={3} primaryText="SE3"/>
+                            { this.state.availableTiers.map(this.renderSelectMenuItems) }
                         </SelectField>
                     </div>
-                    {this.state.isFrontOffice &&
-                    <div className="checkbox-wrapper">
-                        <Toggle label="In der Vergangenheit liegende Seminare anzeigen"
-                                onToggle={this.showPastSeminars}/>
-                    </div>
-                    }
                     <FlatButton onClick={this.clearFilter} label="Filter löschen"
                                 icon={<FontIcon className="material-icons">clear</FontIcon>}
                     />
+                    {this.state.isFrontOffice &&
+                    <div className="checkbox-wrapper">
+                        <Toggle label="In der Vergangenheit liegende Seminare anzeigen"
+                                onToggle={this.showPastSeminars} labelPosition="right"/>
+                    </div>
+                    }
                 </div>
             );
         }

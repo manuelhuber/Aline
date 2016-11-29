@@ -8,7 +8,9 @@ export class SeminarList extends React.Component {
         super();
         this.renderSeminar = this.renderSeminar.bind(this);
         this.saveSeminars = this.saveSeminars.bind(this);
+        this.searchForText = this.searchForText.bind(this);
         this.filterSeminars = this.filterSeminars.bind(this);
+        this.filterTiers = this.filterTiers.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
         this.state = {
             seminars: [],
@@ -33,6 +35,13 @@ export class SeminarList extends React.Component {
         })
     }
 
+    searchForText(textToSearchFor) {
+        let filteredSeminars = this.state.seminars.filter( seminar => JSON.stringify(seminar).includes(textToSearchFor));
+        this.setState({
+            filteredSeminars: filteredSeminars
+        })
+    }
+
     filterSeminars(category) {
         let filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
         this.setState({
@@ -40,16 +49,24 @@ export class SeminarList extends React.Component {
         })
     }
 
-    clearFilter(){
+    filterTiers(targetLevel) {
+        let filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel === targetLevel);
         this.setState({
-            filteredSeminars : this.state.seminars
+            filteredSeminars: filteredSeminars
+        })
+    }
+
+    clearFilter() {
+        this.setState({
+            filteredSeminars: this.state.seminars
         })
     }
 
     render() {
         return (
             <div>
-                <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars} clearFilter={this.clearFilter}/>
+                <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars} filterTiers={this.filterTiers}
+                           clearFilter={this.clearFilter} searchForText={this.searchForText}/>
                 <main className="seminar-tiles">
                     { this.state.filteredSeminars.map(this.renderSeminar) }
                     { this.state.filteredSeminars.length < 1 &&
