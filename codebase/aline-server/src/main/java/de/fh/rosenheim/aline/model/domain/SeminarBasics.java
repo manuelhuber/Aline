@@ -43,8 +43,6 @@ public class SeminarBasics extends DomainBase {
     private String cycle;
     private Date[] dates;
 
-    private String reporting;
-
     /**
      * Easy way to copy basic data
      */
@@ -57,7 +55,6 @@ public class SeminarBasics extends DomainBase {
         category = newData.getCategory();
         targetLevel = newData.getTargetLevel();
         requirements = newData.getRequirements();
-        reporting = newData.getReporting();
         contactPerson = newData.getContactPerson();
         trainingType = newData.getTrainingType();
         maximumParticipants = newData.getMaximumParticipants();
