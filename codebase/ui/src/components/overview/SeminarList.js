@@ -55,7 +55,7 @@ export class SeminarList extends React.Component {
     }
 
     filterTiers(targetLevel) {
-        let filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel === targetLevel);
+        let filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
         this.setState({
             filteredSeminars: filteredSeminars
         })
