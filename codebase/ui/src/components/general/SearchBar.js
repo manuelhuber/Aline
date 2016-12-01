@@ -67,14 +67,16 @@ export class SearchBar extends React.Component {
         this.setState({
             categoryDropdownValue: value,
         });
-        this.props.filterSeminars(value);
+
+        this.props.filterSeminars(value, this.state.tierDropdownValue);
     }
 
     chooseTier(event, index, value) {
         this.setState({
             tierDropdownValue: value
         });
-        this.props.filterTiers(value);
+
+        this.props.filterSeminars(this.state.categoryDropdownValue, value);
     }
 
     renderSelectMenuItems(value) {

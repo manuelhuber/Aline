@@ -12,7 +12,7 @@ export class SeminarList extends React.Component {
         this.saveSeminars = this.saveSeminars.bind(this);
         this.searchForText = this.searchForText.bind(this);
         this.filterSeminars = this.filterSeminars.bind(this);
-        this.filterTiers = this.filterTiers.bind(this);
+        this.filterBoth = this.filterBoth.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
         this.state = {
             seminars: [],
@@ -41,24 +41,34 @@ export class SeminarList extends React.Component {
     }
 
     searchForText(textToSearchFor) {
-        let filteredSeminars = this.state.seminars.filter( seminar => JSON.stringify(seminar).toLowerCase().includes(textToSearchFor.toLowerCase()));
+        let filteredSeminars = this.state.seminars.filter(seminar => JSON.stringify(seminar).toLowerCase().includes(textToSearchFor.toLowerCase()));
         this.setState({
             filteredSeminars: filteredSeminars
         })
     }
 
-    filterSeminars(category) {
-        let filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+    filterSeminars(category, targetLevel) {
+        let filteredSeminars = [];
+        //Category yes && targetLevel no
+        if (category && !targetLevel) {
+            filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+        }
+        //Category no && targetLevel yes
+        else if (!category && targetLevel) {
+            filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
+        }
+        //Category yes && targetLevel yes
+        else if (category && targetLevel) {
+            filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+            filteredSeminars = filteredSeminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
+        }
         this.setState({
             filteredSeminars: filteredSeminars
         })
     }
 
-    filterTiers(targetLevel) {
-        let filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
-        this.setState({
-            filteredSeminars: filteredSeminars
-        })
+    filterBoth() {
+
     }
 
     clearFilter() {
@@ -70,7 +80,7 @@ export class SeminarList extends React.Component {
     render() {
         return (
             <div>
-                <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars} filterTiers={this.filterTiers}
+                <SearchBar searchBarType="overview" filterSeminars={this.filterSeminars}
                            clearFilter={this.clearFilter} searchForText={this.searchForText}/>
                 <main className="seminar-tiles">
                     {this.state.isFrontOffice &&
