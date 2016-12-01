@@ -53,18 +53,20 @@ module.exports = {
         }).then(parseJson)
     },
 
+
     addSeminar(seminar){
         fetch('http://localhost:8008/api/seminars', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': StorageService.getUserToken()
             },
             body: JSON.stringify(seminar)
-        }).then(parseJson).then(result => {
-            console.log(result)
-        })
+        }).then(checkStatus)
+    },
+
+    getTargetLevels(){
+        return [1, 2, 3, 4, 5]
     }
 
 };
@@ -75,4 +77,14 @@ module.exports = {
  */
 function parseJson(response) {
     return response.json();
+}
+
+/**
+ * Check the status of the response
+ * @param response the response got by the server
+ */
+function checkStatus(response) {
+    if (!response.ok) {
+        console.log('Der Response des Servers beim Aufruf der addSeminar Methode war nicht in Ordnung:' + response);
+    }
 }

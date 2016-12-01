@@ -18,7 +18,7 @@ export class SearchBar extends React.Component {
             categoryDropdownValue: '',
             tierDropdownValue: '',
             categories: [],
-            availableTiers: ['1', '2', '3', '4', '5']
+            availableTiers: []
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
@@ -31,7 +31,8 @@ export class SearchBar extends React.Component {
 
     componentDidMount() {
         this.setState({
-            isFrontOffice: AuthService.isFrontOffice()
+            isFrontOffice: AuthService.isFrontOffice(),
+            availableTiers: SeminarService.getTargetLevels()
         });
 
         let categories = SeminarService.getAllCategories();

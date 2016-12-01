@@ -1,0 +1,52 @@
+.create {
+  margin: 0 15px 0 15px;
+}
+
+form.create-seminar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  > div {
+    width: 47%;
+  }
+  .action-elements {
+    width: 100%;
+    text-align: right;
+    .checkbox{
+      width: 255px;
+      display: inline-block;
+      margin-right: -5px; //Fix a strange gap
+    }
+    .button-wrapper{
+      width: 100%;
+      div + div {
+        margin-left: 5px;
+      }
+    }
+  }
+  .datepicker {
+    position: relative;
+    .picked-dates {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 64px;
+      overflow-y: auto;
+      padding-left: 20px;
+      p{
+        display: inline;
+        float: left;
+        margin: 0;
+        padding: 5px;
+      }
+      button{
+        padding: 0 !important;
+        height: 10px !important;
+        width: 34px !important;
+        float: right;
+        bottom: 5px;
+      }
+    }
+  }
+}

@@ -75,7 +75,7 @@ export class SeminarList extends React.Component {
                 <main className="seminar-tiles">
                     {this.state.isFrontOffice &&
                     <div className="add-seminar-tile">
-                        <Link to={`seminars/create`}>
+                        <Link to={`create`}>
                             <i className="material-icons">add</i>
                         </Link>
                     </div>

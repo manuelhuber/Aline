@@ -1,6 +1,7 @@
 import {MainWrapper} from './components/mainwrapper/MainWrapper';
 import {SeminarList} from './components/overview/SeminarList';
 import {SeminarDetail} from './components/detail/SeminarDetail';
+import {CreateSeminar} from './components/create/CreateSeminar';
 import {NotFound} from './components/general/NotFound';
 import {Login} from './components/general/Login';
 import React from 'react';
@@ -31,6 +32,15 @@ function redirectToLogin(nextState, replace) {
     }
 }
 
+function checkIfFrontoffice(nextState, replace) {
+    if(!AuthService.isFrontOffice()){
+        replace({
+            pathname: '/seminars',
+            state: {nextPathname: nextState.location.pathname}
+        });
+    }
+}
+
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/login" component={Login}/>
@@ -38,6 +48,7 @@ ReactDOM.render(
             <IndexRedirect to="/seminars"/>
             <Route path="seminars" component={SeminarList}/>
             <Route path="seminars/:seminarName" component={SeminarDetail}/>
+            <Route path="create" component={CreateSeminar} onEnter={checkIfFrontoffice}/>
             <Route path="*" component={NotFound}/>
         </Route>
     </Router>
