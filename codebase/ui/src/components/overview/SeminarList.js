@@ -41,7 +41,7 @@ export class SeminarList extends React.Component {
     }
 
     searchForText(textToSearchFor) {
-        let filteredSeminars = this.state.seminars.filter( seminar => JSON.stringify(seminar).includes(textToSearchFor));
+        let filteredSeminars = this.state.seminars.filter( seminar => JSON.stringify(seminar).toLowerCase().includes(textToSearchFor.toLowerCase()));
         this.setState({
             filteredSeminars: filteredSeminars
         })
