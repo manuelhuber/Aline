@@ -1,7 +1,8 @@
 import React from 'react';
 import EmployeeService from '../../services/EmployeeService';
+import EmployeeListItem from './EmployeeListItem';
 
-export class DevisionHeadOverview extends React.Component {
+export class EmployeeList extends React.Component {
     constructor() {
         super();
         this.renderEmployee = this.renderEmployee.bind(this);
@@ -11,27 +12,13 @@ export class DevisionHeadOverview extends React.Component {
         }
     }
     componentDidMount() {
-        let empl = {
-            "authorities": "string",
-                "bookings": [
-                {
-                    "created": 0,
-                    "id": 0,
-                    "seminarId": 0,
-                    "status": "DENIED",
-                    "updated": 0,
-                    "username": "string"
-                }
-            ],
-                "division": "FIT",
-                "username": "TestUserMan"
-        }/*EmployeeService.getAllEmployee();*/
-  /*      empl.then(
+        let employ = EmployeeService.getAllEmpolyee();
+        employ.then(
             result => {
-                this.saveEmployee(result)
+                this.saveSeminars(result)
             }
-        );*/ this.saveEmployee(empl)
-    };
+        );
+    }
 
     saveEmployee(result) {
         this.setState({

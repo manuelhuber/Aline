@@ -5,7 +5,7 @@ import React from 'react';
 import {Link} from 'react-router'
 import Paper from 'material-ui/Paper';
 
-export class Employee extends React.Component {
+export class EmployeeListItem extends React.Component {
     constructor(props) {
         super(props);
     }
