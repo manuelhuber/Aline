@@ -1,11 +1,18 @@
 .create {
   margin: 0 15px 0 15px;
+  position: relative;
 }
 
 form.create-seminar {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  .copy-button{
+    position: absolute;
+    text-align: right;
+    right: 0;
+    top: 0;
+  }
   > div {
     width: 47%;
   }

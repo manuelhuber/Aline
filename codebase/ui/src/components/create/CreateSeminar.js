@@ -3,12 +3,14 @@ import SeminarService from '../../services/SeminarService';
 import AuthService from '../../services/AuthService';
 import Seminar from '../../models/Seminar';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
+import Dialog from 'material-ui/Dialog';
 
 export class CreateSeminar extends React.Component {
     constructor() {
@@ -17,6 +19,9 @@ export class CreateSeminar extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderPickedDates = this.renderPickedDates.bind(this);
         this.renderSelectMenuItems = this.renderSelectMenuItems.bind(this);
+        this.openCopyDialog = this.openCopyDialog.bind(this);
+        this.closeCopyDialog = this.closeCopyDialog.bind(this);
+        this.handleCopying = this.handleCopying.bind(this);
 
         this.toggleCreateAnotherSeminar = this.toggleCreateAnotherSeminar.bind(this);
         this.nameInput = this.nameInput.bind(this);
@@ -42,6 +47,7 @@ export class CreateSeminar extends React.Component {
             error: false,
             availableCategories: [],
             availableTargetLevels: [],
+            copyAlertOpen: false,
 
             name: '',
             category: '',
@@ -204,6 +210,24 @@ export class CreateSeminar extends React.Component {
         }
     }
 
+    /**
+     * Copy data from old seminar
+     */
+    handleCopying() {
+        //todo
+    }
+
+    openCopyDialog() {
+        this.setState({
+            copyAlertOpen: true
+        })
+    }
+
+    closeCopyDialog() {
+        this.setState({
+            copyAlertOpen: false
+        })
+    }
     renderPickedDates(date, index) {
         return (
             <p>
@@ -221,11 +245,24 @@ export class CreateSeminar extends React.Component {
     }
 
     render() {
+        const copyActions = [
+            <FlatButton label="Abbrechen" onClick={this.closeCopyDialog}/>,
+            <FlatButton label="Kopieren" primary={true} onClick={this.handleCopying}/>
+        ];
         return (
             <div className="create">
                 <h2>Neues Seminar erstellen: </h2>
                 {this.state.isFrontOffice &&
                 <form className="create-seminar">
+                    <div className="copy-button">
+                        <RaisedButton label="Inhalte reinkopieren" onClick={this.openCopyDialog} secondary={true}>
+                            <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen}
+                                    onRequestClose={this.close}>
+                                Kopiere die Daten aus einem vorherigen Seminar.
+                                todo Dropdown
+                            </Dialog>
+                        </RaisedButton>
+                    </div>
                     <div>
                         <TextField onChange={this.nameInput} fullWidth={true}
                                    floatingLabelText="Name" floatingLabelFixed={true}
