@@ -53,22 +53,40 @@ module.exports = {
         }).then(parseJson)
     },
 
-
+    /**
+     * Add the given seminar
+     * @param seminar the seminar to add
+     */
     addSeminar(seminar){
-        fetch('http://localhost:8008/api/seminars', {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': StorageService.getUserToken()
+                'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
+        }).then(parseJson)
+    },
+    /**
+     * Delete the seminar with the given id
+     * @param seminarId the id of the seminar to delete
+     */
+    deleteSeminar(seminarId){
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
         }).then(checkStatus)
     },
 
     getTargetLevels(){
         return [1, 2, 3, 4, 5]
     }
-
 };
 
 /**

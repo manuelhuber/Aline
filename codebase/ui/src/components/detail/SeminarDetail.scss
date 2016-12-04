@@ -1,3 +1,43 @@
-.seminar{
-  margin: 5px;
+.seminar {
+  margin: 0 15px 0 15px;
+  position: relative;
+  .properties {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .seminar-property {
+      width: 47%;
+      font-size: 16px;
+      padding-bottom: 3px;
+      label {
+        display: block;
+        color: $gray;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+      border-bottom: 1px solid $gray;
+      margin-bottom: 20px;
+    }
+    .seminar-property.dates p,
+    .seminar-property.participants p {
+      display: inline-block;
+      margin: 0;
+      margin-right: 20px;
+    }
+  }
+  .button-wrapper {
+    width: 100%;
+    text-align: right;
+    > div {
+      display: inline-block;
+    }
+    div + div {
+      margin-left: 5px;
+    }
+  }
+  .button-wrapper.frontoffice-buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 }

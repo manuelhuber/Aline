@@ -35,6 +35,7 @@ export class CreateSeminar extends React.Component {
         this.trainerInput = this.trainerInput.bind(this);
         this.trainingTypeInput = this.trainingTypeInput.bind(this);
         this.categoryInput = this.categoryInput.bind(this);
+        this.bookingTimelogInput = this.bookingTimelogInput.bind(this);
         this.state = {
             isFrontOffice: false,
             createAnotherOne: false,
@@ -58,6 +59,7 @@ export class CreateSeminar extends React.Component {
             trainer: '',
             trainingType: '',
             currentPickedDate: null,
+            bookingTimelog: ''
         }
     }
 
@@ -146,6 +148,11 @@ export class CreateSeminar extends React.Component {
         this.setState({requirements: event.target.value})
     }
 
+
+    bookingTimelogInput(event) {
+        this.setState({bookingTimelog: event.target.value})
+    }
+
     targetLevelInput(event, index, value) {
         this.setState({
             targetLevel: value
@@ -178,13 +185,22 @@ export class CreateSeminar extends React.Component {
         } else {
             let targetLevel = [];
             targetLevel.push(this.state.targetLevel);
-            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, targetLevel, this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants, this.state.costsPerParticipant, '', this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
-            SeminarService.addSeminar(seminar);
-            if (this.state.createAnotherOne) {
-                location.reload();
-            } else {
-                this.props.router.replace('/seminars');
-            }
+            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, targetLevel,
+                this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
+                this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
+            var response = SeminarService.addSeminar(seminar);
+            response.then(
+                result => {
+                    if (this.state.createAnotherOne) {
+                        location.reload();
+                    } else {
+                        this.props.router.replace('/seminars/' + result.id);
+                    }
+                },
+                failureResult => {
+                    this.props.router.replace('/error');
+                }
+            );
         }
     }
 
@@ -242,7 +258,7 @@ export class CreateSeminar extends React.Component {
                     </div>
                     <div>
                         <TextField onChange={this.contactPersonInput} fullWidth={true}
-                                   floatingLabelText="Kontaktperson" floatingLabelFixed={true}
+                                   floatingLabelText="Ansprechpartner bei Interesse" floatingLabelFixed={true}
                                    value={this.state.contactPerson} id="contactPerson"/>
                     </div>
                     <div>
@@ -293,6 +309,11 @@ export class CreateSeminar extends React.Component {
                                    floatingLabelText="Schulungsformat" floatingLabelFixed={true}
                                    value={this.state.trainingType} id="type"/>
                     </div>
+                    <div>
+                        <TextField onChange={this.bookingTimelog} fullWidth={true}
+                                   floatingLabelText="Kontierung (im Timelog)" floatingLabelFixed={true}
+                                   value={this.state.bookingTimelog} id="type"/>
+                    </div>
                     <div className="action-elements">
                         <div className="checkbox">
                             <Checkbox label="Ein weiteres Seminar anlegen" value={this.state.createAnotherOne}
@@ -300,7 +321,8 @@ export class CreateSeminar extends React.Component {
                         </div>
                         <div className="button-wrapper">
                             <RaisedButton label="Abbrechen" onClick={this.handleCancel} id="cancelButton"/>
-                            <RaisedButton label="Speichern" onClick={this.handleSubmit} id="loginButton" primary={true}/>
+                            <RaisedButton label="Speichern" onClick={this.handleSubmit} id="loginButton"
+                                          primary={true}/>
                         </div>
                     </div>
                 </form>
