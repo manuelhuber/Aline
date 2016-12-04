@@ -4,6 +4,7 @@ import {SeminarDetail} from './components/detail/SeminarDetail';
 import {CreateSeminar} from './components/create/CreateSeminar';
 import {NotFound} from './components/general/NotFound';
 import {Login} from './components/general/Login';
+import {DevisionHeadOverview} from './components/dhoverview/EmployeeList';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'whatwg-fetch'; //Github fetch
@@ -49,6 +50,7 @@ ReactDOM.render(
             <Route path="seminars" component={SeminarList}/>
             <Route path="seminars/:seminarName" component={SeminarDetail}/>
             <Route path="create" component={CreateSeminar} onEnter={checkIfFrontoffice}/>
+            <Route path="bereichuebersicht" component={DevisionHeadOverview}/>
             <Route path="*" component={NotFound}/>
         </Route>
     </Router>
