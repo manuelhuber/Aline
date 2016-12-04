@@ -6,9 +6,8 @@ import AuthService from '../../services/AuthService';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import Chip from 'material-ui/Chip';
 
-//todo einzeln: Name, Teilnehmer (1 von this....maximaleTeilnehmeranzahl zB)
-//Todo buchen button disabled wenn maximale teilnehmeranzahl erreicht
 var SeminarTexts = {
     description: 'Beschreibung',
     agenda: 'Agenda',
@@ -23,6 +22,7 @@ var SeminarTexts = {
     goal: 'Geplante Weiterentwicklungen',
     duration: 'Dauer',
     cycle: 'Turnus',
+    bookingTimelog : 'Kontierung (im Timelog)'
 };
 
 export class SeminarDetail extends React.Component {
@@ -31,7 +31,6 @@ export class SeminarDetail extends React.Component {
         this.state = {
             seminar: {},
             bookingAlertOpen: false,
-            cancelAlertOpen: false,
             deleteAlertOpen: false,
         };
         this.setSeminar = this.setSeminar.bind(this);
@@ -39,15 +38,13 @@ export class SeminarDetail extends React.Component {
         this.renderProperties = this.renderProperties.bind(this);
         this.renderDates = this.renderDates.bind(this);
         this.renderBookings = this.renderBookings.bind(this);
+
         this.checkIfCurrentUserHasAlreadyBooked = this.checkIfCurrentUserHasAlreadyBooked.bind(this);
+        this.maximumParticipantsAchieved = this.maximumParticipantsAchieved.bind(this);
         //Booking
         this.handleBooking = this.handleBooking.bind(this);
         this.openBookingDialog = this.openBookingDialog.bind(this);
         this.closeBookingDialog = this.closeBookingDialog.bind(this);
-        //Cancel
-        this.handleCancel = this.handleCancel.bind(this);
-        this.openCancelDialog = this.openCancelDialog.bind(this);
-        this.closeCancelDialog = this.closeCancelDialog.bind(this);
         //Delete
         this.handleDelete = this.handleDelete.bind(this);
         this.openDeleteDialog = this.openDeleteDialog.bind(this);
@@ -61,6 +58,13 @@ export class SeminarDetail extends React.Component {
                 this.setSeminar(result)
             }
         );
+    }
+
+    maximumParticipantsAchieved() {
+        if (this.state.seminar.bookings) {
+            return !(this.state.seminar.bookings.length <= this.state.seminar.maximumParticipants)
+        }
+        return false;
     }
 
     checkIfCurrentUserHasAlreadyBooked() {
@@ -93,26 +97,6 @@ export class SeminarDetail extends React.Component {
     closeBookingDialog() {
         this.setState({
             bookingAlertOpen: false
-        })
-    }
-
-    /**
-     * Cancel
-     */
-    handleCancel() {
-        //todo
-        this.closeCancelDialog();
-    }
-
-    openCancelDialog() {
-        this.setState({
-            cancelAlertOpen: true
-        })
-    }
-
-    closeCancelDialog() {
-        this.setState({
-            cancelAlertOpen: false
         })
     }
 
@@ -184,10 +168,6 @@ export class SeminarDetail extends React.Component {
             <FlatButton label="Abbrechen" onClick={this.closeBookingDialog}/>,
             <FlatButton label="Buchen" primary={true} onClick={this.handleBooking}/>
         ];
-        const cancelActions = [
-            <FlatButton label="Abbrechen" onClick={this.closeCancelDialog}/>,
-            <FlatButton label="Stornieren" primary={true} onClick={this.handleCancel}/>
-        ];
         const deleteActions = [
             <FlatButton label="Abbrechen" onClick={this.closeDeleteDialog}/>,
             <FlatButton label="Löschen" primary={true} onClick={this.handleDelete}/>
@@ -196,6 +176,15 @@ export class SeminarDetail extends React.Component {
         return (
             <div className="seminar">
                 <h2>{this.state.seminar.name}</h2>
+                <div className="seminar-info-chips">
+                    {this.checkIfCurrentUserHasAlreadyBooked() &&
+                    <Chip>Von dir gebucht</Chip>
+                    }
+                    {this.maximumParticipantsAchieved() &&
+                    <Chip>Maximale Teilnehmeranzahl erreicht</Chip>
+                    }
+                </div>
+
                 { AuthService.isFrontOffice() &&
                 <div className="button-wrapper frontoffice-buttons">
                     <RaisedButton label="Löschen" onClick={this.openDeleteDialog}>
@@ -228,18 +217,10 @@ export class SeminarDetail extends React.Component {
                     { AuthService.isFrontOffice() &&
                     <div>
                         <RaisedButton label="Rechnung generieren" onClick={this.createInvoice}/>
-                        <RaisedButton label="Stornieren" onClick={this.openCancelDialog} secondary={true}>
-                            <Dialog actions={cancelActions} modal={false} open={this.state.cancelAlertOpen}
-                                    onRequestClose={this.close}>
-                                Möchtest du das Seminar <span
-                                className="highlight-text">"{this.state.seminar.name}" </span>
-                                wirklich stornieren?
-                            </Dialog>
-                        </RaisedButton>
                     </div>
                     }
                     <RaisedButton label="Buchen" onClick={this.openBookingDialog} primary={true}
-                                  disabled={this.checkIfCurrentUserHasAlreadyBooked()}>
+                                  disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
                             Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
