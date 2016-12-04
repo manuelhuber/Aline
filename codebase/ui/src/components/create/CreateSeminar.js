@@ -178,7 +178,6 @@ export class CreateSeminar extends React.Component {
     }
 
     handleSubmit() {
-        var idOfTheNewSeminar = 0;
         if (!this.state.name) {
             this.setState({
                 error: !this.state.name
@@ -189,7 +188,6 @@ export class CreateSeminar extends React.Component {
             var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
                 this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
-            //Get id out of response
             var response = SeminarService.addSeminar(seminar);
             response.then(
                 result => {
