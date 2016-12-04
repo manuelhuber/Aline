@@ -12,10 +12,9 @@ export class Employee extends React.Component {
 
     render() {
         return (
-            <Link to={`seminars/${this.props.employee.id}`}>
+            <Link to={`employees/${this.props.employee.id}`}>
                 <Paper className="employee-tile" zDepth={1}>
-                    <div className="name">{this.props.employee.firstname}</div>
-                    <div className="trainer">{this.props.employee.lastname}</div>
+                    <div className="name">{this.props.employee.username}</div>
                 </Paper>
             </Link>
         );
