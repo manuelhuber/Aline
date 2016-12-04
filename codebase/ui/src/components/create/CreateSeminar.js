@@ -18,10 +18,12 @@ export class CreateSeminar extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderPickedDates = this.renderPickedDates.bind(this);
+        this.renderTargetLevels = this.renderTargetLevels.bind(this);
         this.renderSelectMenuItems = this.renderSelectMenuItems.bind(this);
         this.openCopyDialog = this.openCopyDialog.bind(this);
         this.closeCopyDialog = this.closeCopyDialog.bind(this);
         this.handleCopying = this.handleCopying.bind(this);
+        this.preFillSeminarData = this.preFillSeminarData.bind(this);
 
         this.toggleCreateAnotherSeminar = this.toggleCreateAnotherSeminar.bind(this);
         this.nameInput = this.nameInput.bind(this);
@@ -37,11 +39,13 @@ export class CreateSeminar extends React.Component {
         this.maximumParticipantsInput = this.maximumParticipantsInput.bind(this);
         this.requirementsInput = this.requirementsInput.bind(this);
         this.targetLevelInput = this.targetLevelInput.bind(this);
+        this.removeTargetLevel = this.removeTargetLevel.bind(this);
         this.trainerInput = this.trainerInput.bind(this);
         this.trainingTypeInput = this.trainingTypeInput.bind(this);
         this.categoryInput = this.categoryInput.bind(this);
         this.bookingTimelogInput = this.bookingTimelogInput.bind(this);
         this.state = {
+            updatingExistingSeminar: false,
             isFrontOffice: false,
             createAnotherOne: false,
             error: false,
@@ -49,19 +53,21 @@ export class CreateSeminar extends React.Component {
             availableTargetLevels: [],
             copyAlertOpen: false,
 
+            id: 0, //Use only when updating a seminar
             name: '',
             category: '',
             agenda: '',
             description: '',
-            dates: [], //date.getTime()
+            dates: [],
             contactPerson: '',
             costsPerParticipant: 0,
-            cycle: '', //"Turnus"
+            cycle: '',
             duration: '',
             goal: '',
             maximumParticipants: 0,
             requirements: '',
-            targetLevel: 1,
+            targetLevel: [],
+            currentSelectedTargetLevel: '',
             trainer: '',
             trainingType: '',
             currentPickedDate: null,
@@ -83,6 +89,43 @@ export class CreateSeminar extends React.Component {
             isFrontOffice: AuthService.isFrontOffice(),
             availableTargetLevels: SeminarService.getTargetLevels()
         });
+
+        this.preFillSeminarData();
+    }
+
+    /**
+     * Prefill the input fields with data, when a seminar id got handed by the
+     * query 'changeExisting'
+     */
+    preFillSeminarData() {
+        if (this.props.location.query && this.props.location.query.changeExisting) {
+            var seminarToUpdate = SeminarService.getSeminarById(this.props.location.query.changeExisting);
+            seminarToUpdate.then(
+                result => {
+                    this.setState({
+                        updatingExistingSeminar: true,
+
+                        id: result.id || 0,
+                        name: result.name,
+                        category: result.category || '',
+                        agenda: result.agenda || '',
+                        description: result.duration || '',
+                        dates: result.dates || [],
+                        contactPerson: result.contactPerson || '',
+                        costsPerParticipant: result.costsPerParticipant || 0,
+                        cycle: result.cycle || '',
+                        duration: result.duration || '',
+                        goal: result.goal || '',
+                        maximumParticipants: result.maximumParticipants || 0,
+                        requirements: result.requirements || '',
+                        targetLevel: result.targetLevel || [],
+                        trainer: result.trainer || '',
+                        trainingType: result.trainingType || '',
+                        bookingTimelog: result.bookingTimelog || ''
+                    })
+                }
+            );
+        }
     }
 
     toggleCreateAnotherSeminar() {
@@ -126,6 +169,20 @@ export class CreateSeminar extends React.Component {
         })
     }
 
+    removeTargetLevel(event) {
+        let elementToRemoveIndex = event.currentTarget.name;
+
+        let targetLevel = this.state.targetLevel.filter((currentValue, index) => {
+            if (index != elementToRemoveIndex) {
+                return currentValue;
+            }
+        });
+
+        this.setState({
+            targetLevel: targetLevel
+        })
+    }
+
     contactPersonInput(event) {
         this.setState({contactPerson: event.target.value})
     }
@@ -160,8 +217,11 @@ export class CreateSeminar extends React.Component {
     }
 
     targetLevelInput(event, index, value) {
+        var targetLevel = this.state.targetLevel;
+        targetLevel.push(value);
         this.setState({
-            targetLevel: value
+            targetLevel: targetLevel,
+            currentSelectedTargetLevel: ''
         });
     }
 
@@ -189,12 +249,19 @@ export class CreateSeminar extends React.Component {
                 error: !this.state.name
             })
         } else {
-            let targetLevel = [];
-            targetLevel.push(this.state.targetLevel);
-            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, targetLevel,
+            //Create and fill the seminar object
+            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, this.state.targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
                 this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
-            var response = SeminarService.addSeminar(seminar);
+            //Make the call
+            var response;
+            if (this.state.updatingExistingSeminar) {
+                response = SeminarService.updateSeminar(seminar, this.state.id);
+            }
+            else if (!this.state.updatingExistingSeminar) {
+                response = SeminarService.addSeminar(seminar);
+            }
+            //Handle the response
             response.then(
                 result => {
                     if (this.state.createAnotherOne) {
@@ -228,12 +295,23 @@ export class CreateSeminar extends React.Component {
             copyAlertOpen: false
         })
     }
+
     renderPickedDates(date, index) {
         return (
             <p>
                 {date.toLocaleDateString()}
                 <IconButton iconClassName="material-icons" name={index}
                             onClick={this.removeDate}>remove_circle_outline</IconButton>
+            </p>
+        )
+    }
+
+    renderTargetLevels(targetLevel, index) {
+        return (
+            <p>
+                {targetLevel}
+                <IconButton iconClassName="material-icons" name={index}
+                            onClick={this.removeTargetLevel}>remove_circle_outline</IconButton>
             </p>
         )
     }
@@ -328,13 +406,14 @@ export class CreateSeminar extends React.Component {
                                    floatingLabelText="Voraussetzungen" floatingLabelFixed={true}
                                    value={this.state.requirements} id="requirements"/>
                     </div>
-                    <div>
+                    <div className="target-levels">
                         <SelectField floatingLabelText="Zielgruppe wählen (in Stufen)" floatingLabelFixed={true}
                                      fullWidth={true}
-                                     value={this.state.targetLevel}
+                                     value={this.state.currentSelectedTargetLevel}
                                      onChange={this.targetLevelInput}>
                             { this.state.availableTargetLevels.map(this.renderSelectMenuItems) }
                         </SelectField>
+                        <div className="picked-target-levels">{this.state.targetLevel.map(this.renderTargetLevels)}</div>
                     </div>
                     <div>
                         <TextField onChange={this.trainerInput} fullWidth={true}
