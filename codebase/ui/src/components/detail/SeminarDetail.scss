@@ -18,7 +18,8 @@
       border-bottom: 1px solid $gray;
       margin-bottom: 20px;
     }
-    .seminar-property.dates p {
+    .seminar-property.dates p,
+    .seminar-property.participants p {
       display: inline-block;
       margin: 0;
       margin-right: 20px;
@@ -27,6 +28,9 @@
   .button-wrapper {
     width: 100%;
     text-align: right;
+    > div {
+      display: inline-block;
+    }
     div + div {
       margin-left: 5px;
     }

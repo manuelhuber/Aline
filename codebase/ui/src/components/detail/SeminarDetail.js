@@ -1,6 +1,7 @@
 import React from 'react';
 import SeminarService from '../../services/SeminarService';
 import BookingService from '../../services/BookingService';
+import StorageService from '../../services/StorageService';
 import AuthService from '../../services/AuthService';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -38,6 +39,7 @@ export class SeminarDetail extends React.Component {
         this.renderProperties = this.renderProperties.bind(this);
         this.renderDates = this.renderDates.bind(this);
         this.renderBookings = this.renderBookings.bind(this);
+        this.checkIfCurrentUserHasAlreadyBooked = this.checkIfCurrentUserHasAlreadyBooked.bind(this);
         //Booking
         this.handleBooking = this.handleBooking.bind(this);
         this.openBookingDialog = this.openBookingDialog.bind(this);
@@ -59,6 +61,13 @@ export class SeminarDetail extends React.Component {
                 this.setSeminar(result)
             }
         );
+    }
+
+    checkIfCurrentUserHasAlreadyBooked() {
+        if (this.state.seminar.bookings) {
+            return this.state.seminar.bookings.includes(StorageService.getCurrentUser().user);
+        }
+        return false;
     }
 
     setSeminar(result) {
@@ -136,6 +145,13 @@ export class SeminarDetail extends React.Component {
         //todo umleiten
     }
 
+    /**
+     * Create invoice
+     */
+    createInvoice() {
+        //todo in neuem tab öffnen
+    }
+
     renderProperties(key) {
         return (
             <div className="seminar-property">
@@ -210,16 +226,20 @@ export class SeminarDetail extends React.Component {
                 }
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
-                    <RaisedButton label="Stornieren" onClick={this.openCancelDialog} secondary={true}>
-                        <Dialog actions={cancelActions} modal={false} open={this.state.cancelAlertOpen}
-                                onRequestClose={this.close}>
-                            Möchtest du das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
-                            wirklich stornieren?
-                        </Dialog>
-                    </RaisedButton>
+                    <div>
+                        <RaisedButton label="Rechnung generieren" onClick={this.createInvoice}/>
+                        <RaisedButton label="Stornieren" onClick={this.openCancelDialog} secondary={true}>
+                            <Dialog actions={cancelActions} modal={false} open={this.state.cancelAlertOpen}
+                                    onRequestClose={this.close}>
+                                Möchtest du das Seminar <span
+                                className="highlight-text">"{this.state.seminar.name}" </span>
+                                wirklich stornieren?
+                            </Dialog>
+                        </RaisedButton>
+                    </div>
                     }
                     <RaisedButton label="Buchen" onClick={this.openBookingDialog} primary={true}
-                                  disabled={!this.state.seminar.bookable}>
+                                  disabled={this.checkIfCurrentUserHasAlreadyBooked()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
                             Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
