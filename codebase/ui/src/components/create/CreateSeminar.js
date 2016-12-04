@@ -242,7 +242,7 @@ export class CreateSeminar extends React.Component {
                     </div>
                     <div>
                         <TextField onChange={this.contactPersonInput} fullWidth={true}
-                                   floatingLabelText="Kontaktperson" floatingLabelFixed={true}
+                                   floatingLabelText="Ansprechpartner bei Interesse" floatingLabelFixed={true}
                                    value={this.state.contactPerson} id="contactPerson"/>
                     </div>
                     <div>
