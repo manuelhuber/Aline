@@ -12,10 +12,10 @@ export class EmployeeList extends React.Component {
         }
     }
     componentDidMount() {
-        let employ = EmployeeService.getAllEmpolyee();
+        let employ = EmployeeService.getAllEmployee();
         employ.then(
             result => {
-                this.saveSeminars(result)
+                this.saveEmployee(result)
             }
         );
     }
