@@ -16,7 +16,7 @@ export class Seminar {
      * @param targetLevel the target level of the seminar from 1-5
      * @param trainer the trainer of the seminar
      * @param trainingType the training type of the seminar
-     * @param bookingTimelog the booking timelog
+     * @param bookingTimelog how to book in timelog
      */
     constructor(name, description, agenda, bookable, category, targetLevel, requirements, trainer, contactPerson, trainingType, maximumParticipants, costsPerParticipant, bookingTimelog, goal, duration, cycle, dates) {
         this.name = name;
