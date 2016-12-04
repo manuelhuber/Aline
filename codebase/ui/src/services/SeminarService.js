@@ -59,14 +59,14 @@ module.exports = {
      */
     addSeminar(seminar){
         let token = StorageService.getUserToken();
-        fetch('http://localhost:8008/api/seminars', {
+        return fetch('http://localhost:8008/api/seminars', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
-        }).then(checkStatus)
+        }).then(parseJson)
     },
     /**
      * Delete the seminar with the given id

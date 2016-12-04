@@ -3,6 +3,7 @@ import {SeminarList} from './components/overview/SeminarList';
 import {SeminarDetail} from './components/detail/SeminarDetail';
 import {CreateSeminar} from './components/create/CreateSeminar';
 import {NotFound} from './components/general/NotFound';
+import {Error} from './components/general/Error';
 import {Login} from './components/general/Login';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -49,6 +50,7 @@ ReactDOM.render(
             <Route path="seminars" component={SeminarList}/>
             <Route path="seminars/:seminarName" component={SeminarDetail}/>
             <Route path="create" component={CreateSeminar} onEnter={checkIfFrontoffice}/>
+            <Route path="/error" component={Error}/>
             <Route path="*" component={NotFound}/>
         </Route>
     </Router>

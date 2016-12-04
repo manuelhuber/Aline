@@ -59,7 +59,7 @@ export class CreateSeminar extends React.Component {
             trainer: '',
             trainingType: '',
             currentPickedDate: null,
-            bookingTimelog : ''
+            bookingTimelog: ''
         }
     }
 
@@ -178,6 +178,7 @@ export class CreateSeminar extends React.Component {
     }
 
     handleSubmit() {
+        var idOfTheNewSeminar = 0;
         if (!this.state.name) {
             this.setState({
                 error: !this.state.name
@@ -188,12 +189,20 @@ export class CreateSeminar extends React.Component {
             var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
                 this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
-            SeminarService.addSeminar(seminar);
-            if (this.state.createAnotherOne) {
-                location.reload();
-            } else {
-                this.props.router.replace('/seminars');
-            }
+            //Get id out of response
+            var response = SeminarService.addSeminar(seminar);
+            response.then(
+                result => {
+                    if (this.state.createAnotherOne) {
+                        location.reload();
+                    } else {
+                        this.props.router.replace('/seminars/' + result.id);
+                    }
+                },
+                failureResult => {
+                    this.props.router.replace('/error');
+                }
+            );
         }
     }
 
@@ -314,7 +323,8 @@ export class CreateSeminar extends React.Component {
                         </div>
                         <div className="button-wrapper">
                             <RaisedButton label="Abbrechen" onClick={this.handleCancel} id="cancelButton"/>
-                            <RaisedButton label="Speichern" onClick={this.handleSubmit} id="loginButton" primary={true}/>
+                            <RaisedButton label="Speichern" onClick={this.handleSubmit} id="loginButton"
+                                          primary={true}/>
                         </div>
                     </div>
                 </form>
