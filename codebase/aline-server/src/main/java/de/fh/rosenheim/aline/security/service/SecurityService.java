@@ -103,7 +103,7 @@ public class SecurityService {
     }
 
     /**
-     * Checks if the given principal has divison head authorities
+     * Checks if the given principal has division head authorities
      */
     public boolean isDivisionHead(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));

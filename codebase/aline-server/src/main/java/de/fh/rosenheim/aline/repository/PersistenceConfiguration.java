@@ -70,7 +70,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .division("LOS")
                 .build();
 
-        User fitDivisonHead = User.builder()
+        User fitDivisionHead = User.builder()
                 .username("admin")
                 .firstName("Dave")
                 .lastName("Davidson")
@@ -233,7 +233,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .build();
 
         seminarRepository.save(asList(seminar1, seminar2, seminar3, seminar4));
-        userRepository.save(asList(losStaff, fitStaff, fitDivisonHead, expired, front_office));
+        userRepository.save(asList(losStaff, fitStaff, fitDivisionHead, expired, front_office));
         bookingRepository.save(asList(booking1, booking2, booking3));
     }
 }
