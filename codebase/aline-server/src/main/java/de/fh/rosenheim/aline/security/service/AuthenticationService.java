@@ -2,12 +2,13 @@ package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
+import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
-import de.fh.rosenheim.aline.util.UserUtil;
+import de.fh.rosenheim.aline.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,12 +27,14 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final TokenUtils tokenUtils;
+    private final UserService userService;
 
-    public AuthenticationService(UserRepository u, TokenUtils t, AuthenticationManager a, UserDetailsService ud) {
+    public AuthenticationService(UserRepository u, TokenUtils t, AuthenticationManager a, UserDetailsService ud, UserService userService) {
         this.userRepository = u;
         this.tokenUtils = t;
         this.authenticationManager = a;
         this.userDetailsService = ud;
+        this.userService = userService;
     }
 
     /**
@@ -41,20 +44,21 @@ public class AuthenticationService {
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException if login data is invalid
      */
-    public AuthenticationResponse loginUser(AuthenticationRequest request) throws AuthenticationException {
+    public AuthenticationResponse loginUser(AuthenticationRequest request) throws AuthenticationException, NoObjectForIdException {
+        String username = request.getUsername();
         // Perform authentication
         Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        username,
                         request.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Generate token
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         String token = this.tokenUtils.generateToken(userDetails);
-        return new AuthenticationResponse(token, UserUtil.getAuthoritiesAsStringArray(userDetails));
+        return new AuthenticationResponse(token, userService.getUserByName(username));
     }
 
     /**
@@ -64,7 +68,7 @@ public class AuthenticationService {
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException If the token is no longer valid
      */
-    public AuthenticationResponse refreshToken(String token) throws AuthenticationException {
+    public AuthenticationResponse refreshToken(String token) throws AuthenticationException, NoObjectForIdException {
         SecurityUser user;
 
         try {
@@ -76,7 +80,7 @@ public class AuthenticationService {
 
         if (this.tokenUtils.canTokenBeRefreshed(token, user)) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return new AuthenticationResponse(refreshedToken, UserUtil.getAuthoritiesAsStringArray(user));
+            return new AuthenticationResponse(refreshedToken, userService.getUserByName(user.getUsername()));
         } else throw invalidToken();
     }
 

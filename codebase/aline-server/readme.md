@@ -20,6 +20,9 @@ Use the login endpoint to generate a token. Enter this token at the top right in
 #### Tests
 Execute the gradle jacocoTestReport task to generate test coverage. It can be found under  
  `build\reports\jacoco\test\html\index.html`
+ 
+#### Test Data
+It's created in the PersistenceConfiguration and reset with every server restart.
 
 ##### Project structure:
 
@@ -42,3 +45,4 @@ The content of "security" could have been split between the other packages (i.e.
 - Add CORS urls as necessary in the corsConfigurer function
 - The PersistenceConfiguration adds dummy data - You probably don't want that going live
 - Check the WebSecurityConfig
+- There is no option to create users since most people will want to integrate it with their existing LDAP / whatever 
