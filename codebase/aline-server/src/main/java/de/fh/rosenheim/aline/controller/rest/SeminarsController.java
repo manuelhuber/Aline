@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * All HTTP enpoints related to seminars
+ * All HTTP endpoints related to seminars
  */
 @RestController
 @RequestMapping("${route.seminar.base}")
