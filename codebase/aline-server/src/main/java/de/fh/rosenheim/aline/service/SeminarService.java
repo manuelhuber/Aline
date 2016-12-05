@@ -55,21 +55,7 @@ public class SeminarService {
      */
     public Iterable<Seminar> getPastSeminars() {
         Date today = new Date();
-        return Lists.newArrayList(seminarRepository.findAll())
-                .stream().filter(seminar -> {
-                    Date[] dates = seminar.getDates();
-                    if (dates == null) {
-                        // If there are no dates, return it anyways
-                        return true;
-                    }
-                    boolean everyDateIsInThePast = true;
-                    for (Date date : dates) {
-                        if (date.after(today)) {
-                            everyDateIsInThePast = false;
-                        }
-                    }
-                    return everyDateIsInThePast;
-                }).collect(Collectors.toList());
+        return filterForSeminarsByDate(Lists.newArrayList(seminarRepository.findAll()), today, true);
     }
 
     /**
@@ -77,21 +63,7 @@ public class SeminarService {
      */
     public Iterable<Seminar> getCurrentSeminars() {
         Date today = new Date();
-        return Lists.newArrayList(seminarRepository.findAll())
-                .stream().filter(seminar -> {
-                    Date[] dates = seminar.getDates();
-                    if (dates == null) {
-                        // If there are no dates, return it anyways
-                        return true;
-                    }
-                    boolean atLeastOneDateIsInTheFuture = false;
-                    for (Date date : dates) {
-                        if (date.after(today)) {
-                            atLeastOneDateIsInTheFuture = true;
-                        }
-                    }
-                    return atLeastOneDateIsInTheFuture;
-                }).collect(Collectors.toList());
+        return filterForSeminarsByDate(Lists.newArrayList(seminarRepository.findAll()), today, false);
     }
 
     /**
@@ -165,5 +137,33 @@ public class SeminarService {
         if (!categories.contains(category)) {
             throw new UnkownCategoryException(categories);
         }
+    }
+
+    /**
+     * Filters seminars in regards if they are "in the past" of a given date or not.
+     * All dates of the seminar are before the given date = seminar is before the given date
+     * At least 1 date of the seminar is after the given date = seminar after the given date
+     *
+     * @param seminars        all seminars
+     * @param referenceDate   the date used for comparison
+     * @param getPastSeminars true = return seminars that are before the date
+     *                        false = return seminars that are after the given date
+     * @return A list of seminars either in the past or future compared to the given date
+     */
+    private List<Seminar> filterForSeminarsByDate(List<Seminar> seminars, Date referenceDate, boolean getPastSeminars) {
+        return seminars.stream().filter(seminar -> {
+            Date[] dates = seminar.getDates();
+            if (dates == null) {
+                // If there are no dates, return it anyways
+                return true;
+            }
+            boolean seminarValid = getPastSeminars;
+            for (Date date : dates) {
+                if (date.after(referenceDate)) {
+                    seminarValid = !getPastSeminars;
+                }
+            }
+            return seminarValid;
+        }).collect(Collectors.toList());
     }
 }
