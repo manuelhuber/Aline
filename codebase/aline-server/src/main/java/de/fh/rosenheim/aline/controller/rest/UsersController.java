@@ -48,6 +48,18 @@ public class UsersController {
         return userService.getAllUsernames();
     }
 
+    @RequestMapping(value = "${route.user.division}", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.canGetDivisionUsers(principal, #queryDivision)")
+    public Iterable<User> getAllUsersForDivision(HttpServletRequest request,
+                                                 @RequestParam(name = "division", required = false) String queryDivision)
+            throws NoObjectForIdException {
+        String division = queryDivision;
+        if (division == null || division.length() < 1) {
+            division = userService.getUserByName(controllerUtil.getUsername(request)).getDivision();
+        }
+        return userService.getUsersForDivision(division);
+    }
+
     /**
      * Custom response if no User for the given name exists
      */

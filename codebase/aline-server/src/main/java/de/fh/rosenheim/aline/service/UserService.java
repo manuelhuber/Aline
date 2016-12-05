@@ -26,6 +26,10 @@ public class UserService {
         return user;
     }
 
+    public Iterable<User> getUsersForDivision(String division) {
+        return userRepository.findByDivision(division);
+    }
+
     public List<String> getAllUsernames() {
         return Lists.newArrayList(userRepository.findAll()).stream().map(User::getUsername).collect(Collectors.toList());
     }

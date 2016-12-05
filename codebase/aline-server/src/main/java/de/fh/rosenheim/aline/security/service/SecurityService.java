@@ -63,6 +63,17 @@ public class SecurityService {
     }
 
     /**
+     * Front Office can access the data
+     * if user is the division head of the division (or no division is given) he can access the data
+     */
+    public boolean canGetDivisionUsers(SecurityUser principal, String division) {
+        return isFrontOffice(principal) ||
+                (isDivisionHead(principal)
+                        && (division == null || division.length() < 1 || principal.getDivision().equals(division))
+                );
+    }
+
+    /**
      * Is the given principal the division head of the given user
      */
     public boolean isDivisionHeadForUser(SecurityUser principal, User data) {
@@ -89,6 +100,13 @@ public class SecurityService {
      */
     public boolean isFrontOffice(SecurityUser principal) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.FRONT_OFFICE));
+    }
+
+    /**
+     * Checks if the given principal has divison head authorities
+     */
+    public boolean isDivisionHead(SecurityUser principal) {
+        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
     }
 
     /**

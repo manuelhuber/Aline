@@ -38,6 +38,7 @@ route:
   user:
     base: users
     all: all
+    division: division
   booking:
     base: bookings
     grant: grant
