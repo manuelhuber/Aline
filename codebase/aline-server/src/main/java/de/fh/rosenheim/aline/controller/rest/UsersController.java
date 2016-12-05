@@ -34,9 +34,9 @@ public class UsersController {
 
     @RequestMapping(method = RequestMethod.GET)
     @PostAuthorize("@securityService.canAccessUserData(principal, returnObject)")
-    @ApiOperation(value = "get user info", notes = "Returns the data of the current user (detected via token)")
+    @ApiOperation(value = "get user info", notes = SwaggerTexts.GET_USER_DATA)
     public User user(
-            @ApiParam(value = SwaggerTexts.OTHER_USER) @RequestParam(required = false, name = "name") String queryName,
+            @ApiParam(value = SwaggerTexts.SENSITIVE_DATA) @RequestParam(required = false, name = "name") String queryName,
             HttpServletRequest request) throws NoObjectForIdException {
         String name = queryName != null ? queryName : controllerUtil.getUsername(request);
         return userService.getUserByName(name);
@@ -50,9 +50,10 @@ public class UsersController {
 
     @RequestMapping(value = "${route.user.division}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.canGetDivisionUsers(principal, #queryDivision)")
-    public Iterable<User> getAllUsersForDivision(HttpServletRequest request,
-                                                 @RequestParam(name = "division", required = false) String queryDivision)
-            throws NoObjectForIdException {
+    @ApiOperation(value = "get all users for division", notes = SwaggerTexts.GET_DIVISION_USERS)
+    public Iterable<User> getAllUsersForDivision(
+            @ApiParam(value = SwaggerTexts.SENSITIVE_DATA) @RequestParam(name = "division", required = false) String queryDivision,
+            HttpServletRequest request) throws NoObjectForIdException {
         String division = queryDivision;
         if (division == null || division.length() < 1) {
             division = userService.getUserByName(controllerUtil.getUsername(request)).getDivision();
