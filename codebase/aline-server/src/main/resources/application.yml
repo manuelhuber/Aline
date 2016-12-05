@@ -34,6 +34,8 @@ route:
     logout: logout
   seminar:
     base: seminars
+    current: current
+    past: past
     category: categories
   user:
     base: users

@@ -40,6 +40,26 @@ public class SeminarsController {
     }
 
     /**
+     * Get all seminars
+     *
+     * @return a Iterable over all Seminars (which will be serialized as array in JSON)
+     */
+    @RequestMapping(value = "${route.seminar.past}", method = RequestMethod.GET)
+    public Iterable<Seminar> getPastSeminars() {
+        return seminarService.getPastSeminars();
+    }
+
+    /**
+     * Get all seminars
+     *
+     * @return a Iterable over all Seminars (which will be serialized as array in JSON)
+     */
+    @RequestMapping(value = "${route.seminar.current}", method = RequestMethod.GET)
+    public Iterable<Seminar> getCurrentSeminars() {
+        return seminarService.getCurrentSeminars();
+    }
+
+    /**
      * Add a new seminar
      *
      * @param seminar The basic info about the seminar
@@ -119,7 +139,6 @@ public class SeminarsController {
         seminarService.addCategory(category);
         return seminarService.getAllCategories();
     }
-
 
     /**
      * Delete a category

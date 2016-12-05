@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,50 @@ public class SeminarService {
      */
     public Iterable<Seminar> getAllSeminars() {
         return seminarRepository.findAll();
+    }
+
+    /**
+     * Returns all seminars that have no more dates in the future
+     */
+    public Iterable<Seminar> getPastSeminars() {
+        Date today = new Date();
+        return Lists.newArrayList(seminarRepository.findAll())
+                .stream().filter(seminar -> {
+                    Date[] dates = seminar.getDates();
+                    if (dates == null) {
+                        // If there are no dates, return it anyways
+                        return true;
+                    }
+                    boolean everyDateIsInThePast = true;
+                    for (Date date : dates) {
+                        if (date.after(today)) {
+                            everyDateIsInThePast = false;
+                        }
+                    }
+                    return everyDateIsInThePast;
+                }).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all seminars that have at least 1 date in the future
+     */
+    public Iterable<Seminar> getCurrentSeminars() {
+        Date today = new Date();
+        return Lists.newArrayList(seminarRepository.findAll())
+                .stream().filter(seminar -> {
+                    Date[] dates = seminar.getDates();
+                    if (dates == null) {
+                        // If there are no dates, return it anyways
+                        return true;
+                    }
+                    boolean atLeastOneDateIsInTheFuture = false;
+                    for (Date date : dates) {
+                        if (date.after(today)) {
+                            atLeastOneDateIsInTheFuture = true;
+                        }
+                    }
+                    return atLeastOneDateIsInTheFuture;
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -96,7 +141,7 @@ public class SeminarService {
      * @return A list of categories
      */
     public List<String> getAllCategories() {
-        return Lists.newArrayList(this.categoryRepository.findAll().iterator())
+        return Lists.newArrayList(this.categoryRepository.findAll())
                 .stream().map(Category::getName).collect(Collectors.toList());
     }
 
@@ -119,7 +164,6 @@ public class SeminarService {
         List<String> categories = getAllCategories();
         if (!categories.contains(category)) {
             throw new UnkownCategoryException(categories);
-
         }
     }
 }

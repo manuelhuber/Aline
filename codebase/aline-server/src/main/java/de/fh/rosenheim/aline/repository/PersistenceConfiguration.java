@@ -171,7 +171,8 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar3.setGoal("");
         seminar3.setDuration("2 Tage");
         seminar3.setCycle("1x Jährlich");
-        seminar3.setDates(null);
+        seminar3.setDates(new Date[]{sdf.parse("04/02/2016"), sdf.parse("05/02/2016")});
+
 
         Seminar seminar4 = new Seminar();
         seminar4.setName("Test Design Schoole");
@@ -214,7 +215,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
         seminar4.setDuration("1,5 - 2,0 Tage");
         seminar4.setCycle("Nach Bedarf");
-        seminar4.setDates(null);
+        seminar4.setDates(new Date[]{sdf.parse("10/08/2017")});
 
         Booking booking1 = Booking.builder()
                 .seminar(seminar1)
