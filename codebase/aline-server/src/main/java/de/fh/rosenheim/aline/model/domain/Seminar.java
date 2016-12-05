@@ -48,15 +48,4 @@ public class Seminar extends SeminarBasics {
         super();
         copyBasics(basics);
     }
-
-    public void addBooking(Booking booking) {
-        if (this.bookings == null) {
-            this.bookings = new HashSet<>();
-        }
-        this.bookings.add(booking);
-    }
-
-    public void removeBooking(Booking booking) {
-        this.bookings.remove(booking);
-    }
 }

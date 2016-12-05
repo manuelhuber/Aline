@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
-@Getter
-@Setter
 /**
  * A simple error message
  */
+@AllArgsConstructor
+@Getter
+@Setter
 public class ErrorResponse extends ModelBase {
 
     private String message;

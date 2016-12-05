@@ -1,17 +1,17 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.controller.util.SwaggerTexts;
 import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.json.request.BookingRequest;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.BookingService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,22 +36,21 @@ public class BookingsController {
     /**
      * Books the given user or if no name is given the owner of the X-Auth-Token to the given Seminar
      *
-     * @param seminarId The ID of the seminar
-     * @param queryName the username of the person who wants to attend the seminar
-     * @param request   needed to access the X-Auth-Token
+     * @param httpServletRequest needed to access the X-Auth-Token
      * @return The booking
      * @throws NoObjectForIdException if ID or username are not valid
      * @throws BookingException       if the booking could not be created (reasons in the message)
      */
     @RequestMapping(method = RequestMethod.POST)
-    @PreAuthorize("@securityService.canBookForUser(principal, #queryName)")
+    @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
-    public Booking book(
-            @ApiParam(value = "seminarId") @RequestParam(name = "seminarId") long seminarId,
-            @ApiParam(value = SwaggerTexts.OTHER_USER) @RequestParam(required = false, name = "name") String queryName,
-            HttpServletRequest request) throws NoObjectForIdException, BookingException {
-        String name = queryName != null ? queryName : controllerUtil.getUsername(request);
-        return bookingService.book(seminarId, name);
+    public Booking book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequest bookingRequest)
+            throws NoObjectForIdException, BookingException {
+        String requestName = bookingRequest.getUserName();
+        String name = requestName != null && requestName.length() > 0
+                ? requestName
+                : controllerUtil.getUsername(httpServletRequest);
+        return bookingService.book(bookingRequest.getSeminarId(), name);
     }
 
     /**
