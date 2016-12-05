@@ -22,7 +22,7 @@ var SeminarTexts = {
     goal: 'Geplante Weiterentwicklungen',
     duration: 'Dauer',
     cycle: 'Turnus',
-    bookingTimelog : 'Kontierung (im Timelog)'
+    bookingTimelog: 'Kontierung (im Timelog)'
 };
 
 export class SeminarDetail extends React.Component {
@@ -126,7 +126,12 @@ export class SeminarDetail extends React.Component {
      */
 
     handleSeminarUpdate() {
-        //todo umleiten
+        this.props.router.replace(
+            {
+                pathname: '/create',
+                query: {changeExisting: this.state.seminar.id},
+            }
+        )
     }
 
     /**

@@ -68,6 +68,23 @@ module.exports = {
             body: JSON.stringify(seminar)
         }).then(parseJson)
     },
+
+    /**
+     * Update the given seminar
+     * @param seminar the seminar to update
+     * @param seminarId the id of the seminar to update
+     */
+    updateSeminar(seminar, seminarId){
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: JSON.stringify(seminar)
+        }).then(parseJson)
+    },
     /**
      * Delete the seminar with the given id
      * @param seminarId the id of the seminar to delete
