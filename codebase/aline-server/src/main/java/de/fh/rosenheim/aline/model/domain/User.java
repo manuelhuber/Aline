@@ -34,6 +34,8 @@ public class User extends DomainBase {
 
     @Id
     private String username;
+    private String firstName;
+    private String lastName;
     @Getter(onMethod = @__(@JsonIgnore))
     private String password;
     private String division;
