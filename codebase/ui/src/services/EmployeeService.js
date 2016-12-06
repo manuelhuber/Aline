@@ -3,29 +3,20 @@
  */
 import StorageService from "./StorageService";
 
-module.exports= {
-
-    getCurrentUserDevision() {
-        let userToken = StorageService.getCurrentUser().user;
-        let userData = fetch('http://localhost:8008/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: userToken
-            })
-        }).then(parseJson);
-        return userData.devision
+module.exports = {
+    /**
+     * @returns {*} the currents user division
+     */
+    getCurrentUserDivision() {
+        return StorageService.getCurrentUserDivision();
     },
 
     /**
      * @returns {*|Promise.<TResult>} all available users as a promise
      */
-    getAllEmployee() {
+    getEmployeesForCurrentDivision() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/users/all', {
+        return fetch('http://localhost:8008/api/users/division', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -37,6 +28,7 @@ module.exports= {
     },
 
 };
+
 function parseJson(response) {
     return response.json();
 }

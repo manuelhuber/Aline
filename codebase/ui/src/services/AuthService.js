@@ -23,9 +23,9 @@ module.exports = {
                 password: userPwd,
             })
         }).then(parseJson).then(result => {
-            if (result.token && result.authorities) {
+            if (result.token && result.user) {
                 StorageService.storeUserToken(result.token);
-                StorageService.storeCurrentUser(userName, result.authorities);
+                StorageService.storeCurrentUser(result.user);
             }
         })
     },
@@ -45,7 +45,7 @@ module.exports = {
      * @returns true if the user has the authority division head
      */
     isDivisionHead(){
-        let userRoles = StorageService.getCurrentUser().roles;
+        let userRoles = StorageService.getUserAuthorities();
         return userRoles.includes(AUTHORITIES.DIVISION_HEAD);
     },
 
@@ -53,7 +53,7 @@ module.exports = {
      * @returns true if the user has the authority front office
      */
     isFrontOffice(){
-        let userRoles = StorageService.getCurrentUser().roles;
+        let userRoles = StorageService.getUserAuthorities();
         return userRoles.includes(AUTHORITIES.FRONT_OFFICE);
     }
 };

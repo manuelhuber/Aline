@@ -7,26 +7,41 @@
 const USER_NAME_KEY = 'userName';
 const USER_TOKEN_KEY = 'userToken';
 const USER_ROLES_KEY = 'userRoles';
+const USER_FIRSTNAME_KEY = 'userFirstName';
+const USER_LASTNAME_KEY = 'userLastName';
+const USER_DIVISION_KEY = 'userDivision';
 
 module.exports = {
 
     /**
-     * @param userName the user of the current session
-     * @param userRoles the users roles
+     * @param user the user object of the current session
      */
-    storeCurrentUser(userName, userRoles) {
-        sessionStorage.setItem(USER_NAME_KEY, userName);
-        sessionStorage.setItem(USER_ROLES_KEY, userRoles);
+    storeCurrentUser(user) {
+        sessionStorage.setItem(USER_NAME_KEY, user.username);
+        sessionStorage.setItem(USER_ROLES_KEY, user.authorities);
+        sessionStorage.setItem(USER_FIRSTNAME_KEY, user.firstName);
+        sessionStorage.setItem(USER_LASTNAME_KEY, user.lastName);
+        sessionStorage.setItem(USER_DIVISION_KEY, user.division);
     },
 
     /**
-     * @returns {{user, roles}} the users name as a string and his roles as an array[]
+     * Returns the current user as an user object
      */
     getCurrentUser() {
         return {
-            'user': sessionStorage.getItem(USER_NAME_KEY),
-            'roles': sessionStorage.getItem(USER_ROLES_KEY)
+            'userName': sessionStorage.getItem(USER_NAME_KEY),
+            'roles': sessionStorage.getItem(USER_ROLES_KEY),
+            'firstName': sessionStorage.getItem(USER_FIRSTNAME_KEY),
+            'lastName': sessionStorage.getItem(USER_LASTNAME_KEY),
+            'userDivision': sessionStorage.getItem(USER_DIVISION_KEY)
         }
+    },
+
+    /**
+     * Return the currents user division
+     */
+    getCurrentUserDivision(){
+        return sessionStorage.getItem(USER_DIVISION_KEY);
     },
 
     /**
@@ -45,12 +60,26 @@ module.exports = {
     },
 
     /**
+     * @returns {string} the users full name
+     */
+    getUserFullName(){
+        let firstName = sessionStorage.getItem(USER_FIRSTNAME_KEY);
+        let lastName = sessionStorage.getItem(USER_LASTNAME_KEY);
+        return firstName + ' ' + lastName;
+    },
+
+    /**
+     * @returns {*} the authorities of the current logged in user
+     */
+    getUserAuthorities(){
+        return sessionStorage.getItem(USER_ROLES_KEY);
+    },
+
+    /**
      * Delete the local stored user information
      */
     deleteLocalUserInformation(){
-        sessionStorage.removeItem(USER_NAME_KEY);
-        sessionStorage.removeItem(USER_ROLES_KEY);
-        sessionStorage.removeItem(USER_TOKEN_KEY);
+        sessionStorage.clear();
     }
 };
 

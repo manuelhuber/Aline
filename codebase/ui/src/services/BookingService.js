@@ -10,7 +10,7 @@ module.exports = {
      */
     bookSeminar(id){
         let token = StorageService.getUserToken();
-        let userName = StorageService.getCurrentUser().user;
+        let userName = StorageService.getCurrentUser().userName;
         fetch('http://localhost:8008/api/bookings', {
             method: 'POST',
             headers: {
