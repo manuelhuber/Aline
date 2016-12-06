@@ -45,7 +45,7 @@ public class BookingsController {
     @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
     public Booking book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequest bookingRequest)
-            throws NoObjectForIdException, BookingException {
+            throws BookingException {
         String requestName = bookingRequest.getUserName();
         String name = requestName != null && requestName.length() > 0
                 ? requestName
