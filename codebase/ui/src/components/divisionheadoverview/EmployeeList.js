@@ -30,11 +30,14 @@ export class EmployeeList extends React.Component {
     render() {
         return (
             <div>
-                <main className="employee-name">
+                <main className="employee-names">
                     {this.state.employee.map(this.renderEmployee)}
+                { this.state.employee.length < 1 &&
+                <div className="no-employee-found">
+                    <i className="material-icons md-36">sentiment_neutral</i>
+                    <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
+                </div>}
                 </main>
-                <h3>Entschuldige. TEST.
-                </h3>
             </div>
         );
     }

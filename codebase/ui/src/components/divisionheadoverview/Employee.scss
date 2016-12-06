@@ -1,0 +1,33 @@
+$employee-background: #D7EB05;
+$button-color: #EB0564;
+.employee-names{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 15px 0 15px;
+  .employee{
+    height: 50px;
+    width: 500px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: $spacing / 2;
+    display: inline-block;
+    a {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+    .name {
+      color: $accentColor;
+      height: 40px;
+    }
+  }
+  .no-employee-found {
+    margin: 5px 5px 0 5px;
+    i {
+      position: absolute
+    }
+    p {
+      padding-left: 38px;
+    }
+  }
+}
