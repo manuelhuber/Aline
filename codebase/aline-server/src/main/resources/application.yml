@@ -1,4 +1,5 @@
 server:
+# URL prefix
   contextPath: /api
   port: 8008
 
@@ -20,12 +21,15 @@ logging:
       hibernate: DEBUG
 
 token:
+# Used to encrypt the JWTs
   secret: foobar123
+# Token header key
   header: X-Auth-Token
-#  Time in ms
-#  864000000ms = 10 day
+# Time in ms
+# 864000000ms = 10 day
   expiration: 864000000
 
+# The variables used to build the URLs of all endpoints
 route:
   authentication:
     base: auth

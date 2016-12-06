@@ -1,10 +1,10 @@
 ##Development:
 
 ##### Layers
-`Repositories - Database access  
+Repositories - Database access
 Services - Business logic  
-Controller - HTTP endpoints (and authorization)`  
-Layers should not be skipped. A controller should use a repository
+Controller - HTTP endpoints
+Authorization is whenever possible in the controller. More complex authorization is done in the services.
 
 ##### Lombok
 This Project uses Lombok which auto-generates boilerplate code (like getter and setter). The dependency is in the gradle file but you also need a IDE plugin. There is one for every major IDE and a quick google search will give you all the infos you need to get Lombok running for your IDE of joice. 
@@ -22,11 +22,9 @@ Execute the gradle jacocoTestReport task to generate test coverage. It can be fo
  `build\reports\jacoco\test\html\index.html`
  
 #### Test Data
-It's created in the PersistenceConfiguration and reset with every server restart.
+Dummy data is created in the `PersistenceConfiguration.java` and resets with every server restart.
 
 ##### Project structure:
-
-
 
     |-- java
         |-- AlineServerApplication.java  <- main
@@ -37,12 +35,13 @@ It's created in the PersistenceConfiguration and reset with every server restart
         |-- service                      <- buisness Logic
     |-- resources
         |-- application.yml              <- Configuration
+
 The content of "security" could have been split between the other packages (i.e. services under "service" etc.) but I liked having all of the security code separate from the domain / business code. Only exception is the AuthenticationController since Swagger wants all of the controllers to be in the same package. 
 
 ##Production:
-- The token received from the login endpoint has to be put in the header of requests with the key "X-Auth-Token".
+- The token received from the login endpoint has to be put in the header of requests with the key `X-Auth-Token`.
 - Change the secret in the properties
-- Add CORS urls as necessary in the corsConfigurer function
-- The PersistenceConfiguration adds dummy data - You probably don't want that going live
-- Check the WebSecurityConfig
+- Add CORS urls as necessary in the `corsConfigurer` function
+- The `PersistenceConfiguration.java` adds dummy data - You probably don't want that going live
+- Check the `WebSecurityConfig.java` if everything is up to your standards
 - There is no option to create users since most people will want to integrate it with their existing LDAP / whatever 
