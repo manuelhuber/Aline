@@ -11,6 +11,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import Dialog from 'material-ui/Dialog';
+import Toggle from 'material-ui/Toggle';
 
 export class CreateSeminar extends React.Component {
     constructor() {
@@ -48,10 +49,12 @@ export class CreateSeminar extends React.Component {
             updatingExistingSeminar: false,
             isFrontOffice: false,
             createAnotherOne: false,
-            error: false,
             availableCategories: [],
             availableTargetLevels: [],
             copyAlertOpen: false,
+
+            nameMissingError: false,
+            categoryMissingError: false,
 
             id: 0, //Use only when updating a seminar
             name: '',
@@ -71,7 +74,8 @@ export class CreateSeminar extends React.Component {
             trainer: '',
             trainingType: '',
             currentPickedDate: null,
-            bookingTimelog: ''
+            bookingTimelog: '',
+            bookable: false
         }
     }
 
@@ -121,7 +125,8 @@ export class CreateSeminar extends React.Component {
                         targetLevel: result.targetLevel || [],
                         trainer: result.trainer || '',
                         trainingType: result.trainingType || '',
-                        bookingTimelog: result.bookingTimelog || ''
+                        bookingTimelog: result.bookingTimelog || '',
+                        bookable: result.bookable || false
                     })
                 }
             );
@@ -239,18 +244,34 @@ export class CreateSeminar extends React.Component {
         this.setState({trainingType: event.target.value})
     }
 
+    bookableInput(event) {
+        this.setState({bookable: event.target.value})
+    }
+
     handleCancel() {
         this.props.router.replace('/seminars');
     }
 
     handleSubmit() {
+        if (!this.state.name && !this.state.category) {
+            this.setState({
+                nameMissingError: true,
+                categoryMissingError: true
+            })
+        }
         if (!this.state.name) {
             this.setState({
-                error: !this.state.name
+                nameMissingError: true
             })
-        } else {
+        }
+        if (!this.state.category) {
+            this.setState({
+                categoryMissingError: true
+            })
+        }
+        else {
             //Create and fill the seminar object
-            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, true, this.state.category, this.state.targetLevel,
+            var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, this.state.bookable, this.state.category, this.state.targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
                 this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
             //Make the call
@@ -345,12 +366,12 @@ export class CreateSeminar extends React.Component {
                         <TextField onChange={this.nameInput} fullWidth={true}
                                    floatingLabelText="Name" floatingLabelFixed={true}
                                    value={this.state.name} id="name"
-                                   errorText={this.state.error === true && "Das Seminar braucht einen Namen."}/>
+                                   errorText={this.state.nameMissingError === true && "Das Seminar braucht einen Namen."}/>
                     </div>
                     <div>
                         <SelectField floatingLabelText="Kategorie wählen" floatingLabelFixed={true} fullWidth={true}
-                                     value={this.state.category}
-                                     onChange={this.categoryInput}>
+                                     value={this.state.category} onChange={this.categoryInput}
+                                     errorText={this.state.categoryMissingError === true && "Bitte wähle eine Kategorie."}>
                             { this.state.availableCategories.map(this.renderSelectMenuItems) }
                         </SelectField>
                     </div>
@@ -413,7 +434,8 @@ export class CreateSeminar extends React.Component {
                                      onChange={this.targetLevelInput}>
                             { this.state.availableTargetLevels.map(this.renderSelectMenuItems) }
                         </SelectField>
-                        <div className="picked-target-levels">{this.state.targetLevel.map(this.renderTargetLevels)}</div>
+                        <div
+                            className="picked-target-levels">{this.state.targetLevel.map(this.renderTargetLevels)}</div>
                     </div>
                     <div>
                         <TextField onChange={this.trainerInput} fullWidth={true}
@@ -429,6 +451,11 @@ export class CreateSeminar extends React.Component {
                         <TextField onChange={this.bookingTimelog} fullWidth={true}
                                    floatingLabelText="Kontierung (im Timelog)" floatingLabelFixed={true}
                                    value={this.state.bookingTimelog} id="type"/>
+                    </div>
+                    <div></div>
+                    <div className="toggle-element">
+                        <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable}
+                                onChange={this.bookableInput}/>
                     </div>
                     <div className="action-elements">
                         <div className="checkbox">

@@ -41,6 +41,7 @@ export class SeminarDetail extends React.Component {
 
         this.checkIfCurrentUserHasAlreadyBooked = this.checkIfCurrentUserHasAlreadyBooked.bind(this);
         this.maximumParticipantsAchieved = this.maximumParticipantsAchieved.bind(this);
+        this.isBookable = this.isBookable.bind(this);
         //Booking
         this.handleBooking = this.handleBooking.bind(this);
         this.openBookingDialog = this.openBookingDialog.bind(this);
@@ -68,10 +69,17 @@ export class SeminarDetail extends React.Component {
     }
 
     checkIfCurrentUserHasAlreadyBooked() {
+        var currentUser = StorageService.getCurrentUser().userName;
         if (this.state.seminar.bookings) {
-            return this.state.seminar.bookings.includes(StorageService.getCurrentUser().user);
+            return this.state.seminar.bookings.find((element) => {
+                return element.username === currentUser;
+            });
         }
         return false;
+    }
+
+    isBookable(){
+        return this.state.seminar.bookable;
     }
 
     setSeminar(result) {
@@ -84,8 +92,17 @@ export class SeminarDetail extends React.Component {
      * Booking
      */
     handleBooking() {
-        BookingService.bookSeminar(this.state.seminar.id);
-        this.closeBookingDialog();
+        var response = BookingService.bookSeminar(this.state.seminar.id);
+        //Handle the response
+        response.then(
+            result => {
+                this.forceUpdate();
+                this.closeBookingDialog();
+            },
+            failureResult => {
+                this.props.router.replace('/error');
+            }
+        );
     }
 
     openBookingDialog() {
@@ -225,7 +242,7 @@ export class SeminarDetail extends React.Component {
                     </div>
                     }
                     <RaisedButton label="Buchen" onClick={this.openBookingDialog} primary={true}
-                                  disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved()}>
+                                  disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved() || this.isBookable()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
                             Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
