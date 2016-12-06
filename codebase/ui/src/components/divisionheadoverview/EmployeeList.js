@@ -5,33 +5,33 @@ import {EmployeeListItem} from './EmployeeListItem';
 export class EmployeeList extends React.Component {
     constructor() {
         super();
-        this.renderEmployees = this.renderEmployees.bind(this);
-        this.saveEmployees = this.saveEmployees.bind(this);
+        this.renderEmployee = this.renderEmployee.bind(this);
         this.state = {
-            employees: []
+            employee: []
         }
     }
-
-    saveEmployees(result) {
-        this.setState({
-            employees: result,
-        })
-    }
-
     componentDidMount() {
         let employ = EmployeeService.getEmployeesForCurrentDivision();
         employ.then(
             result => {
-                this.saveEmployees(result)
+                this.saveEmployee(result)
             }
         );
     }
+
+    saveEmployee(result) {
+        this.setState({
+            employee: result
+        })
+    }
+
+
 
     render() {
         return (
             <div>
                 <main className="employee-name">
-                    {this.state.employees.map(this.renderEmployees)}
+                    {this.state.employee.map(this.renderEmployee)}
                 </main>
                 <h3>Entschuldige. TEST.
                 </h3>
@@ -39,8 +39,8 @@ export class EmployeeList extends React.Component {
         );
     }
 
-    renderEmployees(currentEmployee) {
+    renderEmployee(currentEmployee) {
         return <EmployeeListItem employee={currentEmployee}
-                                 key={currentEmployee.userName}/>;
+                                key={currentEmployee.id}/>;
     }
 }
