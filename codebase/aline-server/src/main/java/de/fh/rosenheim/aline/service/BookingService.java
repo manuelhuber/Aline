@@ -34,6 +34,20 @@ public class BookingService {
         this.userService = userService;
     }
 
+    /**
+     * Tries to book the seminar to the user.
+     * If the user already tried to book the seminar and it was DENIED, the old booking will be set to REQUESTED.
+     * If the user (to whom the seminar is booked) is a TOP_DOG the booking will instantly be GRANTED.
+     * If the current user (not necessarily the same as the one to whom the seminar is booked) is FRONT_OFFICE, the
+     * booking will instantly be GRANTED.
+     *
+     * @param seminarId
+     * @param username
+     * @return
+     * @throws BookingException If the given seminar ID or username are not valid
+     *                          If the seminar is not bookable
+     *                          If the seminar is already booked to the user with status "REQUESTED" or "GRANTED"
+     */
     public Booking book(Long seminarId, String username) throws BookingException {
         try {
             Seminar seminar = seminarService.getSeminar(seminarId);
@@ -45,7 +59,7 @@ public class BookingService {
             log.info(currentUser() + "booked seminar with id=" + seminarId + " for user with username=" + username);
             return booking;
         } catch (NoObjectForIdException e) {
-            throw new BookingException("One of the given IDs was not valid: " + e.getId());
+            throw new BookingException("The given ID for " + e.getObject().getSimpleName() + " was not valid: " + e.getId());
         }
     }
 
@@ -88,8 +102,8 @@ public class BookingService {
     /**
      * Checks if the user has already booked the seminar.
      * If there is no booking it will create a new booking.
-     * If there already is a DENIED booking, it will return the old booking but with status REQUESTED, otherwise it will
-     * throw a exception
+     * If there already is a DENIED booking, it will return the old booking but with status REQUESTED.
+     * If there already is a REQUESTED or GRANTED booking it otherwise it will throw a exception
      *
      * @return The booking with the appropriate status
      * @throws BookingException if there already exists a non-denied booking for this seminar/user combination
