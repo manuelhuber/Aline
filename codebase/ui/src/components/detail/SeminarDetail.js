@@ -78,7 +78,7 @@ export class SeminarDetail extends React.Component {
         return false;
     }
 
-    isBookable(){
+    isBookable() {
         return this.state.seminar.bookable;
     }
 
@@ -200,10 +200,13 @@ export class SeminarDetail extends React.Component {
                 <h2>{this.state.seminar.name}</h2>
                 <div className="seminar-info-chips">
                     {this.checkIfCurrentUserHasAlreadyBooked() &&
-                    <Chip>Von dir gebucht</Chip>
+                    <Chip backgroundColor="rgb(255, 64, 129)">Von dir gebucht</Chip>
                     }
                     {this.maximumParticipantsAchieved() &&
-                    <Chip>Maximale Teilnehmeranzahl erreicht</Chip>
+                    <Chip backgroundColor="rgb(255, 64, 129)">Maximale Teilnehmeranzahl erreicht</Chip>
+                    }
+                    {!this.isBookable() &&
+                    <Chip backgroundColor="rgb(255, 64, 129)">Nicht buchbar</Chip>
                     }
                 </div>
 
@@ -242,7 +245,7 @@ export class SeminarDetail extends React.Component {
                     </div>
                     }
                     <RaisedButton label="Buchen" onClick={this.openBookingDialog} primary={true}
-                                  disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved() || this.isBookable()}>
+                                  disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved() || !this.isBookable()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
                             Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
