@@ -1,6 +1,13 @@
 .seminar {
   margin: 0 15px 0 15px;
   position: relative;
+  h2{
+    margin-bottom: 10px;
+    max-width: 76%; //Because of the floating buttons
+  }
+  .seminar-info-chips{
+    margin-bottom: 10px;
+  }
   .properties {
     display: flex;
     flex-wrap: wrap;
@@ -39,5 +46,6 @@
     position: absolute;
     right: 0;
     top: 0;
+    width: auto;
   }
 }
