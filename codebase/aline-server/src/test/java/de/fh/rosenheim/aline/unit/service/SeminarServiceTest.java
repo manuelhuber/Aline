@@ -21,7 +21,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -35,6 +39,7 @@ public class SeminarServiceTest {
     private SeminarRepository seminarRepository;
     private CategoryRepository categoryRepository;
     private SeminarService seminarService;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -75,9 +80,63 @@ public class SeminarServiceTest {
         Seminar seminar = new Seminar();
         seminar.setName("foo");
         seminar.setDescription("bar");
-        final Iterable<Seminar> list = new LinkedList<>(Arrays.asList(seminar));
+        final Iterable<Seminar> list = new LinkedList<>(Collections.singletonList(seminar));
         given(seminarRepository.findAll()).willReturn(list);
         assertThat(seminarService.getAllSeminars()).isEqualTo(list);
+    }
+
+    @Test
+    public void getPastSeminars() throws NoObjectForIdException, ParseException {
+        Seminar onePastOneFutureDate = new Seminar();
+        onePastOneFutureDate.setId((long) 1);
+        onePastOneFutureDate.setDates(new Date[]{sdf.parse("10/08/2117"), sdf.parse("10/3/1899")});
+
+        Seminar allPastDates = new Seminar();
+        allPastDates.setId((long) 2);
+        allPastDates.setDates(new Date[]{sdf.parse("10/08/1117"), sdf.parse("10/3/1899")});
+
+        Seminar allFutureDates = new Seminar();
+        allFutureDates.setId((long) 3);
+        allFutureDates.setDates(new Date[]{sdf.parse("10/08/3117"), sdf.parse("10/3/3899")});
+
+        Seminar noDates = new Seminar();
+        noDates.setId((long) 4);
+
+        final Iterable<Seminar> list
+                = new LinkedList<>(Arrays.asList(onePastOneFutureDate, allPastDates, allFutureDates, noDates));
+        given(seminarRepository.findAll()).willReturn(list);
+        assertThat(seminarService.getPastSeminars())
+                .contains(noDates)
+                .contains(allPastDates)
+                .doesNotContain(onePastOneFutureDate)
+                .doesNotContain(allFutureDates);
+    }
+
+    @Test
+    public void getCurrentSeminars() throws NoObjectForIdException, ParseException {
+        Seminar onePastOneFutureDate = new Seminar();
+        onePastOneFutureDate.setId((long) 1);
+        onePastOneFutureDate.setDates(new Date[]{sdf.parse("10/08/2117"), sdf.parse("10/3/1899")});
+
+        Seminar allPastDates = new Seminar();
+        allPastDates.setId((long) 2);
+        allPastDates.setDates(new Date[]{sdf.parse("10/08/1117"), sdf.parse("10/3/1899")});
+
+        Seminar allFutureDates = new Seminar();
+        allFutureDates.setId((long) 3);
+        allFutureDates.setDates(new Date[]{sdf.parse("10/08/3117"), sdf.parse("10/3/3899")});
+
+        Seminar noDates = new Seminar();
+        noDates.setId((long) 4);
+
+        final Iterable<Seminar> list
+                = new LinkedList<>(Arrays.asList(onePastOneFutureDate, allPastDates, allFutureDates, noDates));
+        given(seminarRepository.findAll()).willReturn(list);
+        assertThat(seminarService.getCurrentSeminars())
+                .contains(noDates)
+                .contains(onePastOneFutureDate)
+                .contains(allFutureDates)
+                .doesNotContain(allPastDates);
     }
 
     @Test
@@ -116,7 +175,7 @@ public class SeminarServiceTest {
         newSeminar.setCategory("Hello World");
         given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
 
-        Seminar returnValue = seminarService.createNewSeminar(newSeminar);
+        seminarService.createNewSeminar(newSeminar);
 
         ArgumentCaptor<Seminar> argument = ArgumentCaptor.forClass(Seminar.class);
         verify(seminarRepository).save(argument.capture());
