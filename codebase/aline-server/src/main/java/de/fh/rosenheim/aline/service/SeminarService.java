@@ -72,12 +72,12 @@ public class SeminarService {
     public void deleteSeminar(long id) throws NoObjectForIdException {
         try {
             seminarRepository.delete(id);
-            log.info(currentUser() + "deleted seminar with id=" + id + " successfully");
+            log.info(currentUser() + "deleted seminar with id=" + id + " successfully.");
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            log.info(currentUser() + "tried to deleted non existing seminar with id=" + id);
+            log.info(currentUser() + "tried to deleted non existing seminar with id=" + id + " unsuccessfully.");
             throw new NoObjectForIdException(Seminar.class, id);
         } catch (Exception e) {
-            log.error(currentUser() + "tried to deleted seminar with id=" + id + " but it failed.", e);
+            log.error(currentUser() + "tried to deleted seminar with id=" + id + " unsuccessfully.", e);
             throw e;
         }
     }
@@ -90,7 +90,7 @@ public class SeminarService {
         Seminar seminar = new Seminar(basics);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
-        log.info(currentUser() + "created a new seminar with id " + seminar.getId());
+        log.info(currentUser() + "created a new seminar with id=" + seminar.getId() + " successfully.");
         return seminar;
     }
 
@@ -103,7 +103,7 @@ public class SeminarService {
         seminar.copyBasics(newSeminar);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
-        log.info(currentUser() + "updated seminar with id " + seminar.getId());
+        log.info(currentUser() + "updated seminar with id " + seminar.getId() + " successfully.");
         return seminar;
     }
 
@@ -119,7 +119,7 @@ public class SeminarService {
 
     public void addCategory(Category category) {
         categoryRepository.save(category);
-        log.info(currentUser() + "created a new seminar with id " + category.getName());
+        log.info(currentUser() + "created a new seminar with id=" + category.getName() + "successfully.");
     }
 
     public void deleteCategory(String categoryName) {
