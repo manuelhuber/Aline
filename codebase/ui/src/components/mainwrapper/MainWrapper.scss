@@ -18,54 +18,9 @@
   .profile {
     float: right;
     position: relative;
+    top: -15px;
     &:hover {
       cursor: pointer;
-    }
-    .dropdown {
-      position: absolute;
-      z-index: 1;
-      right: 0;
-      top: 39px;
-      margin-left: 0;
-      text-align: center;
-      box-shadow: $tileShadow;
-      background-color: rgb(48, 48, 48);
-      .user-name {
-        font-weight: 400;
-        &:hover {
-          cursor: default;
-        }
-      }
-      p {
-        padding: $spacing;
-        margin: 0;
-        white-space: nowrap;
-      }
-      .open-profile,
-      .log-out {
-        &:hover {
-          background-color: $primaryColor;
-          color: $white;
-        }
-      }
-      //Visible or not
-      &.invisible {
-        display: none;
-      }
-      //The dropdown caret
-      &:before {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 0;
-        right: 0;
-        box-sizing: border-box;
-        border: 5px solid $white;
-        border-color: transparent transparent rgb(48, 48, 48) rgb(48, 48, 48);
-        transform-origin: 0 0;
-        transform: rotate(135deg);
-
-      }
     }
   }
   div {

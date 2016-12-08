@@ -1,42 +1,49 @@
-    /**
+/**
  * Created by franziskah on 22.11.16.
  */
 import React from 'react';
 import {Link, hashHistory} from 'react-router'
 import AuthService from '../../services/AuthService';
 import StorageService from '../../services/StorageService';
+import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
 
 export class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isDivisionHead: AuthService.isDivisionHead(),
-            userName: ''
+            userName: '',
+            profileOpen: false
         };
-        this.toggleVisibility = this.toggleVisibility.bind(this);
+        this.openMenu = this.openMenu.bind(this);
+        this.closeMenu = this.closeMenu.bind(this);
         this.navigateToProfile = this.navigateToProfile.bind(this);
         this.logOut = this.logOut.bind(this);
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState({
             userName: StorageService.getUserFullName()
         })
     }
 
-    toggleVisibility() {
-        let classList = document.getElementById('profileDropdown').classList;
-        if (classList.contains('invisible')) {
-            classList.remove('invisible');
-            this.forceUpdate();
-        } else {
-            classList.add('invisible');
-            this.forceUpdate();
-        }
+    openMenu(event) {
+        this.setState({
+            profileOpen: true,
+            anchorEl: event.currentTarget,
+        });
+    }
+
+    closeMenu() {
+        this.setState({
+            profileOpen: false
+        })
     }
 
     navigateToProfile() {
-        this.toggleVisibility();
         hashHistory.push('/profile');
     }
 
@@ -63,14 +70,18 @@ export class Header extends React.Component {
                 </div>
                 }
                 <div className="profile">
-                    <div onClick={this.toggleVisibility}>
-                        <i className="material-icons md-light" title="Profil und Logout">account_box</i>
-                    </div>
-                    <div id="profileDropdown" className="dropdown invisible">
-                        <p className="user-name">{this.state.userName}</p>
-                        <p className="open-profile" onClick={this.navigateToProfile}>Öffne Profil</p>
-                        <p className="log-out" onClick={this.logOut}>Ausloggen</p>
-                    </div>
+                    <IconButton
+                        iconClassName="material-icons md-light" tooltip="Profil und Logout" onClick={this.openMenu}>account_box</IconButton>
+                    <Popover open={this.state.profileOpen} anchorEl={this.state.anchorEl}
+                             anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
+                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                             onRequestClose={this.closeMenu}>
+                        <Menu>
+                            <MenuItem primaryText={this.state.userName} disabled={true}/>
+                            <MenuItem primaryText="Öffne Profil" onClick={this.navigateToProfile}/>
+                            <MenuItem primaryText="Ausloggen" onClick={this.logOut}/>
+                        </Menu>
+                    </Popover>
                 </div>
             </header>
         );

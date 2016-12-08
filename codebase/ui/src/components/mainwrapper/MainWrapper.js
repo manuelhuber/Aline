@@ -15,14 +15,14 @@ export class MainWrapper extends React.Component {
 
     render() {
         return (
-            <div className="main-wrapper">
-                <Header />
-                <div className="content">
-                    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                <div className="main-wrapper">
+                    <Header />
+                    <div className="content">
                         {this.props.children}
-                    </MuiThemeProvider>
+                    </div>
                 </div>
-            </div>
+            </MuiThemeProvider>
         );
     }
 }
