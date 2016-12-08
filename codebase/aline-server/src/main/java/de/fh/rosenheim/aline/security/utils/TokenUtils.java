@@ -4,7 +4,6 @@ import de.fh.rosenheim.aline.model.security.SecurityUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,14 +16,15 @@ import java.util.Map;
 public class TokenUtils {
 
     private static final String CREATED = "created";
-    private final Logger logger = Logger.getLogger(this.getClass());
 
     @Value("${token.secret}")
     private String secret;
 
+    /**
+     * Expiration in seconds
+     */
     @Value("${token.expiration}")
     private Long expiration;
-
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -33,10 +33,23 @@ public class TokenUtils {
         return this.generateToken(claims);
     }
 
+    /**
+     * Only valid tokens can be refreshed
+     *
+     * @param token       JWT
+     * @param userDetails
+     * @return
+     */
     public Boolean canTokenBeRefreshed(String token, UserDetails userDetails) {
-        return validateToken(token, userDetails);
+        return isTokenValid(token, userDetails);
     }
 
+    /**
+     * Creates a new token with the same claims from the given token
+     *
+     * @param token JWT
+     * @return A new token
+     */
     public String refreshToken(String token) {
         String refreshedToken;
         try {
@@ -49,7 +62,16 @@ public class TokenUtils {
         return refreshedToken;
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    /**
+     * Checks if the given JWT is valid.
+     * Logging out invalidates all previous tokens.
+     * Password change invalidates all previous tokens.
+     *
+     * @param token       a JWT
+     * @param userDetails
+     * @return is the token valid
+     */
+    public Boolean isTokenValid(String token, UserDetails userDetails) {
         SecurityUser user = (SecurityUser) userDetails;
         final String username = this.getUsernameFromToken(token);
         final Date created = this.getCreatedDateFromToken(token);
@@ -106,7 +128,7 @@ public class TokenUtils {
     }
 
     private Date generateCurrentDate() {
-        return new Date(System.currentTimeMillis());
+        return new Date();
     }
 
     private Date generateExpirationDate() {
