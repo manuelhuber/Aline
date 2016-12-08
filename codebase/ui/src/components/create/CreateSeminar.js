@@ -12,18 +12,21 @@ import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import Dialog from 'material-ui/Dialog';
 import Toggle from 'material-ui/Toggle';
+import {PastSeminarList} from './PastSeminarList';
 
 export class CreateSeminar extends React.Component {
     constructor() {
         super();
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
         this.renderPickedDates = this.renderPickedDates.bind(this);
         this.renderTargetLevels = this.renderTargetLevels.bind(this);
         this.renderSelectMenuItems = this.renderSelectMenuItems.bind(this);
+
         this.openCopyDialog = this.openCopyDialog.bind(this);
         this.closeCopyDialog = this.closeCopyDialog.bind(this);
-        this.handleCopying = this.handleCopying.bind(this);
+        this.chooseSeminarToCopy = this.chooseSeminarToCopy.bind(this);
         this.preFillSeminarData = this.preFillSeminarData.bind(this);
 
         this.toggleCreateAnotherSeminar = this.toggleCreateAnotherSeminar.bind(this);
@@ -48,6 +51,7 @@ export class CreateSeminar extends React.Component {
         this.bookableInput = this.bookableInput.bind(this);
         this.state = {
             updatingExistingSeminar: false,
+            seminarToCopyId: 0,
             isFrontOffice: false,
             createAnotherOne: false,
             availableCategories: [],
@@ -76,7 +80,7 @@ export class CreateSeminar extends React.Component {
             trainingType: '',
             currentPickedDate: null,
             bookingTimelog: '',
-            bookable: false
+            bookable: true
         }
     }
 
@@ -101,10 +105,17 @@ export class CreateSeminar extends React.Component {
     /**
      * Prefill the input fields with data, when a seminar id got handed by the
      * query 'changeExisting'
+     * @param seminarId the id of the seminar to prefill the data with. May be null when used the query method
      */
-    preFillSeminarData() {
-        if (this.props.location.query && this.props.location.query.changeExisting) {
-            var seminarToUpdate = SeminarService.getSeminarById(this.props.location.query.changeExisting);
+    preFillSeminarData(seminarId) {
+        if (seminarId || this.props.location.query && this.props.location.query.changeExisting) {
+            var seminarToUpdate;
+            if (seminarId) {
+                seminarToUpdate = SeminarService.getSeminarById(seminarId);
+            }
+            else {
+                seminarToUpdate = SeminarService.getSeminarById(this.props.location.query.changeExisting);
+            }
             seminarToUpdate.then(
                 result => {
                     this.setState({
@@ -127,7 +138,7 @@ export class CreateSeminar extends React.Component {
                         trainer: result.trainer || '',
                         trainingType: result.trainingType || '',
                         bookingTimelog: result.bookingTimelog || '',
-                        bookable: result.bookable || false
+                        bookable: result.bookable || true
                     })
                 }
             );
@@ -303,8 +314,12 @@ export class CreateSeminar extends React.Component {
     /**
      * Copy data from old seminar
      */
-    handleCopying() {
-        //todo
+    chooseSeminarToCopy(seminarId) {
+        this.setState({
+            seminarToCopyId: seminarId
+        });
+        this.preFillSeminarData(seminarId);
+        this.closeCopyDialog();
     }
 
     openCopyDialog() {
@@ -322,7 +337,7 @@ export class CreateSeminar extends React.Component {
     renderPickedDates(date, index) {
         return (
             <p>
-                {date.toLocaleDateString()}
+                {new Date(date).toLocaleDateString()}
                 <IconButton iconClassName="material-icons" name={index}
                             onClick={this.removeDate}>remove_circle_outline</IconButton>
             </p>
@@ -346,9 +361,12 @@ export class CreateSeminar extends React.Component {
     }
 
     render() {
+        const dialogStyle = {
+            height: '500px'
+        };
+
         const copyActions = [
             <FlatButton label="Abbrechen" onClick={this.closeCopyDialog}/>,
-            <FlatButton label="Kopieren" primary={true} onClick={this.handleCopying}/>
         ];
         return (
             <div className="create">
@@ -357,10 +375,10 @@ export class CreateSeminar extends React.Component {
                 <form className="create-seminar">
                     <div className="copy-button">
                         <RaisedButton label="Inhalte reinkopieren" onClick={this.openCopyDialog} secondary={true}>
-                            <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen}
+                            <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen} contentStyle={dialogStyle}
                                     onRequestClose={this.close}>
-                                Kopiere die Daten aus einem vorherigen Seminar.
-                                todo Dropdown
+                                <h3>Kopiere die Daten aus einem vorherigen Seminar:</h3>
+                                <PastSeminarList chooseSeminar={this.chooseSeminarToCopy}/>
                             </Dialog>
                         </RaisedButton>
                     </div>
@@ -371,7 +389,7 @@ export class CreateSeminar extends React.Component {
                                    errorText={this.state.nameMissingError === true && "Das Seminar braucht einen Namen."}/>
                     </div>
                     <div>
-                        <SelectField floatingLabelText="Kategorie wählen" floatingLabelFixed={true} fullWidth={true}
+                        <SelectField floatingLabelText="Kategorie" floatingLabelFixed={true} fullWidth={true}
                                      value={this.state.category} onChange={this.categoryInput}
                                      errorText={this.state.categoryMissingError === true && "Bitte wähle eine Kategorie."}>
                             { this.state.availableCategories.map(this.renderSelectMenuItems) }
@@ -430,7 +448,7 @@ export class CreateSeminar extends React.Component {
                                    value={this.state.requirements} id="requirements"/>
                     </div>
                     <div className="target-levels">
-                        <SelectField floatingLabelText="Zielgruppe wählen (in Stufen)" floatingLabelFixed={true}
+                        <SelectField floatingLabelText="Zielgruppe (in Stufen)" floatingLabelFixed={true}
                                      fullWidth={true}
                                      value={this.state.currentSelectedTargetLevel}
                                      onChange={this.targetLevelInput}>
@@ -456,7 +474,7 @@ export class CreateSeminar extends React.Component {
                     </div>
                     <div></div>
                     <div className="toggle-element">
-                        <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable}
+                        <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable} defaultToggled={true}
                                 onToggle={this.bookableInput}/>
                     </div>
                     <div className="action-elements">
