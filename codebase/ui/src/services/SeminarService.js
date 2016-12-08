@@ -22,6 +22,39 @@ module.exports = {
     },
 
     /**
+     * @returns {*|Promise.<TResult>} all current available seminars as a promise
+     */
+    getCurrentSeminars() {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars/current', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: {}
+        }).then(parseJson)
+    },
+
+
+    /**
+     * @returns {*|Promise.<TResult>} all past available seminars as a promise
+     */
+    getPastSeminars() {
+        let token = StorageService.getUserToken();
+        return fetch('http://localhost:8008/api/seminars/past', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: {}
+        }).then(parseJson)
+    },
+
+    /**
      * @returns {*|Promise.<TResult>} all available categories as a promise
      */
     getAllCategories() {

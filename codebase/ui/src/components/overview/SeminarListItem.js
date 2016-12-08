@@ -10,7 +10,7 @@ export class SeminarListItem extends React.Component {
     render() {
         return (
             <Link to={`seminars/${this.props.seminar.id}`}>
-                <Paper className="seminar-tile" zDepth={1}>
+                <Paper className={this.props.isPast ? 'seminar-tile past-seminar invisible' : 'seminar-tile invisible'} zDepth={1}>
                     <div className="name">{this.props.seminar.name}</div>
                     <div className="trainer">{this.props.seminar.trainer}</div>
                 </Paper>

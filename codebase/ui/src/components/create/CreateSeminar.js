@@ -45,6 +45,7 @@ export class CreateSeminar extends React.Component {
         this.trainingTypeInput = this.trainingTypeInput.bind(this);
         this.categoryInput = this.categoryInput.bind(this);
         this.bookingTimelogInput = this.bookingTimelogInput.bind(this);
+        this.bookableInput = this.bookableInput.bind(this);
         this.state = {
             updatingExistingSeminar: false,
             isFrontOffice: false,
@@ -244,8 +245,9 @@ export class CreateSeminar extends React.Component {
         this.setState({trainingType: event.target.value})
     }
 
-    bookableInput(event) {
-        this.setState({bookable: event.target.value})
+    bookableInput() {
+        let bookable = !(this.state.bookable);
+        this.setState({bookable: bookable})
     }
 
     handleCancel() {
@@ -455,7 +457,7 @@ export class CreateSeminar extends React.Component {
                     <div></div>
                     <div className="toggle-element">
                         <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable}
-                                onChange={this.bookableInput}/>
+                                onToggle={this.bookableInput}/>
                     </div>
                     <div className="action-elements">
                         <div className="checkbox">

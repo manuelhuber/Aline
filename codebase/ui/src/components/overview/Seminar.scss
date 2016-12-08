@@ -25,6 +25,16 @@ $button-color: #EB0564;
       overflow: hidden;
       word-wrap: break-word;
     }
+    //Past seminar tile styling
+    &.past-seminar{
+      color: $gray;
+      .name{
+        color: $gray;
+      }
+      &.invisible{
+        display: none;
+      }
+    }
   }
   .add-seminar-tile {
     border: 1px dashed $white;

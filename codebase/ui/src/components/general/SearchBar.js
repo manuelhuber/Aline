@@ -18,13 +18,14 @@ export class SearchBar extends React.Component {
             categoryDropdownValue: '',
             tierDropdownValue: '',
             categories: [],
-            availableTiers: []
+            availableTiers: [],
+            showPastSeminars: false
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
         this.chooseCategory = this.chooseCategory.bind(this);
         this.chooseTier = this.chooseTier.bind(this);
-        this.showPastSeminars = this.showPastSeminars.bind(this);
+        this.handlePastSeminarsToggle = this.handlePastSeminarsToggle.bind(this);
         this.saveCategories = this.saveCategories.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
     }
@@ -59,8 +60,12 @@ export class SearchBar extends React.Component {
         this.props.searchForText(this.state.textSearchInput);
     }
 
-    showPastSeminars() {
-        //todo
+    handlePastSeminarsToggle() {
+        let showPastSeminars = !(this.state.showPastSeminars);
+        this.setState({
+            showPastSeminars: showPastSeminars
+        });
+        this.props.showPastSeminars(showPastSeminars); //Call the handed method
     }
 
     chooseCategory(event, index, value) {
@@ -89,7 +94,7 @@ export class SearchBar extends React.Component {
         this.setState({
             categoryDropdownValue: '',
             tierDropdownValue: '',
-            textSearchInput : ''
+            textSearchInput: ''
         });
         this.props.clearFilter();
     }
@@ -129,7 +134,8 @@ export class SearchBar extends React.Component {
                     {this.state.isFrontOffice &&
                     <div className="checkbox-wrapper">
                         <Toggle label="In der Vergangenheit liegende Seminare anzeigen"
-                                onToggle={this.showPastSeminars} labelPosition="right"/>
+                                value={this.state.showPastSeminars}
+                                onToggle={this.handlePastSeminarsToggle} labelPosition="right"/>
                     </div>
                     }
                 </div>
