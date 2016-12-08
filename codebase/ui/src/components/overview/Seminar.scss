@@ -19,6 +19,7 @@ $button-color: #EB0564;
     .name {
       color: $accentColor;
       height: 40px;
+      word-break: break-all;
     }
     .trainer {
       height: 90px;
@@ -27,10 +28,7 @@ $button-color: #EB0564;
     }
     //Past seminar tile styling
     &.past-seminar{
-      color: $gray;
-      .name{
-        color: $gray;
-      }
+      opacity: 0.5;
       &.invisible{
         display: none;
       }
