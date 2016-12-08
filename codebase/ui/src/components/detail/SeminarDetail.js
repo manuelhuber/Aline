@@ -96,8 +96,8 @@ export class SeminarDetail extends React.Component {
         //Handle the response
         response.then(
             result => {
-                this.forceUpdate();
                 this.closeBookingDialog();
+                location.reload();
             },
             failureResult => {
                 this.props.router.replace('/error');
