@@ -65,13 +65,13 @@ export class SeminarList extends React.Component {
         });
         if (showPastSeminars === true) {
             let pastSeminars = document.getElementsByClassName('past-seminar');
-            for(let i = 0; i < pastSeminars.length; i++){
+            for (let i = 0; i < pastSeminars.length; i++) {
                 pastSeminars[i].classList.remove('invisible');
             }
         }
         else {
             let pastSeminars = document.getElementsByClassName('past-seminar');
-            for(let i = 0; i < pastSeminars.length; i++){
+            for (let i = 0; i < pastSeminars.length; i++) {
                 pastSeminars[i].classList.add('invisible');
             }
         }
@@ -92,12 +92,12 @@ export class SeminarList extends React.Component {
         }
         //Category no && targetLevel yes
         else if (!category && targetLevel) {
-            filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
+            filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
         }
         //Category yes && targetLevel yes
         else if (category && targetLevel) {
             filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
-            filteredSeminars = filteredSeminars.filter(seminar => seminar.targetLevel[0] === targetLevel);
+            filteredSeminars = filteredSeminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
         }
         this.setState({
             filteredSeminars: filteredSeminars
@@ -130,7 +130,7 @@ export class SeminarList extends React.Component {
                     }
                     { this.state.filteredSeminars.map(this.renderSeminar) }
                     { this.state.isFrontOffice && this.state.pastSeminars.map(this.renderPastSeminar) }
-                    { this.state.filteredSeminars.length < 1 &&
+                    { ((this.state.filteredSeminars.length < 1 ) && ((this.state.pastSeminars.length < 1) || !(this.state.showPastSeminars))) &&
                     <div className="no-seminar-found">
                         <i className="material-icons md-36">sentiment_neutral</i>
                         <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
