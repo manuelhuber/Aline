@@ -13,7 +13,6 @@ var SeminarTexts = {
     description: 'Beschreibung',
     agenda: 'Agenda',
     category: 'Kategorie',
-    targetLevel: 'Zielgruppe',
     requirements: 'Voraussetzungen',
     trainer: 'Referent/externer Anbieter',
     contactPerson: 'Ansprechpartner bei Interesse',
@@ -197,6 +196,14 @@ export class SeminarDetail extends React.Component {
         )
     }
 
+    renderTargetLevels(targetLevel) {
+        return (
+            <p>
+                {targetLevel}
+            </p>
+        )
+    }
+
     render() {
         const bookingActions = [
             <FlatButton label="Abbrechen" onClick={this.closeBookingDialog}/>,
@@ -237,6 +244,10 @@ export class SeminarDetail extends React.Component {
                 {
                     <div className="properties">
                         { Object.keys(SeminarTexts).map(this.renderProperties)}
+                        <div className="seminar-property target-level">
+                            <label>Zielgruppe</label>
+                            {this.state.seminar.targetLevel && this.state.seminar.targetLevel.map(this.renderTargetLevels)}
+                        </div>
                         <div className="seminar-property dates">
                             <label>Termine</label>
                             {this.state.seminar.dates && this.state.seminar.dates.map(this.renderDates)}
