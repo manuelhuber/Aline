@@ -6,7 +6,8 @@ import StorageService from "./StorageService";
 const AUTHORITIES = {
     EMPLOYEE: 'EMPLOYEE',
     DIVISION_HEAD: 'DIVISION_HEAD',
-    FRONT_OFFICE: 'FRONT_OFFICE'
+    FRONT_OFFICE: 'FRONT_OFFICE',
+    TOP_DOG: 'TOP_DOGy'
 };
 
 module.exports = {
@@ -55,6 +56,22 @@ module.exports = {
     isFrontOffice(){
         let userRoles = StorageService.getUserAuthorities();
         return userRoles.includes(AUTHORITIES.FRONT_OFFICE);
+    },
+
+    /**
+     * @returns true if the user has the authority employee
+     */
+    isEmployee(){
+        let userRoles = StorageService.getUserAuthorities();
+        return userRoles.includes(AUTHORITIES.EMPLOYEE);
+    },
+
+    /**
+     * @returns true if the user has the authority top-dog
+     */
+    isTopDog(){
+        let userRoles = StorageService.getUserAuthorities();
+        return userRoles.includes(AUTHORITIES.TOP_DOG);
     }
 };
 

@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import Chip from 'material-ui/Chip';
+import {Link} from 'react-router'
 
 var SeminarTexts = {
     description: 'Beschreibung',
@@ -32,6 +33,7 @@ export class SeminarDetail extends React.Component {
             seminar: {},
             bookingAlertOpen: false,
             deleteAlertOpen: false,
+            showBookingConfirmation: false
         };
         this.setSeminar = this.setSeminar.bind(this);
         this.handleSeminarUpdate = this.handleSeminarUpdate.bind(this);
@@ -96,8 +98,18 @@ export class SeminarDetail extends React.Component {
         //Handle the response
         response.then(
             result => {
-                this.closeBookingDialog();
-                location.reload();
+                this.setState({
+                    showBookingConfirmation: true
+                });
+                if(AuthService.isEmployee()){
+                    window.setTimeout(function () {
+                        location.reload();
+                    }, 5000);
+                }else{
+                    window.setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                }
             },
             failureResult => {
                 this.props.router.replace('/error');
@@ -248,8 +260,20 @@ export class SeminarDetail extends React.Component {
                                   disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved() || !this.isBookable()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
-                            Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
-                            buchen?
+                            {!(this.state.showBookingConfirmation) &&
+                            <div>Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
+                                buchen?</div>
+                            }
+                            {this.state.showBookingConfirmation &&
+                            <div>Das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
+                                wurde erfolgreich gebucht.
+                                { AuthService.isEmployee() &&
+                                <p>In deinem Profil kannst du einsehen, wenn die Buchung
+                                    durch deinen Bereichsleiter
+                                    bestätigt wurde.</p>
+                                }
+                            </div>
+                            }
                         </Dialog>
                     </RaisedButton>
                 </div>

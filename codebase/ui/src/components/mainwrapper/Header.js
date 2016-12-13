@@ -14,7 +14,6 @@ export class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isDivisionHead: AuthService.isDivisionHead(),
             userName: '',
             profileOpen: false
         };
@@ -61,7 +60,7 @@ export class Header extends React.Component {
                         Seminarübersicht
                     </Link>
                 </div>
-                {this.state.isDivisionHead &&
+                {AuthService.isDivisionHead() &&
                 <div className="navlink">
                     <Link to="/bereichuebersicht" activeClassName="active">
                         <i className="material-icons md-light">group</i>
