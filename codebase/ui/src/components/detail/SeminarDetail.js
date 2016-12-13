@@ -32,7 +32,6 @@ export class SeminarDetail extends React.Component {
             seminar: {},
             bookingAlertOpen: false,
             deleteAlertOpen: false,
-            showBookingConfirmation: false
         };
         this.setSeminar = this.setSeminar.bind(this);
         this.handleSeminarUpdate = this.handleSeminarUpdate.bind(this);
@@ -51,6 +50,7 @@ export class SeminarDetail extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.openDeleteDialog = this.openDeleteDialog.bind(this);
         this.closeDeleteDialog = this.closeDeleteDialog.bind(this);
+        this.redirectToOverview = this.redirectToOverview.bind(this);
     }
 
     componentDidMount() {
@@ -97,18 +97,11 @@ export class SeminarDetail extends React.Component {
         //Handle the response
         response.then(
             result => {
-                this.setState({
-                    showBookingConfirmation: true
-                });
-                if(AuthService.isEmployee()){
-                    window.setTimeout(function () {
-                        location.reload();
-                    }, 5000);
-                }else{
-                    window.setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-                }
+                this.props.showSnackbar('Buchungsanfrage erfolgreich erstellt');
+                this.closeBookingDialog();
+                window.setTimeout(function () {
+                    location.reload();
+                }, 2000);
             },
             failureResult => {
                 this.props.router.replace('/error');
@@ -134,6 +127,11 @@ export class SeminarDetail extends React.Component {
     handleDelete() {
         SeminarService.deleteSeminar(this.state.seminar.id);
         this.closeDeleteDialog();
+        this.props.showSnackbar('Seminar wurde erfolgreich gelöscht.');
+        window.setTimeout(this.redirectToOverview, 2000);
+    }
+
+    redirectToOverview() {
         this.props.router.replace('/seminars');
     }
 
@@ -271,20 +269,9 @@ export class SeminarDetail extends React.Component {
                                   disabled={this.checkIfCurrentUserHasAlreadyBooked() || this.maximumParticipantsAchieved() || !this.isBookable()}>
                         <Dialog actions={bookingActions} modal={false} open={this.state.bookingAlertOpen}
                                 onRequestClose={this.close}>
-                            {!(this.state.showBookingConfirmation) &&
                             <div>Jetzt das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
-                                buchen?</div>
-                            }
-                            {this.state.showBookingConfirmation &&
-                            <div>Das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
-                                wurde erfolgreich gebucht.
-                                { AuthService.isEmployee() &&
-                                <p>In deinem Profil kannst du einsehen, wenn die Buchung
-                                    durch deinen Bereichsleiter
-                                    bestätigt wurde.</p>
-                                }
+                                buchen?
                             </div>
-                            }
                         </Dialog>
                     </RaisedButton>
                 </div>

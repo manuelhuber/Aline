@@ -7,11 +7,38 @@ import {Header} from './Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+//Appwide components
+import Snackbar from 'material-ui/Snackbar';
+
 
 export class MainWrapper extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            snackbarOpen: false,
+            snackbarMessage: 'Erfolgreich ausgeführt'
+        };
+        this.closeSnackbar = this.closeSnackbar.bind(this);
+        this.showSnackbar = this.showSnackbar.bind(this);
     };
+
+    closeSnackbar() {
+        this.setState({
+            snackbarOpen: false
+        })
+    }
+
+    /**
+     * Show the global Snackbar.
+     * Use with 'this.props.showSnackbar('Text to show')' in any child component of this Main Wrapper
+     * @param messageToShow the message to show in the snackbar
+     */
+    showSnackbar(messageToShow) {
+        this.setState({
+            snackbarMessage: messageToShow,
+            snackbarOpen: true
+        })
+    }
 
     render() {
         return (
@@ -19,8 +46,10 @@ export class MainWrapper extends React.Component {
                 <div className="main-wrapper">
                     <Header />
                     <div className="content">
-                        {this.props.children}
+                        {React.cloneElement(this.props.children, {showSnackbar: this.showSnackbar})}
                     </div>
+                    <Snackbar message={this.state.snackbarMessage} open={this.state.snackbarOpen}
+                              autoHideDuration={4000} onRequestClose={this.closeSnackbar}/>
                 </div>
             </MuiThemeProvider>
         );

@@ -298,8 +298,11 @@ export class CreateSeminar extends React.Component {
             //Handle the response
             response.then(
                 result => {
+                    this.props.showSnackbar('Seminar erfolgreich erstellt');
                     if (this.state.createAnotherOne) {
-                        location.reload();
+                        window.setTimeout(function () {
+                            location.reload();
+                        }, 2000);
                     } else {
                         this.props.router.replace('/seminars/' + result.id);
                     }
