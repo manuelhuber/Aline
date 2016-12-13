@@ -2,6 +2,7 @@
  * Created by franziskah on 02.11.16.
  */
 import StorageService from "./StorageService";
+import Util from './Util';
 
 const AUTHORITIES = {
     EMPLOYEE: 'EMPLOYEE',
@@ -12,8 +13,13 @@ const AUTHORITIES = {
 
 module.exports = {
 
+    /**
+     * @param userName the given name of the user
+     * @param userPwd the given password of the user
+     * @returns {Promise.<TResult>} the result as a promise
+     */
     loginUser(userName, userPwd) {
-        return fetch('http://localhost:8008/api/auth/login', {
+        return fetch(Util.getBasicPath() + '/auth/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -23,7 +29,7 @@ module.exports = {
                 username: userName,
                 password: userPwd,
             })
-        }).then(parseJson).then(result => {
+        }).then(Util.parseJson).then(result => {
             if (result.token && result.user) {
                 StorageService.storeUserToken(result.token);
                 StorageService.storeCurrentUser(result.user);
@@ -31,6 +37,9 @@ module.exports = {
         })
     },
 
+    /**
+     * Logout the current user
+     */
     logoutUser(){
         sessionStorage.clear();
     },
@@ -74,25 +83,3 @@ module.exports = {
         return userRoles.includes(AUTHORITIES.TOP_DOG);
     }
 };
-
-/**
- * @param response the response to parse
- * @returns {*} the response, parsed to json
- */
-function parseJson(response) {
-    return response.json();
-}
-
-/**
- * Check the status of the response
- * @param response the response we got by the fetch function
- */
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response;
-    } else {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-    }
-}

@@ -2,6 +2,7 @@
  * Created by franziskah on 02.11.16.
  */
 import StorageService from "./StorageService";
+import Util from './Util';
 
 module.exports = {
 
@@ -10,7 +11,7 @@ module.exports = {
      */
     getAllSeminars() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars', {
+        return fetch(Util.getBasicSeminarsPath(), {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -18,7 +19,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
     /**
@@ -26,7 +27,7 @@ module.exports = {
      */
     getCurrentSeminars() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/current', {
+        return fetch(Util.getBasicSeminarsPath() + '/current', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -34,7 +35,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
 
@@ -43,7 +44,7 @@ module.exports = {
      */
     getPastSeminars() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/past', {
+        return fetch(Util.getBasicSeminarsPath() + '/past', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -51,7 +52,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
     /**
@@ -59,7 +60,7 @@ module.exports = {
      */
     getAllCategories() {
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/categories', {
+        return fetch(Util.getBasicSeminarsPath() + '/categories', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -67,7 +68,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
     /**
@@ -76,14 +77,14 @@ module.exports = {
      */
     getSeminarById(seminarId){
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
+        return fetch(Util.getBasicSeminarsPath() + '/' + seminarId, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             }
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
     /**
@@ -92,14 +93,14 @@ module.exports = {
      */
     addSeminar(seminar){
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars', {
+        return fetch(Util.getBasicSeminarsPath(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
 
     /**
@@ -109,14 +110,14 @@ module.exports = {
      */
     updateSeminar(seminar, seminarId){
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
+        return fetch(Util.getBasicSeminarsPath() + '/' + seminarId, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
-        }).then(parseJson)
+        }).then(Util.parseJson)
     },
     /**
      * Delete the seminar with the given id
@@ -124,35 +125,21 @@ module.exports = {
      */
     deleteSeminar(seminarId){
         let token = StorageService.getUserToken();
-        return fetch('http://localhost:8008/api/seminars/' + seminarId, {
+        return fetch(Util.getBasicSeminarsPath() + '/' + seminarId, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             }
-        }).then(checkStatus)
+        }).then(Util.checkStatus)
     },
 
+    /**
+     * @returns {number[]} the available targetLevels
+     */
     getTargetLevels(){
         return [1, 2, 3, 4, 5]
     }
 };
 
-/**
- * @param response the response to parse
- * @returns {*} the response, parsed to json
- */
-function parseJson(response) {
-    return response.json();
-}
-
-/**
- * Check the status of the response
- * @param response the response got by the server
- */
-function checkStatus(response) {
-    if (!response.ok) {
-        console.log('Der Response des Servers beim Aufruf der addSeminar Methode war nicht in Ordnung:' + response);
-    }
-}
