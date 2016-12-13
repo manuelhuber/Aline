@@ -1,6 +1,7 @@
 import React from 'react';
 import EmployeeService from '../../services/EmployeeService';
 import {EmployeeListItem} from './EmployeeListItem';
+import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
 
 export class EmployeeList extends React.Component {
     constructor() {
@@ -33,10 +34,10 @@ export class EmployeeList extends React.Component {
                 <main className="employee-names">
                     {this.state.employee.map(this.renderEmployee)}
                 { this.state.employee.length < 1 &&
-                <div className="no-employee-found">
+                <Popover className="no-employee-found">
                     <i className="material-icons md-36">sentiment_neutral</i>
                     <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
-                </div>}
+                </Popover>}
                 </main>
             </div>
         );
