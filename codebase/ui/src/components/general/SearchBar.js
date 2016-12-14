@@ -103,7 +103,11 @@ export class SearchBar extends React.Component {
         if (this.props.searchBarType == 'department') {
             return (
                 <div className="search-bar">
-                    Bereichssuchleiste
+                    <div className="text-search">
+                        <TextField type="search" hintText="Mitarbeiter suchen" value={this.state.textSearchInput}
+                                   onChange={this.handleTextSearch}/>
+                        <IconButton onClick={this.searchForText} iconClassName="material-icons">search</IconButton>
+                    </div>
                 </div>
             )
         } else {

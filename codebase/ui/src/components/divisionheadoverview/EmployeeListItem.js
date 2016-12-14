@@ -38,7 +38,7 @@ export class EmployeeListItem extends React.Component {
                         {this.props.employee.firstName}, {this.props.employee.lastName}
                     </div>
                     <div className="seminar-proof">
-                        <FlatButton label="Seminare bestätigen" onMouseEnter={this.openSeminarList} onMouseLeave={this.closeSeminarList} id="seminar-lable"/>
+                        <FlatButton label="Seminare bestätigen" onClick={this.openSeminarList} onMouseLeave={this.closeSeminarList} id="seminar-lable"/>
                         <Popover open={this.state.semListOpen}>
                             <h3>Test</h3>
                         </Popover>
