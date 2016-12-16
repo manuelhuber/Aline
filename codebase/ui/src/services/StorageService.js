@@ -10,6 +10,7 @@ const USER_ROLES_KEY = 'userRoles';
 const USER_FIRSTNAME_KEY = 'userFirstName';
 const USER_LASTNAME_KEY = 'userLastName';
 const USER_DIVISION_KEY = 'userDivision';
+const USER_BOOKINGS_KEY = 'userBookings';
 
 module.exports = {
 
@@ -22,6 +23,7 @@ module.exports = {
         sessionStorage.setItem(USER_FIRSTNAME_KEY, user.firstName);
         sessionStorage.setItem(USER_LASTNAME_KEY, user.lastName);
         sessionStorage.setItem(USER_DIVISION_KEY, user.division);
+        sessionStorage.setItem(USER_BOOKINGS_KEY, user.bookings);
     },
 
     /**
@@ -33,7 +35,8 @@ module.exports = {
             'roles': sessionStorage.getItem(USER_ROLES_KEY),
             'firstName': sessionStorage.getItem(USER_FIRSTNAME_KEY),
             'lastName': sessionStorage.getItem(USER_LASTNAME_KEY),
-            'userDivision': sessionStorage.getItem(USER_DIVISION_KEY)
+            'userDivision': sessionStorage.getItem(USER_DIVISION_KEY),
+/*            'bookings': sessionStorage.getItem(USER_BOOKINGS_KEY)*/
         }
     },
 

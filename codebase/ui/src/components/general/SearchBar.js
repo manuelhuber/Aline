@@ -19,7 +19,8 @@ export class SearchBar extends React.Component {
             tierDropdownValue: '',
             categories: [],
             availableTiers: [],
-            showPastSeminars: false
+            showPastSeminars: false,
+            relEmployee: false
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
@@ -28,6 +29,7 @@ export class SearchBar extends React.Component {
         this.handlePastSeminarsToggle = this.handlePastSeminarsToggle.bind(this);
         this.saveCategories = this.saveCategories.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
+        this.handleShowRelevantEmployees = this.handleShowRelevantEmployees.bind(this);
     }
 
     componentDidMount() {
@@ -99,6 +101,14 @@ export class SearchBar extends React.Component {
         this.props.clearFilter();
     }
 
+    handleShowRelevantEmployees(){
+        let showRelevantEmployees = !(this.state.relEmployee)
+        this.setState({
+            relEmployee:showRelevantEmployees
+        })
+        this.props.showRelevantEmployees(showRelevantEmployees); //Call the handed method
+    }
+
     render() {
         if (this.props.searchBarType == 'department') {
             return (
@@ -107,6 +117,11 @@ export class SearchBar extends React.Component {
                         <TextField type="search" hintText="Mitarbeiter suchen" value={this.state.textSearchInput}
                                    onChange={this.handleTextSearch}/>
                         <IconButton onClick={this.searchForText} iconClassName="material-icons">search</IconButton>
+                    </div>
+                    <div className="checkbox-wrapper">
+                        <Toggle label="Mitarbeiter anzeigen die noch unbestätige Seminare haben"
+                                value={this.state.relEmployee}
+                                onToggle={this.handleShowRelevantEmployees} labelPosition="right"/>
                     </div>
                 </div>
             )

@@ -10,9 +10,11 @@ export class EmployeeList extends React.Component {
         this.renderEmployee = this.renderEmployee.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
         this.filterEmployees = this.filterEmployees.bind(this);
+        this.showRelevantEmployees = this.showRelevantEmployees.bind(this);
         this.state = {
             employees: [],
-            filteredEmployees: []
+            filteredEmployees: [],
+            relevantEmployees: false
         }
     }
     componentDidMount() {
@@ -33,7 +35,7 @@ export class EmployeeList extends React.Component {
 
     filterEmployees(name) {
         let filteredEmployees = this.state.employees.filter(employee => JSON.stringify(employee).toLowerCase().includes(name.toLowerCase()));
-    this.setState ({
+        this.setState ({
             filteredEmployees: filteredEmployees
         })
     }
@@ -44,13 +46,39 @@ export class EmployeeList extends React.Component {
         })
     }
 
+    showRelevantEmployees(showRelevant){
+        this.setState({
+            showRelevantEmployees: showRelevant
+        })
+        if (showRelevant === true) {
+            let filtered = this.state.filteredEmployees.filter(employee => JSON.stringify(employee.bookings).toUpperCase().includes('REQUESTED'));
+            this.setState({
+                filteredEmployees: filtered
+            })
+        }
+        else {
+            this.setState({
+                filteredEmployees: this.state.employees
+            })
+        }
+    }
+
+    saveRelevantEmployee(employee){
+        console.log(employee)
+        this.setState({
+            filteredEmployees : employee
+        })
+    }
+
     render() {
         return (
             <div>
                 <SearchBar searchBarType="department" searchForText={this.filterEmployees}
+                           showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}/>
                 <main className="employee-names">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
+
                 { this.state.filteredEmployees.length < 1 &&
                 <Popover className="no-employee-found">
                     <i className="material-icons md-36">sentiment_neutral</i>

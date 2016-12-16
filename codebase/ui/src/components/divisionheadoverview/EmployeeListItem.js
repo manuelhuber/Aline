@@ -46,6 +46,7 @@ export class EmployeeListItem extends React.Component {
                 </Paper>
         );
     }
+    
     semList(seminar) {
        return seminar.props.employee.bookings.map(function (semina) {
            return <p>{semina.seminarId}</p>;
