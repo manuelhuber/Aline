@@ -109,7 +109,8 @@ public class SeminarServiceTest {
                 .contains(noDates)
                 .contains(allPastDates)
                 .doesNotContain(onePastOneFutureDate)
-                .doesNotContain(allFutureDates);
+                .doesNotContain(allFutureDates)
+                .hasSize(2);
     }
 
     @Test
@@ -136,7 +137,8 @@ public class SeminarServiceTest {
                 .contains(noDates)
                 .contains(onePastOneFutureDate)
                 .contains(allFutureDates)
-                .doesNotContain(allPastDates);
+                .doesNotContain(allPastDates)
+                .hasSize(3);
     }
 
     @Test

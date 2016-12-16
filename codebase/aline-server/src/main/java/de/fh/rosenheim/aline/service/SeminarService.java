@@ -103,7 +103,7 @@ public class SeminarService {
         seminar.copyBasics(newSeminar);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
-        log.info(currentUser() + "updated seminar with id " + seminar.getId() + " successfully.");
+        log.info(currentUser() + "updated seminar with id=" + seminar.getId() + " successfully.");
         return seminar;
     }
 

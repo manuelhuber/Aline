@@ -64,7 +64,7 @@ public class AuthenticationService {
     /**
      * Returns a fresh token if the given one is valid
      *
-     * @param token
+     * @param token a JWT
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException If the token is no longer valid
      */
@@ -90,7 +90,7 @@ public class AuthenticationService {
 
         try {
             securityUser = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
-            if (this.tokenUtils.validateToken(token, securityUser)) {
+            if (this.tokenUtils.isTokenValid(token, securityUser)) {
                 User user = this.userRepository.findByUsername(username);
                 user.setLastLogout(new Date());
                 this.userRepository.save(user);
