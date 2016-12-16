@@ -14,7 +14,9 @@ export class EmployeeList extends React.Component {
         this.state = {
             employees: [],
             filteredEmployees: [],
-            relevantEmployees: false
+            relevantEmployees: false,
+            alreadyDone: 0,
+            toDo: 0
         }
     }
     componentDidMount() {
@@ -23,7 +25,28 @@ export class EmployeeList extends React.Component {
             result => {
                 this.saveEmployee(result)
             }
-        );
+        ).then(result =>
+            this.countSeminars()
+        )
+    }
+
+    countSeminars(){
+        let SeminarCount = 0
+        let AllSeminars = 0
+        console.log(this.state.employees)
+        this.state.employees.map(function(employee){
+            let RequestedSeminarsForEmployee = employee.bookings.filter( booking => JSON.stringify(booking).toUpperCase().includes('REQUESTED'))
+            let ToDoSeminarCounter = RequestedSeminarsForEmployee.length
+            let AllCounter = employee.bookings.length
+            SeminarCount = SeminarCount + ToDoSeminarCounter
+            AllSeminars = AllSeminars + AllCounter
+            RequestedSeminarsForEmployee = 0
+            ToDoSeminarCounter = 0
+        })
+        this.setState({
+            toDo:SeminarCount,
+            alreadyDone:AllSeminars
+        })
     }
 
     saveEmployee(result) {
@@ -75,7 +98,8 @@ export class EmployeeList extends React.Component {
             <div>
                 <SearchBar searchBarType="department" searchForText={this.filterEmployees}
                            showRelevantEmployees={this.showRelevantEmployees}
-                           clearFilter={this.clearFilter}/>
+                           clearFilter={this.clearFilter}
+                />
                 <main className="employee-names">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
 
