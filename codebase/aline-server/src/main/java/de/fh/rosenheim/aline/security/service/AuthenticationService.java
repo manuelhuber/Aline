@@ -64,7 +64,7 @@ public class AuthenticationService {
     /**
      * Returns a fresh token if the given one is valid
      *
-     * @param token
+     * @param token a JWT
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException If the token is no longer valid
      */
