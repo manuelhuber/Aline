@@ -4,6 +4,7 @@ import {EmployeeListItem} from './EmployeeListItem';
 import {SearchBar} from '../general/SearchBar';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
 
+
 export class EmployeeList extends React.Component {
     constructor() {
         super();
@@ -14,9 +15,10 @@ export class EmployeeList extends React.Component {
         this.state = {
             employees: [],
             filteredEmployees: [],
-            relevantEmployees: false,
+            filteredEmployeesBackup: [],
+            showRelevantEmployees: false,
             alreadyDone: 0,
-            toDo: 0
+            totalToDo: 0
         }
     }
     componentDidMount() {
@@ -31,20 +33,19 @@ export class EmployeeList extends React.Component {
     }
 
     countSeminars(){
-        let SeminarCount = 0
-        let AllSeminars = 0
-        console.log(this.state.employees)
+        let SeminarCount = 0;
+        let AllSeminars = 0;
         this.state.employees.map(function(employee){
             let RequestedSeminarsForEmployee = employee.bookings.filter( booking => JSON.stringify(booking).toUpperCase().includes('REQUESTED'))
-            let ToDoSeminarCounter = RequestedSeminarsForEmployee.length
-            let AllCounter = employee.bookings.length
-            SeminarCount = SeminarCount + ToDoSeminarCounter
-            AllSeminars = AllSeminars + AllCounter
-            RequestedSeminarsForEmployee = 0
-            ToDoSeminarCounter = 0
-        })
+            let ToDoSeminarCounter = RequestedSeminarsForEmployee.length;
+            let AllCounter = employee.bookings.length;
+            SeminarCount = SeminarCount + ToDoSeminarCounter;
+            AllSeminars = AllSeminars + AllCounter;
+            RequestedSeminarsForEmployee = 0;
+            ToDoSeminarCounter = 0;
+        });
         this.setState({
-            toDo:SeminarCount,
+            totalToDo:SeminarCount,
             alreadyDone:AllSeminars
         })
     }
@@ -76,12 +77,13 @@ export class EmployeeList extends React.Component {
         if (showRelevant === true) {
             let filtered = this.state.filteredEmployees.filter(employee => JSON.stringify(employee.bookings).toUpperCase().includes('REQUESTED'));
             this.setState({
+                filteredEmployeesBackup: this.state.filteredEmployees,
                 filteredEmployees: filtered
             })
         }
         else {
             this.setState({
-                filteredEmployees: this.state.employees
+                filteredEmployees: this.state.filteredEmployeesBackup,
             })
         }
     }
