@@ -33,14 +33,22 @@ export class SeminarList extends React.Component {
         let seminars = SeminarService.getCurrentSeminars();
         seminars.then(
             result => {
-                this.saveSeminars(result)
+                this.saveSeminars(result);
+            },
+            failureResult => {
+                this.props.router.replace('/error');
             }
         );
         if (AuthService.isFrontOffice()) {
+            this.props.showLoadingIndicator(true);
             let pastSeminars = SeminarService.getPastSeminars();
             pastSeminars.then(
                 result => {
-                    this.savePastSeminars(result)
+                    this.savePastSeminars(result);
+                    this.props.showLoadingIndicator(false)
+                },
+                failureResult => {
+                    this.props.router.replace('/error');
                 }
             );
         }

@@ -35,6 +35,8 @@
 }
 
 .content {
+  width: 1052px;
+  margin: 0 auto;
   a {
     color: $accentColor;
   }
@@ -46,5 +48,35 @@
   }
   &.md-light {
     color: $white;
+  }
+}
+
+#loadingIndicator {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 2000;
+  visibility: hidden;
+  //Animation for darkening the background. If we start with a full black background, it will look strange if the spinner just get shown for a very short amount of time
+  animation-name: darkenBackground;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+  //The Spinner itself
+  > div {
+    top: calc(40%);
+    left: calc(50% - 40px);
+  }
+}
+
+@keyframes darkenBackground {
+  from {
+    background-color: transparent;
+    visibility: hidden;
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: visible;
   }
 }
