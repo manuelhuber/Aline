@@ -37,6 +37,8 @@
 .content {
   width: 1052px;
   margin: 0 auto;
+  padding: 0 10px 0 10px;
+  box-sizing: border-box;
   a {
     color: $accentColor;
   }

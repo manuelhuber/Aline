@@ -169,7 +169,7 @@ export class SeminarDetail extends React.Component {
 
     renderProperties(key) {
         return (
-            <div className="seminar-property">
+            <div className="property">
                 <output>
                     <label>{SeminarTexts[key]}</label>
                     {this.state.seminar[key]}
@@ -240,17 +240,17 @@ export class SeminarDetail extends React.Component {
                 </div>
                 }
                 {
-                    <div className="properties">
+                    <div className="output-properties">
                         { Object.keys(SeminarTexts).map(this.renderProperties)}
-                        <div className="seminar-property target-level">
+                        <div className="property seminar-property target-level">
                             <label>Zielgruppe</label>
                             {this.state.seminar.targetLevel && this.state.seminar.targetLevel.map(this.renderTargetLevels)}
                         </div>
-                        <div className="seminar-property dates">
+                        <div className="property seminar-property dates">
                             <label>Termine</label>
                             {this.state.seminar.dates && this.state.seminar.dates.map(this.renderDates)}
                         </div>
-                        <div className="seminar-property participants">
+                        <div className="property seminar-property participants">
                             {this.state.seminar.bookings &&
                             <label>Buchungen
                                 ({this.state.seminar.bookings.length}/{this.state.seminar.maximumParticipants})</label>

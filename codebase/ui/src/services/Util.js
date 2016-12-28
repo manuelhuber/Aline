@@ -17,6 +17,13 @@ module.exports = {
     },
 
     /**
+     * @returns {string} the basic users path of the REST api
+     */
+    getBasicUsersPath(){
+        return BASIC_PATH + '/users'
+    },
+
+    /**
      * @param response the response to parse
      * @returns {*} the response, parsed to json
      */

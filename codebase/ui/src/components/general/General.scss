@@ -30,3 +30,23 @@
 .not-found{
   margin: 0 15px 0 15px;
 }
+
+//Output Properties with label and text
+.output-properties {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .property {
+    width: 47%;
+    font-size: 16px;
+    padding-bottom: 3px;
+    label {
+      display: block;
+      color: $gray;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    border-bottom: 1px solid $gray;
+    margin-bottom: 20px;
+  }
+}

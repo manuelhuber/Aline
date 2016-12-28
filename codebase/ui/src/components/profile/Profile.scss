@@ -1,0 +1,21 @@
+.profile {
+  h3 {
+    margin: 0 0 10px 0;
+  }
+  .bookings {
+    position: relative;
+  }
+  .history-button {
+    position: absolute;
+    top: -8px;
+    right: 0;
+  }
+  .bookings {
+    .booking {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+  }
+}

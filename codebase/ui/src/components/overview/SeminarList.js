@@ -14,7 +14,6 @@ export class SeminarList extends React.Component {
         this.savePastSeminars = this.savePastSeminars.bind(this);
         this.searchForText = this.searchForText.bind(this);
         this.filterSeminars = this.filterSeminars.bind(this);
-        this.filterBoth = this.filterBoth.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
         this.showPastSeminars = this.showPastSeminars.bind(this);
         this.state = {
@@ -110,10 +109,6 @@ export class SeminarList extends React.Component {
         this.setState({
             filteredSeminars: filteredSeminars
         })
-    }
-
-    filterBoth() {
-
     }
 
     clearFilter() {

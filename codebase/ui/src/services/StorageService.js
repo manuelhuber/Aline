@@ -36,7 +36,7 @@ module.exports = {
             'firstName': sessionStorage.getItem(USER_FIRSTNAME_KEY),
             'lastName': sessionStorage.getItem(USER_LASTNAME_KEY),
             'userDivision': sessionStorage.getItem(USER_DIVISION_KEY),
-/*            'bookings': sessionStorage.getItem(USER_BOOKINGS_KEY)*/
+            'bookings': sessionStorage.getItem(USER_BOOKINGS_KEY)
         }
     },
 

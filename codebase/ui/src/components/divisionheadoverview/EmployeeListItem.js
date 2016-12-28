@@ -18,17 +18,30 @@ export class EmployeeListItem extends React.Component {
         }
 
     }
+
     closeSeminarList() {
         this.setState({
             semListOpen: false
         })
     }
+
     openSeminarList(event) {
         this.setState({
             semListOpen: true,
         });
     }
 
+    /**
+     * todo button die funktion aufruft einfügen
+     */
+    navigateToProfile(){
+        this.props.router.replace(
+            {
+                pathname: '/profile',
+                query: {userName: this.props.employee.username},
+            }
+        )
+    }
 
     render() {
         return (
