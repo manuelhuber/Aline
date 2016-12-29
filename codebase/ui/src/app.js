@@ -2,6 +2,7 @@ import {MainWrapper} from './components/mainwrapper/MainWrapper';
 import {SeminarList} from './components/overview/SeminarList';
 import {SeminarDetail} from './components/detail/SeminarDetail';
 import {Profile} from './components/profile/Profile';
+import {BookingHistory} from './components/profile/BookingHistory';
 import {CreateSeminar} from './components/create/CreateSeminar';
 import {NotFound} from './components/general/NotFound';
 import {Error} from './components/general/Error';
@@ -54,6 +55,7 @@ ReactDOM.render(
             <Route path="create" component={CreateSeminar} onEnter={checkIfFrontoffice}/>
             <Route path="profile" component={Profile}/>
             <Route path="bereichuebersicht" component={EmployeeList}/>
+            <Route path="history" component={BookingHistory}/>
             <Route path="/error" component={Error}/>
             <Route path="*" component={NotFound}/>
         </Route>

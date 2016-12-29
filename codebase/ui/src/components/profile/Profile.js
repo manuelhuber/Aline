@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router'
 import UserService from '../../services/UserService';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
@@ -56,7 +55,7 @@ export class Profile extends React.Component {
     }
 
     navigateToSeminarHistory() {
-
+        this.props.router.replace('/history');
     }
 
     /**
@@ -67,7 +66,7 @@ export class Profile extends React.Component {
             <Paper className="booking" zDepth={1}>
                 <div className="name">{booking.seminarId}</div>
                 <div className="date">{ new Date(booking.created).toLocaleDateString()}</div>
-                <div className="status"><Checkbox label="Bestätigt" value={booking.status} disabled="true"/></div>
+                <div className="status"><Checkbox label="Bestätigt" value={(booking.status == 'GRANTED')} disabled={true}/></div>
             </Paper>
         )
     }

@@ -1,3 +1,4 @@
+/**------- Profile ---------**/
 .profile {
   h3 {
     margin: 0 0 10px 0;
@@ -17,5 +18,12 @@
       align-items: center;
       padding: 10px;
     }
+  }
+}
+
+/**------- Seminar history ---------**/
+.seminar-history {
+  .back-button {
+    display: block;
   }
 }
