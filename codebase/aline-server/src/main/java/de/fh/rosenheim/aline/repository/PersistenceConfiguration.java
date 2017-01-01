@@ -103,6 +103,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar1.setDescription("Lord, yer not vandalizing me without a desolation!Yuck! Pieces o' yellow fever are forever cloudy. Mainland of a rough strength, endure the endurance! The captain hobbles amnesty like an old lass.");
         seminar1.setAgenda("- Heu, brevis spatii! \n - Cum solem potus, omnes buxumes anhelare brevis, dexter lapsuses. \n  - All prime sources view each other, only simple therapists have a freedom.");
         seminar1.setBookable(true);
+        seminar1.setCategory("Management");
         seminar1.setTargetLevel(new int[]{1, 2});
         seminar1.setRequirements("Keine");
         seminar1.setTrainer("Sonja Schlappinger");
@@ -132,6 +133,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 "Laterale Führung — die Arbeit mit selbstorganisierten Teams\n" +
                 "Skalierung und verteilte Teams");
         seminar2.setBookable(true);
+        seminar2.setCategory("Software Engineering");
         seminar2.setTargetLevel(new int[]{1, 2, 3, 4, 5});
         seminar2.setRequirements("Die Teilnehmer sollten mit den Grundbegriffen von Scrum vertraut sein.");
         seminar2.setTrainer("Boris Gloger Training\n" +
@@ -160,6 +162,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 "Entwicklung von Benutzeroberflächen\n" +
                 "Daten persistieren");
         seminar3.setBookable(false);
+        seminar3.setCategory("Software Engineering");
         seminar3.setTargetLevel(new int[]{1, 2, 3});
         seminar3.setRequirements("Erfahrung in OOP");
         seminar3.setTrainer("Patrick Gaißert, Julian Feller");
@@ -172,7 +175,6 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar3.setDuration("2 Tage");
         seminar3.setCycle("1x Jährlich");
         seminar3.setDates(new Date[]{sdf.parse("04/02/2016"), sdf.parse("05/02/2016")});
-
 
         Seminar seminar4 = new Seminar();
         seminar4.setName("Test Design Schoole");
@@ -203,6 +205,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 "Viel Spaß beim Durchklicken!");
 
         seminar4.setBookable(false);
+        seminar4.setCategory("Testmanagement");
         seminar4.setTargetLevel(new int[]{1, 2, 3});
         seminar4.setRequirements("Vorkenntnisse im Testumfeld wünschenswert / ISTQB Foundation Level Certified Tester");
         seminar4.setTrainer("Kursleiter: Julia Reichelt, Maike Uhlig; \"Gastredner\": Ulf Richter");
