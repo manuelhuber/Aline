@@ -22,7 +22,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * The highest level handler that will only be called if no other handler fits
+     * The lowest handler that will only be called if no other handler fits
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> genericError(Exception exception) {
@@ -33,7 +33,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     /**
-     * Generic Autentication / Authorization response.
+     * Generic Authentication / Authorization response.
      * Note: SpringSecurity will in some cases (like @PreAuthorization) send it's own response
      */
     @ExceptionHandler(value = {AuthenticationException.class, AccessDeniedException.class})
