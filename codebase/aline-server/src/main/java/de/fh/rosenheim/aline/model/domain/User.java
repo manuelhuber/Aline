@@ -43,6 +43,10 @@ public class User extends DomainBase {
     private Date lastPasswordReset;
     @Getter(onMethod = @__(@JsonIgnore))
     private Date lastLogout;
+
+    /**
+     * The authorities of the users in a comma-separated single string
+     */
     private String authorities;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)

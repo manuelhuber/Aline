@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-@Data
 /**
  * Implementation of UserDetails, which is required for Spring Security
  */
+@Data
 public class SecurityUser implements UserDetails {
 
     private String username;

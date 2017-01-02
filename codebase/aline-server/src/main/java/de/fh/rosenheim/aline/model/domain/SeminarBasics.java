@@ -37,6 +37,9 @@ public class SeminarBasics extends DomainBase {
     private String trainingType;
     private int maximumParticipants;
     private int costsPerParticipant;
+    /**
+     * A description on how employees can book the time as working hours
+     */
     private String bookingTimelog;
     private String goal;
     private String duration;
