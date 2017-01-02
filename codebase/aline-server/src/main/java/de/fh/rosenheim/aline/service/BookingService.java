@@ -14,7 +14,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
@@ -46,14 +48,25 @@ public class BookingService {
      * @return
      * @throws BookingException If the given seminar ID or username are not valid
      *                          If the seminar is not bookable
+     *                          If the seminar is already fully booked
      *                          If the seminar is already booked to the user with status "REQUESTED" or "GRANTED"
      */
     public Booking book(Long seminarId, String username) throws BookingException {
         try {
             Seminar seminar = seminarService.getSeminar(seminarId);
+
             if (!seminar.isBookable()) {
                 throw new BookingException("This seminar is not bookable");
             }
+
+            Collection<Booking> nonDeniedBookings = seminar.getBookings()
+                    .stream()
+                    .filter(booking -> booking.getStatus().equals(BookingStatus.DENIED))
+                    .collect(Collectors.toList());
+            if (nonDeniedBookings.size() >= seminar.getMaximumParticipants()) {
+                throw new BookingException("This seminar is already fully booked");
+            }
+
             Booking booking = getValidBookingForUser(seminar, userService.getUserByName(username));
             bookingRepository.save(booking);
             log.info(currentUser() + "booked seminar with id=" + seminarId + " for user with username=" + username);
