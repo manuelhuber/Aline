@@ -3,7 +3,7 @@ package de.fh.rosenheim.aline.controller.rest;
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.domain.SeminarBasics;
-import de.fh.rosenheim.aline.model.dtos.response.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.service.SeminarService;

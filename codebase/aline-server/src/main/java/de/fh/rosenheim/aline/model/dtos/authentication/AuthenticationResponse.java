@@ -1,6 +1,7 @@
-package de.fh.rosenheim.aline.model.dtos.response;
+package de.fh.rosenheim.aline.model.dtos.authentication;
 
 import de.fh.rosenheim.aline.model.base.ModelBase;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

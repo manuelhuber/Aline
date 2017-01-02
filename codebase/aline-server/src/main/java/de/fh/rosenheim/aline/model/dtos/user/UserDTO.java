@@ -1,5 +1,6 @@
-package de.fh.rosenheim.aline.model.dtos.response;
+package de.fh.rosenheim.aline.model.dtos.user;
 
+import de.fh.rosenheim.aline.model.dtos.booking.BookingSummaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,5 @@ public class UserDTO {
     List<String> authorities;
 
     @ApiModelProperty(position = 5)
-    List<BookingSummaryDto> bookings;
+    List<BookingSummaryDTO> bookings;
 }

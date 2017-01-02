@@ -1,9 +1,9 @@
 package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.dtos.factory.UserFactory;
-import de.fh.rosenheim.aline.model.dtos.request.AuthenticationRequest;
-import de.fh.rosenheim.aline.model.dtos.response.AuthenticationResponse;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequest;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationResponse;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;

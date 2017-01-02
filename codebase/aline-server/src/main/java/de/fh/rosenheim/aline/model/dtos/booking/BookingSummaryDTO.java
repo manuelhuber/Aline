@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.model.dtos.response;
+package de.fh.rosenheim.aline.model.dtos.booking;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BookingSummaryDto {
+public class BookingSummaryDTO {
 
     int year;
     @ApiModelProperty(position = 1)

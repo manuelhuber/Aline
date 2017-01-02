@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.unit.security.service;
 
-import de.fh.rosenheim.aline.model.dtos.request.AuthenticationRequest;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;

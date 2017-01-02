@@ -1,9 +1,10 @@
-package de.fh.rosenheim.aline.model.dtos.factory;
+package de.fh.rosenheim.aline.model.dtos.user;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.dtos.response.BookingSummaryDto;
-import de.fh.rosenheim.aline.model.dtos.response.UserBookingDTO;
-import de.fh.rosenheim.aline.model.dtos.response.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.booking.BookingFactory;
+import de.fh.rosenheim.aline.model.dtos.booking.BookingSummaryDTO;
+import de.fh.rosenheim.aline.model.dtos.booking.UserBookingDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -33,10 +34,10 @@ public class UserFactory {
         Map<Integer, List<UserBookingDTO>> sortedBookings =
                 bookingDTOs.stream().collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
 
-        List<BookingSummaryDto> bookings = new ArrayList<>();
+        List<BookingSummaryDTO> bookings = new ArrayList<>();
 
         sortedBookings.forEach((year, userBookingDTOS) -> {
-            BookingSummaryDto summary = new BookingSummaryDto();
+            BookingSummaryDTO summary = new BookingSummaryDTO();
             summary.setYear(year);
             summary.setBookings(userBookingDTOS);
             summary.setTotalSpending(userBookingDTOS.stream().mapToInt(UserBookingDTO::getSeminarCost).sum());

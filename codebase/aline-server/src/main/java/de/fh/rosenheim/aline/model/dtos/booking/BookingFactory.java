@@ -1,7 +1,7 @@
-package de.fh.rosenheim.aline.model.dtos.factory;
+package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.dtos.response.UserBookingDTO;
+import de.fh.rosenheim.aline.model.dtos.booking.UserBookingDTO;
 
 import java.util.Arrays;
 import java.util.Calendar;

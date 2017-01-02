@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.model.dtos.request;
+package de.fh.rosenheim.aline.model.dtos.booking;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.fh.rosenheim.aline.model.base.ModelBase;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class BookingRequest extends ModelBase {
+public class BookingRequestDTO extends ModelBase {
 
     @NotNull
     @JsonProperty(value = "seminarId", required = true)

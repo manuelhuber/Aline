@@ -1,9 +1,9 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.controller.util.SwaggerTexts;
-import de.fh.rosenheim.aline.model.dtos.factory.UserFactory;
-import de.fh.rosenheim.aline.model.dtos.response.ErrorResponse;
-import de.fh.rosenheim.aline.model.dtos.response.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.service.UserService;
 import de.fh.rosenheim.aline.util.ControllerUtil;

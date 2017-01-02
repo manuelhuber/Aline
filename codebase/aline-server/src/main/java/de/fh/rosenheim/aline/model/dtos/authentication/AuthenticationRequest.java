@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.model.dtos.request;
+package de.fh.rosenheim.aline.model.dtos.authentication;
 
 import de.fh.rosenheim.aline.model.base.ModelBase;
 import io.swagger.annotations.ApiModelProperty;

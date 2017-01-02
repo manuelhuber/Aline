@@ -1,8 +1,8 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.dtos.request.BookingRequest;
-import de.fh.rosenheim.aline.model.dtos.response.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.booking.BookingRequestDTO;
+import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
 import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.service.BookingService;
@@ -44,7 +44,7 @@ public class BookingsController {
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
-    public Booking book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequest bookingRequest)
+    public Booking book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequestDTO bookingRequest)
             throws BookingException {
         String requestName = bookingRequest.getUserName();
         String name = requestName != null && requestName.length() > 0
