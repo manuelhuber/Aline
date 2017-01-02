@@ -3,7 +3,9 @@ package de.fh.rosenheim.aline.controller.rest;
 import de.fh.rosenheim.aline.controller.util.SwaggerTexts;
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.json.factory.UserFactory;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
+import de.fh.rosenheim.aline.model.json.response.UserDTO;
 import de.fh.rosenheim.aline.service.UserService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
 import io.swagger.annotations.ApiOperation;
@@ -35,11 +37,11 @@ public class UsersController {
     @RequestMapping(method = RequestMethod.GET)
     @PostAuthorize("@securityService.canAccessUserData(principal, returnObject)")
     @ApiOperation(value = "get user info", notes = SwaggerTexts.GET_USER_DATA)
-    public User user(
+    public UserDTO user(
             @ApiParam(value = SwaggerTexts.SENSITIVE_DATA) @RequestParam(required = false, name = "name") String queryName,
             HttpServletRequest request) throws NoObjectForIdException {
         String name = queryName != null ? queryName : controllerUtil.getUsername(request);
-        return userService.getUserByName(name);
+        return UserFactory.toUserDTO(userService.getUserByName(name));
     }
 
     @RequestMapping(value = "${route.user.all}", method = RequestMethod.GET)

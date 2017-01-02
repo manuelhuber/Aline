@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.factory.SecurityUserFactory;
+import de.fh.rosenheim.aline.model.security.SecurityUserFactory;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

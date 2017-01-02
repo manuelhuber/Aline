@@ -1,0 +1,43 @@
+package de.fh.rosenheim.aline.model.json.factory;
+
+import de.fh.rosenheim.aline.model.domain.User;
+import de.fh.rosenheim.aline.model.json.response.BookingSummaryDto;
+import de.fh.rosenheim.aline.model.json.response.UserBookingDTO;
+import de.fh.rosenheim.aline.model.json.response.UserDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class UserFactory {
+
+    static public UserDTO toUserDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setUsername(user.getUsername());
+        dto.setAuthorities(user.getAuthorities());
+        dto.setDivision(user.getDivision());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+
+        List<UserBookingDTO> bookingDTOs =
+                user.getBookings().stream().map(BookingFactory::toUserBookingDTO).collect(Collectors.toList());
+
+        Map<Integer, List<UserBookingDTO>> sortedBookings =
+                bookingDTOs.stream().collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
+
+        List<BookingSummaryDto> bookings = new ArrayList<>();
+
+        sortedBookings.forEach((year, userBookingDTOS) -> {
+            BookingSummaryDto summary = new BookingSummaryDto();
+            summary.setYear(year);
+            summary.setBookings(userBookingDTOS);
+            summary.setTotalSpending(userBookingDTOS.stream().mapToInt(UserBookingDTO::getSeminarCost).sum());
+            bookings.add(summary);
+        });
+
+        dto.setBookings(bookings);
+
+        return dto;
+    }
+}

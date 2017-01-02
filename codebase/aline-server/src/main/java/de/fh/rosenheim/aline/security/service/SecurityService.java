@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.domain.User;
+import de.fh.rosenheim.aline.model.json.response.UserDTO;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,9 +27,9 @@ public class SecurityService {
      * Division Heads can access data of everybody in their division
      * Front Office can access everything
      */
-    public boolean canAccessUserData(SecurityUser principal, User data) {
+    public boolean canAccessUserData(SecurityUser principal, UserDTO data) {
         return principal != null && data != null &&
-                (isDivisionHeadForUser(principal, data) || isSelf(principal, data) || isFrontOffice(principal));
+                (isHeadOfDivision(principal, data.getDivision()) || isSelf(principal, data.getUsername()) || isFrontOffice(principal));
     }
 
     /**
@@ -49,7 +49,7 @@ public class SecurityService {
     public boolean canCurrentUserChangeBookingStatus(Booking data) {
         SecurityUser principal = getCurrentUser();
         return principal != null && data != null &&
-                (isDivisionHeadForUser(principal, data.getUser()) || isFrontOffice(principal));
+                (isHeadOfDivision(principal, data.getUser().getDivision()) || isFrontOffice(principal));
     }
 
     /**
@@ -59,7 +59,7 @@ public class SecurityService {
     public boolean canCurrentUserDeleteBooking(Booking data) {
         SecurityUser principal = getCurrentUser();
         return principal != null && data != null &&
-                (isSelf(principal, data.getUser()) || isFrontOffice(principal));
+                (isSelf(principal, data.getUser().getUsername()) || isFrontOffice(principal));
     }
 
     /**
@@ -76,16 +76,16 @@ public class SecurityService {
     /**
      * Is the given principal the division head of the given user
      */
-    public boolean isDivisionHeadForUser(SecurityUser principal, User data) {
+    public boolean isHeadOfDivision(SecurityUser principal, String division) {
         return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
-                principal.getDivision().equals(data.getDivision());
+                principal.getDivision().equals(division);
     }
 
     /**
      * Does the user data belong to the given principal
      */
-    public boolean isSelf(SecurityUser principal, User data) {
-        return principal.getUsername().equals(data.getUsername());
+    public boolean isSelf(SecurityUser principal, String userName) {
+        return principal.getUsername().equals(userName);
     }
 
     /**

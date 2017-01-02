@@ -1,7 +1,6 @@
-package de.fh.rosenheim.aline.model.factory;
+package de.fh.rosenheim.aline.model.security;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.security.SecurityUser;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 public class SecurityUserFactory {
