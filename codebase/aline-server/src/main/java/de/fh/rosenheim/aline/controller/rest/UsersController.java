@@ -1,7 +1,6 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.controller.util.SwaggerTexts;
-import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.json.factory.UserFactory;
 import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * All HTTP endpoints related to user
@@ -46,21 +47,27 @@ public class UsersController {
 
     @RequestMapping(value = "${route.user.all}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public List<String> getAllUsernames() {
+    public List<String> getAllUserNames() {
         return userService.getAllUsernames();
     }
 
     @RequestMapping(value = "${route.user.division}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.canGetDivisionUsers(principal, #queryDivision)")
     @ApiOperation(value = "get all users for division", notes = SwaggerTexts.GET_DIVISION_USERS)
-    public Iterable<User> getAllUsersForDivision(
+    public List<UserDTO> getAllUsersForDivision(
             @ApiParam(value = SwaggerTexts.SENSITIVE_DATA) @RequestParam(name = "division", required = false) String queryDivision,
             HttpServletRequest request) throws NoObjectForIdException {
+
         String division = queryDivision;
+
         if (division == null || division.length() < 1) {
             division = userService.getUserByName(controllerUtil.getUsername(request)).getDivision();
         }
-        return userService.getUsersForDivision(division);
+
+        return StreamSupport
+                .stream(userService.getUsersForDivision(division).spliterator(), false)
+                .map(UserFactory::toUserDTO)
+                .collect(Collectors.toList());
     }
 
     /**

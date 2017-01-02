@@ -4,6 +4,8 @@ import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.json.response.BookingSummaryDto;
 import de.fh.rosenheim.aline.model.json.response.UserBookingDTO;
 import de.fh.rosenheim.aline.model.json.response.UserDTO;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +16,13 @@ public class UserFactory {
 
     static public UserDTO toUserDTO(User user) {
         UserDTO dto = new UserDTO();
-        dto.setUsername(user.getUsername());
-        dto.setAuthorities(user.getAuthorities());
+        dto.setUserName(user.getUsername());
+        dto.setAuthorities(
+                AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthorities())
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())
+        );
         dto.setDivision(user.getDivision());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDTO {
 
-    String username;
+    String userName;
 
     @ApiModelProperty(position = 1)
     String firstName;
@@ -22,7 +22,7 @@ public class UserDTO {
     String division;
 
     @ApiModelProperty(position = 4)
-    String authorities;
+    List<String> authorities;
 
     @ApiModelProperty(position = 5)
     List<BookingSummaryDto> bookings;

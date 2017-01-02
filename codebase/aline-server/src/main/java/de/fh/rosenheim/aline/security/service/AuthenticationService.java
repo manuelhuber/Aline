@@ -3,6 +3,7 @@ package de.fh.rosenheim.aline.security.service;
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
+import de.fh.rosenheim.aline.model.json.factory.UserFactory;
 import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
 import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
@@ -58,7 +59,10 @@ public class AuthenticationService {
         // Generate token
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         String token = this.tokenUtils.generateToken(userDetails);
-        return new AuthenticationResponse(token, userService.getUserByName(username));
+        return new AuthenticationResponse(
+                token,
+                UserFactory.toUserDTO(userService.getUserByName(username))
+        );
     }
 
     /**
@@ -80,7 +84,10 @@ public class AuthenticationService {
 
         if (this.tokenUtils.canTokenBeRefreshed(token, user)) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return new AuthenticationResponse(refreshedToken, userService.getUserByName(user.getUsername()));
+            return new AuthenticationResponse(
+                    refreshedToken,
+                    UserFactory.toUserDTO(userService.getUserByName(user.getUsername()))
+            );
         } else throw invalidToken();
     }
 

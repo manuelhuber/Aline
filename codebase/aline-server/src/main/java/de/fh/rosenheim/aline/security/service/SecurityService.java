@@ -29,7 +29,7 @@ public class SecurityService {
      */
     public boolean canAccessUserData(SecurityUser principal, UserDTO data) {
         return principal != null && data != null &&
-                (isHeadOfDivision(principal, data.getDivision()) || isSelf(principal, data.getUsername()) || isFrontOffice(principal));
+                (isHeadOfDivision(principal, data.getDivision()) || isSelf(principal, data.getUserName()) || isFrontOffice(principal));
     }
 
     /**
