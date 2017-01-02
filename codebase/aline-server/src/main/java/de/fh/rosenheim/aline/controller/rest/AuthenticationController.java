@@ -1,8 +1,8 @@
 package de.fh.rosenheim.aline.controller.rest;
 
+import de.fh.rosenheim.aline.model.dtos.request.AuthenticationRequest;
+import de.fh.rosenheim.aline.model.dtos.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
-import de.fh.rosenheim.aline.model.json.request.AuthenticationRequest;
-import de.fh.rosenheim.aline.model.json.response.AuthenticationResponse;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
 import org.springframework.http.ResponseEntity;

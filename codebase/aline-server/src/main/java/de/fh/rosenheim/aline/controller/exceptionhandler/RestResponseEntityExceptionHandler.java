@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.controller.exceptionhandler;
 
-import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.response.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

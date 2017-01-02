@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.model.json.response;
+package de.fh.rosenheim.aline.model.dtos.response;
 
 import de.fh.rosenheim.aline.model.domain.BookingStatus;
 import io.swagger.annotations.ApiModelProperty;

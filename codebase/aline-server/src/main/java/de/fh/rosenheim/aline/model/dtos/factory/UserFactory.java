@@ -1,9 +1,9 @@
-package de.fh.rosenheim.aline.model.json.factory;
+package de.fh.rosenheim.aline.model.dtos.factory;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.json.response.BookingSummaryDto;
-import de.fh.rosenheim.aline.model.json.response.UserBookingDTO;
-import de.fh.rosenheim.aline.model.json.response.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.response.BookingSummaryDto;
+import de.fh.rosenheim.aline.model.dtos.response.UserBookingDTO;
+import de.fh.rosenheim.aline.model.dtos.response.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 

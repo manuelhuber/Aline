@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.json.response.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.response.UserDTO;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.Authorities;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

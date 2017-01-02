@@ -1,10 +1,10 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.dtos.request.BookingRequest;
+import de.fh.rosenheim.aline.model.dtos.response.ErrorResponse;
 import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
-import de.fh.rosenheim.aline.model.json.request.BookingRequest;
-import de.fh.rosenheim.aline.model.json.response.ErrorResponse;
 import de.fh.rosenheim.aline.service.BookingService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
 import io.swagger.annotations.ApiOperation;
