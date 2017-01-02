@@ -1,12 +1,9 @@
 package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
-import de.fh.rosenheim.aline.model.dtos.booking.UserBookingDTO;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Manuel on 02.01.2017.
@@ -31,5 +28,24 @@ public class BookingFactory {
         userBookingDTO.setSeminarYear(cal.get(Calendar.YEAR));
 
         return userBookingDTO;
+    }
+
+    public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
+        List<UserBookingDTO> bookingDTOs =
+                bookings.stream().map(BookingFactory::toUserBookingDTO).collect(Collectors.toList());
+
+        Map<Integer, List<UserBookingDTO>> sortedBookings =
+                bookingDTOs.stream().collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
+
+        List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
+
+        sortedBookings.forEach((year, userBookingDTOS) -> {
+            BookingSummaryDTO summary = new BookingSummaryDTO();
+            summary.setYear(year);
+            summary.setBookings(userBookingDTOS);
+            summary.setTotalSpending(userBookingDTOS.stream().mapToInt(UserBookingDTO::getSeminarCost).sum());
+            bookingSummaries.add(summary);
+        });
+        return bookingSummaries;
     }
 }
