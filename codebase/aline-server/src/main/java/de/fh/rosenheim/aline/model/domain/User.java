@@ -1,8 +1,5 @@
 package de.fh.rosenheim.aline.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.fh.rosenheim.aline.model.base.DomainBase;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -17,9 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "users")
-@Getter
-@Setter
 @ToString(exclude = {"bookings"})
 @EqualsAndHashCode(callSuper = true, of = {"username"})
 @Builder()
@@ -27,7 +23,6 @@ import java.util.Set;
 @NoArgsConstructor
 // Needed for builder
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class User extends DomainBase {
 
     private static final long serialVersionUID = 2353528370345499815L;
@@ -36,12 +31,9 @@ public class User extends DomainBase {
     private String username;
     private String firstName;
     private String lastName;
-    @Getter(onMethod = @__(@JsonIgnore))
     private String password;
     private String division;
-    @Getter(onMethod = @__(@JsonIgnore))
     private Date lastPasswordReset;
-    @Getter(onMethod = @__(@JsonIgnore))
     private Date lastLogout;
 
     /**
