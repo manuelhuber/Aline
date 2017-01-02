@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * A DTO that's specific to a user (an therefore does not contain info about users)
+ */
 @Data
 public class UserBookingDTO {
 

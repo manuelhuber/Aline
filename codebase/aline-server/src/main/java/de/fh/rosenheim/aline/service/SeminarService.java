@@ -3,7 +3,8 @@ package de.fh.rosenheim.aline.service;
 import com.google.common.collect.Lists;
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
-import de.fh.rosenheim.aline.model.domain.SeminarBasics;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.repository.CategoryRepository;
@@ -86,8 +87,8 @@ public class SeminarService {
      * Creates a new seminar
      * Will always create a new seminar, even if the given seminar already has an ID
      */
-    public Seminar createNewSeminar(SeminarBasics basics) throws UnkownCategoryException {
-        Seminar seminar = new Seminar(basics);
+    public Seminar createNewSeminar(SeminarBasicsDTO basics) throws UnkownCategoryException {
+        Seminar seminar = SeminarFactory.createSeminar(basics);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
         log.info(currentUser() + "created a new seminar with id=" + seminar.getId() + " successfully.");
@@ -98,9 +99,9 @@ public class SeminarService {
      * Updates the seminar with the given ID with the given data
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
-    public Seminar updateSeminar(long id, SeminarBasics newSeminar) throws NoObjectForIdException, UnkownCategoryException {
+    public Seminar updateSeminar(long id, SeminarBasicsDTO newSeminarData) throws NoObjectForIdException, UnkownCategoryException {
         Seminar seminar = getSeminar(id);
-        seminar.copyBasics(newSeminar);
+        SeminarFactory.updateSeminar(seminar, newSeminarData);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
         log.info(currentUser() + "updated seminar with id=" + seminar.getId() + " successfully.");

@@ -121,6 +121,7 @@ public class BookingServiceTest {
     public void bookTwicePreviousStatusDenied() throws NoObjectForIdException, BookingException {
         Seminar seminar = new Seminar();
         seminar.setBookable(true);
+        seminar.setMaximumParticipants(10);
         given(seminarService.getSeminar(1)).willReturn(seminar);
 
         User user = new User();
@@ -137,6 +138,7 @@ public class BookingServiceTest {
     public void bookingSeminar() throws NoObjectForIdException, BookingException {
         Seminar seminar = new Seminar();
         seminar.setBookable(true);
+        seminar.setMaximumParticipants(10);
         given(seminarService.getSeminar(1)).willReturn(seminar);
 
         User user = new User();
@@ -153,6 +155,7 @@ public class BookingServiceTest {
     public void bookingSeminarAsFrontOffice() throws NoObjectForIdException, BookingException {
         Seminar seminar = new Seminar();
         seminar.setBookable(true);
+        seminar.setMaximumParticipants(10);
         given(seminarService.getSeminar(1)).willReturn(seminar);
 
         User user = new User();
@@ -171,6 +174,7 @@ public class BookingServiceTest {
     public void bookingSeminarForTopDog() throws NoObjectForIdException, BookingException {
         Seminar seminar = new Seminar();
         seminar.setBookable(true);
+        seminar.setMaximumParticipants(10);
         given(seminarService.getSeminar(1)).willReturn(seminar);
 
         User user = new User();

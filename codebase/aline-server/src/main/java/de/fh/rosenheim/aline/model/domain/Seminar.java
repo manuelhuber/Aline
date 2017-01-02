@@ -1,7 +1,5 @@
 package de.fh.rosenheim.aline.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +18,10 @@ import java.util.Set;
 @Table(name = "seminars")
 @Getter
 @ToString(exclude = {"bookings"})
-@EqualsAndHashCode(callSuper = true, of = {"id"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Seminar extends SeminarBasics {
+@EqualsAndHashCode(of = {"id"})
+public class Seminar {
 
     private static final long serialVersionUID = 2353528359632158741L;
-    @CreationTimestamp
-    private Date created;
-    @UpdateTimestamp
-    private Date updated;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,15 +30,69 @@ public class Seminar extends SeminarBasics {
 
     @OneToMany(mappedBy = "seminar", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Setter
     private Set<Booking> bookings = new HashSet<>();
 
-    public Seminar() {
-        super();
-    }
+    @Setter
+    private String name;
 
-    public Seminar(SeminarBasics basics) {
-        super();
-        copyBasics(basics);
-    }
+    @Column(length = 100000)
+    @Setter
+    private String description;
+
+    @Column(length = 100000)
+    @Setter
+    private String agenda;
+
+    @Setter
+    private boolean bookable;
+
+    // This is just a string and not a Category object for simplicity sake, i.e. while (de-)serializing.
+    // We check the validity of the string in the SeminarService when creating & updating a seminar
+    @Setter
+    private String category;
+
+    // The employees are grouped in 5 levels, depending on skill in their field
+    @Setter
+    private int[] targetLevel;
+
+    @Setter
+    private String requirements;
+
+    @Setter
+    private String trainer;
+
+    @Setter
+    private String contactPerson;
+
+    @Setter
+    private String trainingType;
+
+    @Setter
+    private int maximumParticipants;
+
+    @Setter
+    private int costsPerParticipant;
+
+    /**
+     * A description on how employees can book the time as working hours
+     */
+    @Setter
+    private String bookingTimelog;
+
+    @Setter
+    private String goal;
+
+    @Setter
+    private String duration;
+
+    @Setter
+    private String cycle;
+
+    @Setter
+    private Date[] dates;
+
+    @CreationTimestamp
+    private Date created;
+    @UpdateTimestamp
+    private Date updated;
 }

@@ -2,7 +2,7 @@ package de.fh.rosenheim.aline.unit.service;
 
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
-import de.fh.rosenheim.aline.model.domain.SeminarBasics;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
@@ -165,13 +165,13 @@ public class SeminarServiceTest {
     public void createNewSeminarWithInvalidCategory() throws UnkownCategoryException {
         given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
         exception.expect(UnkownCategoryException.class);
-        seminarService.createNewSeminar(new SeminarBasics());
+        seminarService.createNewSeminar(new SeminarBasicsDTO());
         verify(seminarRepository, times(0)).save(any(Seminar.class));
     }
 
     @Test
     public void createNewSeminar() throws UnkownCategoryException {
-        SeminarBasics newSeminar = new SeminarBasics();
+        SeminarBasicsDTO newSeminar = new SeminarBasicsDTO();
         newSeminar.setName("foo");
         newSeminar.setDescription("bar");
         newSeminar.setCategory("Hello World");
@@ -187,7 +187,7 @@ public class SeminarServiceTest {
 
     @Test
     public void updateNonExistingSeminar() throws NoObjectForIdException, UnkownCategoryException {
-        SeminarBasics seminarUpdate = new SeminarBasics();
+        SeminarBasicsDTO seminarUpdate = new SeminarBasicsDTO();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");
 
@@ -208,13 +208,13 @@ public class SeminarServiceTest {
         given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
 
         exception.expect(UnkownCategoryException.class);
-        seminarService.updateSeminar(10, new SeminarBasics());
+        seminarService.updateSeminar(10, new SeminarBasicsDTO());
         verify(seminarRepository, times(0)).save(any(Seminar.class));
     }
 
     @Test
     public void updateSeminar() throws NoObjectForIdException, UnkownCategoryException {
-        SeminarBasics seminarUpdate = new SeminarBasics();
+        SeminarBasicsDTO seminarUpdate = new SeminarBasicsDTO();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");
         seminarUpdate.setCategory("Hello World");

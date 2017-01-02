@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 
 import java.util.*;
@@ -18,7 +19,7 @@ public class BookingFactory {
         dto.setUpdated(booking.getUpdated());
         dto.setStatus(booking.getStatus());
 
-        dto.setSeminar(booking.getSeminar());
+        dto.setSeminar(SeminarFactory.toSeminarDTO(booking.getSeminar()));
 
         dto.setUser(UserFactory.toUserDTO(booking.getUser()));
 

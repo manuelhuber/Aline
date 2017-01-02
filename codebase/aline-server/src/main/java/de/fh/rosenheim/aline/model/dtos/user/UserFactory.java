@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 public class UserFactory {
 
     static public UserDTO toUserDTO(User user) {
+        if (user == null) {
+            return null;
+        }
         UserDTO dto = new UserDTO();
         dto.setUserName(user.getUsername());
         dto.setAuthorities(

@@ -2,8 +2,10 @@ package de.fh.rosenheim.aline.controller.rest;
 
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
-import de.fh.rosenheim.aline.model.domain.SeminarBasics;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarDTO;
+import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.service.SeminarService;
@@ -13,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * All HTTP endpoints related to seminars
@@ -31,12 +35,10 @@ public class SeminarsController {
 
     /**
      * Get all seminars
-     *
-     * @return a Iterable over all Seminars (which will be serialized as array in JSON)
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Seminar> getAllSeminars() {
-        return seminarService.getAllSeminars();
+    public List<SeminarDTO> getAllSeminars() {
+        return toDto(seminarService.getAllSeminars());
     }
 
     /**
@@ -45,8 +47,8 @@ public class SeminarsController {
      * @return a Iterable over all Seminars (which will be serialized as array in JSON)
      */
     @RequestMapping(value = "${route.seminar.past}", method = RequestMethod.GET)
-    public Iterable<Seminar> getPastSeminars() {
-        return seminarService.getPastSeminars();
+    public List<SeminarDTO> getPastSeminars() {
+        return toDto(seminarService.getPastSeminars());
     }
 
     /**
@@ -55,8 +57,8 @@ public class SeminarsController {
      * @return a Iterable over all Seminars (which will be serialized as array in JSON)
      */
     @RequestMapping(value = "${route.seminar.current}", method = RequestMethod.GET)
-    public Iterable<Seminar> getCurrentSeminars() {
-        return seminarService.getCurrentSeminars();
+    public List<SeminarDTO> getCurrentSeminars() {
+        return toDto(seminarService.getCurrentSeminars());
     }
 
     /**
@@ -69,8 +71,11 @@ public class SeminarsController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public ResponseEntity<Seminar> addSeminar(@RequestBody SeminarBasics seminar) throws UnkownCategoryException {
-        return new ResponseEntity<>(seminarService.createNewSeminar(seminar), HttpStatus.CREATED);
+    public ResponseEntity<SeminarDTO> addSeminar(@RequestBody SeminarBasicsDTO seminar) throws UnkownCategoryException {
+        return new ResponseEntity<>(
+                SeminarFactory.toSeminarDTO(seminarService.createNewSeminar(seminar)),
+                HttpStatus.CREATED
+        );
     }
 
     /**
@@ -81,8 +86,8 @@ public class SeminarsController {
      * @throws NoObjectForIdException if there is no seminar for the given ID
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public Seminar getSeminarById(@PathVariable long id) throws NoObjectForIdException {
-        return seminarService.getSeminar(id);
+    public SeminarDTO getSeminarById(@PathVariable long id) throws NoObjectForIdException {
+        return SeminarFactory.toSeminarDTO(seminarService.getSeminar(id));
     }
 
     /**
@@ -98,16 +103,15 @@ public class SeminarsController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public Seminar updateSeminar(@PathVariable long id, @RequestBody SeminarBasics seminar)
+    public SeminarDTO updateSeminar(@PathVariable long id, @RequestBody SeminarBasicsDTO seminar)
             throws NoObjectForIdException, UnkownCategoryException {
-        return seminarService.updateSeminar(id, seminar);
+        return SeminarFactory.toSeminarDTO(seminarService.updateSeminar(id, seminar));
     }
 
     /**
      * Delete a single seminar
      *
      * @param id of the seminar that should be deleted
-     * @return
      * @throws NoObjectForIdException if there is no seminar for the given ID
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -172,5 +176,12 @@ public class SeminarsController {
                 new ErrorResponse(
                         "You entered an invalid category. Allowed values are: " + ex.getAllowedCategories().toString()),
                 HttpStatus.NOT_FOUND);
+    }
+
+    private List<SeminarDTO> toDto(Iterable<Seminar> seminars) {
+        return StreamSupport
+                .stream(seminars.spliterator(), false)
+                .map(SeminarFactory::toSeminarDTO)
+                .collect(Collectors.toList());
     }
 }
