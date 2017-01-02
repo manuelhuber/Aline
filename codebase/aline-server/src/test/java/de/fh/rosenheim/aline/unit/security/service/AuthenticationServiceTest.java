@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.unit.security.service;
 
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequest;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;
@@ -54,8 +54,8 @@ public class AuthenticationServiceTest {
         authenticationService.loginUser(generateRequest());
     }
 
-    private AuthenticationRequest generateRequest() {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+    private AuthenticationRequestDTO generateRequest() {
+        AuthenticationRequestDTO authenticationRequest = new AuthenticationRequestDTO();
         authenticationRequest.setUsername(USERNAME);
         authenticationRequest.setPassword(PASSWORD);
         return authenticationRequest;

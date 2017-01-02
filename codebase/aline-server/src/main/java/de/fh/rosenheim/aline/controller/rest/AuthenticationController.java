@@ -1,7 +1,7 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequest;
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationResponse;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.security.service.AuthenticationService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
@@ -37,7 +37,7 @@ public class AuthenticationController {
      * @return A token & all authorities of the user
      */
     @RequestMapping(value = "${route.authentication.login}", method = RequestMethod.POST)
-    public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) throws NoObjectForIdException {
+    public AuthenticationDTO login(@RequestBody AuthenticationRequestDTO authenticationRequest) throws NoObjectForIdException {
         return authenticationService.loginUser(authenticationRequest);
     }
 
@@ -47,7 +47,7 @@ public class AuthenticationController {
      * @return A token & all authorities of the user
      */
     @RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
-    public AuthenticationResponse authenticationRequest(HttpServletRequest request) throws NoObjectForIdException {
+    public AuthenticationDTO authenticationRequest(HttpServletRequest request) throws NoObjectForIdException {
         return authenticationService.refreshToken(controllerUtil.getToken(request));
     }
 

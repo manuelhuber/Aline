@@ -2,8 +2,8 @@ package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequest;
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationResponse;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationDTO;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
@@ -45,7 +45,7 @@ public class AuthenticationService {
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException if login data is invalid
      */
-    public AuthenticationResponse loginUser(AuthenticationRequest request) throws AuthenticationException, NoObjectForIdException {
+    public AuthenticationDTO loginUser(AuthenticationRequestDTO request) throws AuthenticationException, NoObjectForIdException {
         String username = request.getUsername();
         // Perform authentication
         Authentication authentication = this.authenticationManager.authenticate(
@@ -59,7 +59,7 @@ public class AuthenticationService {
         // Generate token
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         String token = this.tokenUtils.generateToken(userDetails);
-        return new AuthenticationResponse(
+        return new AuthenticationDTO(
                 token,
                 UserFactory.toUserDTO(userService.getUserByName(username))
         );
@@ -72,7 +72,7 @@ public class AuthenticationService {
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException If the token is no longer valid
      */
-    public AuthenticationResponse refreshToken(String token) throws AuthenticationException, NoObjectForIdException {
+    public AuthenticationDTO refreshToken(String token) throws AuthenticationException, NoObjectForIdException {
         SecurityUser user;
 
         try {
@@ -84,7 +84,7 @@ public class AuthenticationService {
 
         if (this.tokenUtils.canTokenBeRefreshed(token, user)) {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return new AuthenticationResponse(
+            return new AuthenticationDTO(
                     refreshedToken,
                     UserFactory.toUserDTO(userService.getUserByName(user.getUsername()))
             );

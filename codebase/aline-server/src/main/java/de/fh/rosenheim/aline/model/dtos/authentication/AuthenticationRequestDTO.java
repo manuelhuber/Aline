@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuthenticationRequest extends ModelBase {
+public class AuthenticationRequestDTO extends ModelBase {
 
     private static final long serialVersionUID = 6624726180748515507L;
     @ApiModelProperty(required = true)
