@@ -114,7 +114,7 @@ export class EmployeeList extends React.Component {
     }
 
     renderEmployee(currentEmployee) {
-        return <EmployeeListItem employee={currentEmployee}
+        return <EmployeeListItem employee={currentEmployee} router={this.props.router}
                                 key={currentEmployee.id}/>;
     }
 }

@@ -2,6 +2,7 @@
  * Created by franziskah on 02.11.16.
  */
 import StorageService from "./StorageService";
+import Util from "./Util";
 
 module.exports = {
     /**
@@ -11,7 +12,7 @@ module.exports = {
     bookSeminar(id){
         let token = StorageService.getUserToken();
         let userName = StorageService.getCurrentUser().userName;
-        return fetch('http://localhost:8008/api/bookings', {
+        return fetch(Util.getBasicBookingPath(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +23,24 @@ module.exports = {
                 userName: userName
             })
         }).then(checkStatus).then(parseJson)
-    }
+    },
+
+    /**
+     *
+     * @param bookingId the id of the booking
+     * @returns {Promise.<TResult>}
+     */
+    grantSingleBooking(bookingId){
+        let token = StorageService.getUserToken();
+        return fetch(Util.getBasicBookingPath() + '/' + bookingId + '/grant', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        }).then(Util.parseJson)
+    },
 };
 
 /**

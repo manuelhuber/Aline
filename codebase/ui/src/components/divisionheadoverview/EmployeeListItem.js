@@ -6,35 +6,39 @@ import {Link} from 'react-router'
 import Paper from 'material-ui/Paper';
 import {Popover} from 'material-ui/Popover';
 import FlatButton from 'material-ui/FlatButton';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import BookingService from '../../services/BookingService';
 
 export class EmployeeListItem extends React.Component {
     constructor(props) {
         super(props);
-        this.semList = this.semList(this);
-        this.openSeminarList = this.openSeminarList.bind(this);
-        this.closeSeminarList = this.closeSeminarList.bind(this);
+        this.showBookingList = this.showBookingList.bind(this);
+        this.closeBookingList = this.closeBookingList.bind(this);
+        this.navigateToProfile = this.navigateToProfile.bind(this);
+        this.renderSingleBooking = this.renderSingleBooking.bind(this);
+        this.confirmSingleBooking = this.confirmSingleBooking.bind(this);
         this.state = {
-            semListOpen: false
-        }
-
+            bookingListOpen: false
+        };
+        //todo nur unbestätigte Buchungen werden im Popup gezeigt
+        //todo Änderungen von Manu einpflegen
     }
 
-    closeSeminarList() {
+    closeBookingList() {
         this.setState({
-            semListOpen: false
+            bookingListOpen: false
         })
     }
 
-    openSeminarList(event) {
+    showBookingList(event) {
         this.setState({
-            semListOpen: true,
+            bookingListOpen: true,
+            anchorEl: event.currentTarget
         });
     }
 
-    /**
-     * todo button die funktion aufruft einfügen
-     */
-    navigateToProfile(){
+    navigateToProfile() {
         this.props.router.replace(
             {
                 pathname: '/profile',
@@ -43,26 +47,50 @@ export class EmployeeListItem extends React.Component {
         )
     }
 
-    render() {
-        return (
-                <Paper className="employee" zDepth={1}>
-                    <div className="name">
-                        <i className="material-icons md-light">face</i>
-                        {this.props.employee.firstName}, {this.props.employee.lastName}
-                    </div>
-                    <div className="seminar-proof">
-                        <FlatButton label="Seminare bestätigen" onClick={this.openSeminarList} onMouseLeave={this.closeSeminarList} id="seminar-lable"/>
-                        <Popover open={this.state.semListOpen}>
-                            <h3>Test</h3>
-                        </Popover>
-                    </div>
-                </Paper>
+    confirmSingleBooking(bookingId) {
+        var response = BookingService.grantSingleBooking(bookingId);
+        response.then(
+            result => {
+                this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
+            },
+            failureResult => {
+                this.props.router.replace('/error');
+            }
         );
     }
-    
-    semList(seminar) {
-       return seminar.props.employee.bookings.map(function (semina) {
-           return <p>{semina.seminarId}</p>;
-       })
+
+    renderSingleBooking(booking) {
+        return (
+            <MenuItem primaryText={(new Date(booking.created).toLocaleDateString()) + ' für ' + booking.seminarId}
+                      onClick={()=>{this.confirmSingleBooking(booking.id)}}
+                      title="Nur dieses Seminar bestätigen"/>
+        )
+    }
+
+    render() {
+        return (
+            <Paper className="employee" zDepth={1}>
+                <div className="name" onClick={this.navigateToProfile}
+                     title={'Zum Profil von ' + this.props.employee.firstName + ' ' + this.props.employee.lastName + ' navigieren'}>
+                    <i className="material-icons md-light">face</i>
+                    {this.props.employee.firstName}, {this.props.employee.lastName}
+                </div>
+                <div className="seminar-proof">
+                    <FlatButton label="Buchungen bestätigen" onMouseOver={this.showBookingList}
+                                disabled={this.props.employee.bookings.length < 1}
+                                title="Alle offenen Buchungen bestätigen" id="seminar-lable"/>
+                    {(this.props.employee.bookings.length > 0) &&
+                    <Popover open={this.state.bookingListOpen} anchorEl={this.state.anchorEl}
+                             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                             targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                             onRequestClose={this.closeBookingList}>
+                        <Menu>
+                            {this.props.employee.bookings.map(this.renderSingleBooking)}
+                        </Menu>
+                    </Popover>
+                    }
+                </div>
+            </Paper>
+        );
     }
 }

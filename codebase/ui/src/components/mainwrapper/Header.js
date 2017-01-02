@@ -5,7 +5,7 @@ import React from 'react';
 import {Link, hashHistory} from 'react-router'
 import AuthService from '../../services/AuthService';
 import StorageService from '../../services/StorageService';
-import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
+import {Popover} from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -32,7 +32,7 @@ export class Header extends React.Component {
     openMenu(event) {
         this.setState({
             profileOpen: true,
-            anchorEl: event.currentTarget,
+            anchorEl: event.currentTarget
         });
     }
 

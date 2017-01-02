@@ -24,6 +24,13 @@ module.exports = {
     },
 
     /**
+     * @returns {string} the basic booking path of the REST api
+     */
+    getBasicBookingPath(){
+        return BASIC_PATH + '/bookings'
+    },
+
+    /**
      * @param response the response to parse
      * @returns {*} the response, parsed to json
      */

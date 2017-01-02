@@ -1,21 +1,19 @@
 $employee-background: #D7EB05;
 $button-color: #EB0564;
-.employee-names{
-  margin-top:10px;
+.employee-names {
+  margin-top: 10px;
   margin-left: 15px;
   margin-right: 15px;
   width: 600px;
   position: fixed;
   left: 50%;
   transform: translate(-50%);
-  .employee{
-    height:50px;
-    margin-bottom: 5px;
-
-
+  .employee {
+    height: 50px;
     .name {
+      cursor: pointer;
       display: inline-block;
-      float:left;
+      float: left;
       position: relative;
       top: 50%;
       transform: translate(0%, -50%);
@@ -28,17 +26,17 @@ $button-color: #EB0564;
       }
     }
     .seminar-proof {
-      float:right;
-      width:200px;
+      float: right;
+      width: 200px;
       margin-right: 50px;
       align-self: center;
       #seminar-lable {
         position: absolute;
-        top:50%;
+        top: 50%;
       }
-
-
-
+    }
   }
-
-}}
+  .employee + .employee {
+    margin-top: 5px;
+  }
+}
