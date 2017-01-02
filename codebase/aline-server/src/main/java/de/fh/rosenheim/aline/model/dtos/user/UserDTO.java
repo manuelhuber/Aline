@@ -13,22 +13,22 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDTO {
 
-    @JsonView(View.UserWithoutBooking.class)
+    @JsonView(View.UserWithoutBookingView.class)
     String userName;
 
-    @JsonView(View.UserWithoutBooking.class)
+    @JsonView(View.UserWithoutBookingView.class)
     @ApiModelProperty(position = 1)
     String firstName;
 
-    @JsonView(View.UserWithoutBooking.class)
+    @JsonView(View.UserWithoutBookingView.class)
     @ApiModelProperty(position = 2)
     String lastName;
 
-    @JsonView(View.UserWithoutBooking.class)
+    @JsonView(View.UserWithoutBookingView.class)
     @ApiModelProperty(position = 3)
     String division;
 
-    @JsonView(View.UserWithoutBooking.class)
+    @JsonView(View.UserWithoutBookingView.class)
     @ApiModelProperty(position = 4)
     List<String> authorities;
 

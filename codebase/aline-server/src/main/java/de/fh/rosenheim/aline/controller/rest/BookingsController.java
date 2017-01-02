@@ -47,7 +47,7 @@ public class BookingsController {
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
-    @JsonView(View.BookingOverview.class)
+    @JsonView(View.BookingSummaryView.class)
     public BookingDTO book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequestDTO bookingRequest)
             throws BookingException {
         String requestName = bookingRequest.getUserName();
@@ -65,7 +65,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @JsonView(View.BookingOverview.class)
+    @JsonView(View.BookingSummaryView.class)
     public BookingDTO getBookingById(@PathVariable long id) throws NoObjectForIdException {
         return BookingFactory.toBookingDTO(bookingService.getBooking(id));
     }
@@ -78,7 +78,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
-    @JsonView(View.BookingOverview.class)
+    @JsonView(View.BookingSummaryView.class)
     public BookingDTO grantBooking(@PathVariable long id) throws NoObjectForIdException {
         return BookingFactory.toBookingDTO(bookingService.grantBooking(id));
     }
@@ -91,7 +91,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
-    @JsonView(View.BookingOverview.class)
+    @JsonView(View.BookingSummaryView.class)
     public BookingDTO denyBooking(@PathVariable long id) throws NoObjectForIdException {
         return BookingFactory.toBookingDTO(bookingService.denyBooking(id));
     }
