@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,6 +10,20 @@ import java.util.stream.Collectors;
  * Created by Manuel on 02.01.2017.
  */
 public class BookingFactory {
+
+    public static BookingDTO toBookingDTO(Booking booking) {
+        BookingDTO dto = new BookingDTO();
+        dto.setId(booking.getId());
+        dto.setCreated(booking.getCreated());
+        dto.setUpdated(booking.getUpdated());
+        dto.setStatus(booking.getStatus());
+
+        dto.setSeminar(booking.getSeminar());
+
+        dto.setUser(UserFactory.toUserDTO(booking.getUser()));
+
+        return dto;
+    }
 
     public static UserBookingDTO toUserBookingDTO(Booking booking) {
         UserBookingDTO userBookingDTO = new UserBookingDTO();

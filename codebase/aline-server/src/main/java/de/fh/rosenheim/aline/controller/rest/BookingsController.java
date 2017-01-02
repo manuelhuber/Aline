@@ -1,8 +1,11 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.model.domain.Booking;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.fh.rosenheim.aline.model.dtos.booking.BookingDTO;
+import de.fh.rosenheim.aline.model.dtos.booking.BookingFactory;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingRequestDTO;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
+import de.fh.rosenheim.aline.model.dtos.json.view.View;
 import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.service.BookingService;
@@ -44,13 +47,13 @@ public class BookingsController {
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
-    public Booking book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequestDTO bookingRequest)
+    public BookingDTO book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequestDTO bookingRequest)
             throws BookingException {
         String requestName = bookingRequest.getUserName();
         String name = requestName != null && requestName.length() > 0
                 ? requestName
                 : controllerUtil.getUsername(httpServletRequest);
-        return bookingService.book(bookingRequest.getSeminarId(), name);
+        return BookingFactory.toBookingDTO(bookingService.book(bookingRequest.getSeminarId(), name));
     }
 
     /**
@@ -60,9 +63,10 @@ public class BookingsController {
      * @return the booking
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
+    @JsonView(View.BookingOverview.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Booking getBookingById(@PathVariable long id) throws NoObjectForIdException {
-        return bookingService.getBooking(id);
+    public BookingDTO getBookingById(@PathVariable long id) throws NoObjectForIdException {
+        return BookingFactory.toBookingDTO(bookingService.getBooking(id));
     }
 
     /**
@@ -73,8 +77,8 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
-    public Booking grantBooking(@PathVariable long id) throws NoObjectForIdException {
-        return bookingService.grantBooking(id);
+    public BookingDTO grantBooking(@PathVariable long id) throws NoObjectForIdException {
+        return BookingFactory.toBookingDTO(bookingService.grantBooking(id));
     }
 
     /**
@@ -85,8 +89,8 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
-    public Booking denyBooking(@PathVariable long id) throws NoObjectForIdException {
-        return bookingService.denyBooking(id);
+    public BookingDTO denyBooking(@PathVariable long id) throws NoObjectForIdException {
+        return BookingFactory.toBookingDTO(bookingService.denyBooking(id));
     }
 
     /**
