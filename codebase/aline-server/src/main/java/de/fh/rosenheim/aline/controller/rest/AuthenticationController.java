@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * All HTTP enpoints related to authentication
+ * All HTTP endpoints related to authentication
  */
 @RestController
 @RequestMapping("${route.authentication.base}")

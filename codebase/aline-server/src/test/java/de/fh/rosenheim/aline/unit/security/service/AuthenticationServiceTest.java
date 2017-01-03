@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 public class AuthenticationServiceTest {
 
     private static final String USERNAME = "John";
-    private static final String PASSWORD = "foorbar123";
+    private static final String PASSWORD = "foobar123";
     private AuthenticationService authenticationService;
 
     private UserRepository userRepository;

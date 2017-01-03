@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * A simple way to store the categories in the databse.
+ * A simple way to store the categories in the database.
  * We don't want to use an enum since they need to be added
  */
 @Entity

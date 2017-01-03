@@ -30,7 +30,7 @@ public class UserService {
         return userRepository.findByDivision(division);
     }
 
-    public List<String> getAllUsernames() {
+    public List<String> getAllUserNames() {
         return Lists.newArrayList(userRepository.findAll()).stream().map(User::getUsername).collect(Collectors.toList());
     }
 }

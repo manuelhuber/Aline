@@ -48,7 +48,7 @@ public class UsersController {
     @RequestMapping(value = "${route.user.all}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
     public List<String> getAllUserNames() {
-        return userService.getAllUsernames();
+        return userService.getAllUserNames();
     }
 
     @RequestMapping(value = "${route.user.division}", method = RequestMethod.GET)

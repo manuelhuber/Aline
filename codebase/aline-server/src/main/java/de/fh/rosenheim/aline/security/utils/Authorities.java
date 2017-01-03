@@ -11,7 +11,7 @@ public class Authorities {
      */
     public static final String EMPLOYEE = "EMPLOYEE";
     /**
-     * Front Office who need the authority to change just about anyhting
+     * Front Office who need the authority to change just about anything
      */
     public static final String FRONT_OFFICE = "FRONT_OFFICE";
     /**

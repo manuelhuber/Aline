@@ -55,7 +55,7 @@ public class UserServiceTest {
 
         final LinkedList<User> list = new LinkedList<>(Arrays.asList(user1, user2, user3));
         given(userRepository.findAll()).willReturn(list);
-        assertThat(userService.getAllUsernames())
+        assertThat(userService.getAllUserNames())
                 .contains("John")
                 .contains("Pete")
                 .contains("Micky")
