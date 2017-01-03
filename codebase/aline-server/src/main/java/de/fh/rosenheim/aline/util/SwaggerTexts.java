@@ -1,4 +1,4 @@
-package de.fh.rosenheim.aline.controller.util;
+package de.fh.rosenheim.aline.util;
 
 /**
  * Define texts for swagger here to avoid duplicates and allow easy changes
@@ -13,4 +13,6 @@ public class SwaggerTexts {
      * Getting data about a user other than yourself
      */
     public final static String SENSITIVE_DATA = "Accessing other user's data requires specific authorities.";
+
+    public final static String CURRENCY = "In euro cent. Example: 1234 = 12,34 Euro";
 }

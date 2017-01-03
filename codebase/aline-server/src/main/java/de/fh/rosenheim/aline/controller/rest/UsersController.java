@@ -1,6 +1,6 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.controller.util.SwaggerTexts;
+import de.fh.rosenheim.aline.util.SwaggerTexts;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
 import de.fh.rosenheim.aline.model.dtos.user.UserDTO;

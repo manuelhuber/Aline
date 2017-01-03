@@ -27,6 +27,7 @@ public class SeminarFactory {
         dto.setDuration(seminar.getDuration());
         dto.setCycle(seminar.getCycle());
         dto.setDates(seminar.getDates());
+        dto.setBillGenerated(seminar.isBillGenerated());
 
         dto.setActiveBookings(
                 (int) seminar.getBookings()

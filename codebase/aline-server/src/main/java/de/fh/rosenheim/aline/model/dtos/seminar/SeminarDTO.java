@@ -19,5 +19,8 @@ public class SeminarDTO extends SeminarBasicsDTO {
     private Date created;
 
     @JsonView(View.SeminarView.class)
+    private boolean billGenerated;
+
+    @JsonView(View.SeminarView.class)
     private Date updated;
 }

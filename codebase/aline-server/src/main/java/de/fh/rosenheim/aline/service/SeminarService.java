@@ -3,6 +3,8 @@ package de.fh.rosenheim.aline.service;
 import com.google.common.collect.Lists;
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.dtos.bill.BillDTO;
+import de.fh.rosenheim.aline.model.dtos.bill.BillFactory;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
@@ -106,6 +108,14 @@ public class SeminarService {
         seminarRepository.save(seminar);
         log.info(currentUser() + "updated seminar with id=" + seminar.getId() + " successfully.");
         return seminar;
+    }
+
+    public BillDTO getBill(long id) throws NoObjectForIdException {
+        Seminar seminar = getSeminar(id);
+        BillDTO bill = BillFactory.generateBill(seminar);
+        seminar.setBillGenerated(true);
+        seminarRepository.save(seminar);
+        return bill;
     }
 
     /**

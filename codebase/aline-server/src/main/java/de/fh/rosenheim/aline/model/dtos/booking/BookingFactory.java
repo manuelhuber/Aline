@@ -59,7 +59,7 @@ public class BookingFactory {
             BookingSummaryDTO summary = new BookingSummaryDTO();
             summary.setYear(year);
             summary.setBookings(userBookingDTOS);
-            summary.setTotalSpending(userBookingDTOS.stream().mapToInt(UserBookingDTO::getSeminarCost).sum());
+            summary.setTotalSpending(userBookingDTOS.stream().mapToLong(UserBookingDTO::getSeminarCost).sum());
             bookingSummaries.add(summary);
         });
         return bookingSummaries;

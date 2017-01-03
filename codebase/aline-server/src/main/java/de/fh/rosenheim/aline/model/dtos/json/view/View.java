@@ -2,7 +2,7 @@ package de.fh.rosenheim.aline.model.dtos.json.view;
 
 public class View {
 
-    public interface UserWithoutBookingView {
+    public interface UserBasicsView {
 
     }
 
@@ -17,7 +17,12 @@ public class View {
     }
 
 
-    public interface BookingSummaryView extends UserWithoutBookingView, SeminarView {
+    public interface BookingSummaryView extends UserBasicsView, SeminarView {
+
+    }
+
+
+    public interface BillView extends UserBasicsView, SeminarBasicsView {
 
     }
 }

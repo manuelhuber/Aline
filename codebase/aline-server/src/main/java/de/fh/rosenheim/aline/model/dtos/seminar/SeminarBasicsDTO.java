@@ -2,6 +2,7 @@ package de.fh.rosenheim.aline.model.dtos.seminar;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import de.fh.rosenheim.aline.model.dtos.json.view.View;
+import de.fh.rosenheim.aline.util.SwaggerTexts;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -45,7 +46,8 @@ public class SeminarBasicsDTO {
     private int maximumParticipants;
 
     @JsonView(View.SeminarBasicsView.class)
-    private int costsPerParticipant;
+    @ApiModelProperty(notes = SwaggerTexts.CURRENCY)
+    private long costsPerParticipant;
 
     @JsonView(View.SeminarBasicsView.class)
     private String bookingTimelog;

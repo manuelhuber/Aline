@@ -70,8 +70,12 @@ public class Seminar {
     @Setter
     private int maximumParticipants;
 
+    /**
+     * In euro cent
+     * 1234 = 12,23 Euro
+     */
     @Setter
-    private int costsPerParticipant;
+    private long costsPerParticipant;
 
     /**
      * A description on how employees can book the time as working hours
@@ -90,6 +94,9 @@ public class Seminar {
 
     @Setter
     private Date[] dates;
+
+    @Setter
+    private boolean billGenerated;
 
     @CreationTimestamp
     private Date created;
