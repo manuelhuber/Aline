@@ -13,8 +13,10 @@ import java.util.List;
 public class BookingSummaryDTO {
 
     private int year;
-    @ApiModelProperty(position = 1, notes = SwaggerTexts.CURRENCY)
-    private long totalSpending;
-    @ApiModelProperty(position = 2)
+    @ApiModelProperty(position = 1, notes = SwaggerTexts.PLANNED_SPENDING)
+    private long plannedSpending;
+    @ApiModelProperty(position = 2, notes = SwaggerTexts.GRANTED_SPENDING)
+    private long grantedSpending;
+    @ApiModelProperty(position = 3)
     List<UserBookingDTO> bookings;
 }

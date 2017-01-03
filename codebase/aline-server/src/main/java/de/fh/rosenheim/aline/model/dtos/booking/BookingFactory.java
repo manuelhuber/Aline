@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
+import de.fh.rosenheim.aline.model.domain.BookingStatus;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.util.SeminarUtil;
@@ -58,7 +59,14 @@ public class BookingFactory {
             BookingSummaryDTO summary = new BookingSummaryDTO();
             summary.setYear(year);
             summary.setBookings(userBookingDTOS);
-            summary.setTotalSpending(userBookingDTOS.stream().mapToLong(UserBookingDTO::getSeminarCost).sum());
+            summary.setPlannedSpending(userBookingDTOS
+                    .stream()
+                    .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED))
+                    .mapToLong(UserBookingDTO::getSeminarCost).sum());
+            summary.setGrantedSpending(userBookingDTOS
+                    .stream()
+                    .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED))
+                    .mapToLong(UserBookingDTO::getSeminarCost).sum());
             bookingSummaries.add(summary);
         });
         return bookingSummaries;

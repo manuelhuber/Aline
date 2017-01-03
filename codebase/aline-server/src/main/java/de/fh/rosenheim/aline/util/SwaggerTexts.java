@@ -15,4 +15,9 @@ public class SwaggerTexts {
     public final static String SENSITIVE_DATA = "Accessing other user's data requires specific authorities.";
 
     public final static String CURRENCY = "In euro cent. Example: 1234 = 12,34 Euro";
+
+    public final static String ACTIVE_BOOKINGS = "All non-denied bookings (including requested but not yet granted)";
+
+    public final static String PLANNED_SPENDING = "The total cost of all granted & requested seminars. " + CURRENCY;
+    public final static String GRANTED_SPENDING = "The total cost of all granted seminars. " + CURRENCY;
 }

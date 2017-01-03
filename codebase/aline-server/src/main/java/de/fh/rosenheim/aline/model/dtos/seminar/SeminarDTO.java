@@ -2,6 +2,8 @@ package de.fh.rosenheim.aline.model.dtos.seminar;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import de.fh.rosenheim.aline.model.dtos.json.view.View;
+import de.fh.rosenheim.aline.util.SwaggerTexts;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,6 +15,7 @@ public class SeminarDTO extends SeminarBasicsDTO {
     private long id;
 
     @JsonView(View.SeminarView.class)
+    @ApiModelProperty(notes = SwaggerTexts.ACTIVE_BOOKINGS)
     private int activeBookings;
 
     @JsonView(View.SeminarView.class)
