@@ -18,9 +18,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-/**
- * Created by Manuel on 03.01.2017.
- */
 public class BookingFactoryTest {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

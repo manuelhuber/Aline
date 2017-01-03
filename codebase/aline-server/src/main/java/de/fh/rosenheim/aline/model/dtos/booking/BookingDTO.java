@@ -6,11 +6,13 @@ import de.fh.rosenheim.aline.model.dtos.json.view.View;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarDTO;
 import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@Builder
 public class BookingDTO {
 
     @JsonView(View.BookingSummaryView.class)

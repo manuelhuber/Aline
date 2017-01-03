@@ -12,63 +12,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by Manuel on 02.01.2017.
- */
 public class BookingFactory {
 
     public static BookingDTO toBookingDTO(Booking booking) {
-        BookingDTO dto = new BookingDTO();
-        dto.setId(booking.getId());
-        dto.setCreated(booking.getCreated());
-        dto.setUpdated(booking.getUpdated());
-        dto.setStatus(booking.getStatus());
-
-        dto.setSeminar(SeminarFactory.toSeminarDTO(booking.getSeminar()));
-
-        dto.setUser(UserFactory.toUserDTO(booking.getUser()));
-
-        return dto;
+        return BookingDTO.builder()
+                .id(booking.getId())
+                .created(booking.getCreated())
+                .updated(booking.getUpdated())
+                .status(booking.getStatus())
+                .seminar(SeminarFactory.toSeminarDTO(booking.getSeminar()))
+                .user(UserFactory.toUserDTO(booking.getUser()))
+                .build();
     }
 
     public static UserBookingDTO toUserBookingDTO(Booking booking) {
-        UserBookingDTO userBookingDTO = new UserBookingDTO();
-
-        userBookingDTO.setId(booking.getId());
-        userBookingDTO.setStatus(booking.getStatus());
-        userBookingDTO.setCreated(booking.getCreated());
-        userBookingDTO.setUpdated(booking.getUpdated());
-        userBookingDTO.setSeminarId(booking.getSeminar().getId());
-        userBookingDTO.setSeminarName(booking.getSeminar().getName());
-        userBookingDTO.setSeminarCost(booking.getSeminar().getCostsPerParticipant());
-        userBookingDTO.setSeminarYear(SeminarUtil.getYear(booking.getSeminar()));
-
-        return userBookingDTO;
+        return UserBookingDTO.builder()
+                .id(booking.getId())
+                .status(booking.getStatus())
+                .created(booking.getCreated())
+                .updated(booking.getUpdated())
+                .seminarId(booking.getSeminar().getId())
+                .seminarName(booking.getSeminar().getName())
+                .seminarCost(booking.getSeminar().getCostsPerParticipant())
+                .seminarYear(SeminarUtil.getYear(booking.getSeminar()))
+                .build();
     }
 
     public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
-        List<UserBookingDTO> bookingDTOs =
-                bookings.stream().map(BookingFactory::toUserBookingDTO).collect(Collectors.toList());
 
-        Map<Integer, List<UserBookingDTO>> sortedBookings =
-                bookingDTOs.stream().collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
+        Map<Integer, List<UserBookingDTO>> sortedBookings = bookings.stream()
+                .map(BookingFactory::toUserBookingDTO)
+                .collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
 
         List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
 
-        sortedBookings.forEach((year, userBookingDTOS) -> {
-            BookingSummaryDTO summary = new BookingSummaryDTO();
-            summary.setYear(year);
-            summary.setBookings(userBookingDTOS);
-            summary.setPlannedSpending(userBookingDTOS
-                    .stream()
-                    .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED))
-                    .mapToLong(UserBookingDTO::getSeminarCost).sum());
-            summary.setGrantedSpending(userBookingDTOS
-                    .stream()
-                    .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED))
-                    .mapToLong(UserBookingDTO::getSeminarCost).sum());
-            bookingSummaries.add(summary);
-        });
+        sortedBookings.forEach((year, userBookingDTOS) -> bookingSummaries.add(BookingSummaryDTO.builder()
+                .year(year)
+                .bookings(userBookingDTOS)
+                .plannedSpending(userBookingDTOS.stream()
+                        .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED))
+                        .mapToLong(UserBookingDTO::getSeminarCost).sum())
+                .grantedSpending(userBookingDTOS.stream()
+                        .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED))
+                        .mapToLong(UserBookingDTO::getSeminarCost).sum())
+                .build()
+        ));
         return bookingSummaries;
     }
 }

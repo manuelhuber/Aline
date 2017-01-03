@@ -3,6 +3,7 @@ package de.fh.rosenheim.aline.model.dtos.booking;
 import de.fh.rosenheim.aline.model.domain.BookingStatus;
 import de.fh.rosenheim.aline.util.SwaggerTexts;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * A DTO that's specific to a user (an therefore does not contain info about users)
  */
 @Data
+@Builder
 public class UserBookingDTO {
 
     private long id;
