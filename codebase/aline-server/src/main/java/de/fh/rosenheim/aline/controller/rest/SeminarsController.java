@@ -133,7 +133,7 @@ public class SeminarsController {
      * @return the bill
      * @throws NoObjectForIdException if there is no seminar for the given ID
      */
-    @RequestMapping(value = "{id}/bill", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/${route.seminar.bill}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
     @JsonView(View.BillView.class)
     public BillDTO generateBillForSeminar(@PathVariable long id) throws NoObjectForIdException {

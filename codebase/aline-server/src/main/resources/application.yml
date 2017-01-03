@@ -41,6 +41,7 @@ route:
     current: current
     past: past
     category: categories
+    bill: bill
   user:
     base: users
     all: all
