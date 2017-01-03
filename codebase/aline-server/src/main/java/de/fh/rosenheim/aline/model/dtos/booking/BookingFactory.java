@@ -3,8 +3,12 @@ package de.fh.rosenheim.aline.model.dtos.booking;
 import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.util.SeminarUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -36,12 +40,7 @@ public class BookingFactory {
         userBookingDTO.setSeminarId(booking.getSeminar().getId());
         userBookingDTO.setSeminarName(booking.getSeminar().getName());
         userBookingDTO.setSeminarCost(booking.getSeminar().getCostsPerParticipant());
-
-        List<Date> dates = Arrays.asList(booking.getSeminar().getDates());
-        dates.sort(Date::compareTo);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dates.get(0));
-        userBookingDTO.setSeminarYear(cal.get(Calendar.YEAR));
+        userBookingDTO.setSeminarYear(SeminarUtil.getYear(booking.getSeminar()));
 
         return userBookingDTO;
     }

@@ -11,6 +11,7 @@ import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
 import de.fh.rosenheim.aline.repository.CategoryRepository;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
+import de.fh.rosenheim.aline.util.SeminarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -163,18 +164,9 @@ public class SeminarService {
      */
     private List<Seminar> filterForSeminarsByDate(List<Seminar> seminars, Date referenceDate, boolean getPastSeminars) {
         return seminars.stream().filter(seminar -> {
-            Date[] dates = seminar.getDates();
-            if (dates == null) {
-                // If there are no dates, return it anyways
-                return true;
-            }
-            boolean seminarValid = getPastSeminars;
-            for (Date date : dates) {
-                if (date.after(referenceDate)) {
-                    seminarValid = !getPastSeminars;
-                }
-            }
-            return seminarValid;
+            Date latestDate = SeminarUtil.getLastDate(seminar);
+            // If there are no dates,return it anyways
+            return latestDate == null || latestDate.after(referenceDate) != getPastSeminars;
         }).collect(Collectors.toList());
     }
 }
