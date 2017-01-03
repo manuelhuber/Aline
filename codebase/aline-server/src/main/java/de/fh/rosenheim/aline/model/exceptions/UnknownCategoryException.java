@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UnkownCategoryException extends Exception {
+public class UnknownCategoryException extends Exception {
 
     private List<String> allowedCategories;
 }

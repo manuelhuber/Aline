@@ -10,7 +10,7 @@ import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
-import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
+import de.fh.rosenheim.aline.model.exceptions.UnknownCategoryException;
 import de.fh.rosenheim.aline.service.SeminarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,12 +69,12 @@ public class SeminarsController {
      *
      * @param seminar The basic info about the seminar
      * @return The complete newly created seminar
-     * @throws UnkownCategoryException if the category is not a known category (all categories will be listed in the
+     * @throws UnknownCategoryException if the category is not a known category (all categories will be listed in the
      *                                 response)
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public ResponseEntity<SeminarDTO> addSeminar(@RequestBody SeminarBasicsDTO seminar) throws UnkownCategoryException {
+    public ResponseEntity<SeminarDTO> addSeminar(@RequestBody SeminarBasicsDTO seminar) throws UnknownCategoryException {
         return new ResponseEntity<>(
                 SeminarFactory.toSeminarDTO(seminarService.createNewSeminar(seminar)),
                 HttpStatus.CREATED
@@ -101,13 +101,13 @@ public class SeminarsController {
      * @param seminar the basic data that will be set
      * @return The updated Seminar
      * @throws NoObjectForIdException  if there is no seminar for the given ID
-     * @throws UnkownCategoryException if the category is not a known category (all categories will be listed in the
+     * @throws UnknownCategoryException if the category is not a known category (all categories will be listed in the
      *                                 response)
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
     public SeminarDTO updateSeminar(@PathVariable long id, @RequestBody SeminarBasicsDTO seminar)
-            throws NoObjectForIdException, UnkownCategoryException {
+            throws NoObjectForIdException, UnknownCategoryException {
         return SeminarFactory.toSeminarDTO(seminarService.updateSeminar(id, seminar));
     }
 
@@ -189,8 +189,8 @@ public class SeminarsController {
     /**
      * Custom response if no Seminar for the given ID exists
      */
-    @ExceptionHandler(UnkownCategoryException.class)
-    public ResponseEntity<ErrorResponse> categoryNotFoundException(UnkownCategoryException ex) {
+    @ExceptionHandler(UnknownCategoryException.class)
+    public ResponseEntity<ErrorResponse> categoryNotFoundException(UnknownCategoryException ex) {
         return new ResponseEntity<>(
                 new ErrorResponse(
                         "You entered an invalid category. Allowed values are: " + ex.getAllowedCategories().toString()),

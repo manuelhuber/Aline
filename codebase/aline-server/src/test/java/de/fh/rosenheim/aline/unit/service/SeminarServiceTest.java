@@ -4,7 +4,7 @@ import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
-import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
+import de.fh.rosenheim.aline.model.exceptions.UnknownCategoryException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.repository.CategoryRepository;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
@@ -162,15 +162,15 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void createNewSeminarWithInvalidCategory() throws UnkownCategoryException {
+    public void createNewSeminarWithInvalidCategory() throws UnknownCategoryException {
         given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
-        exception.expect(UnkownCategoryException.class);
+        exception.expect(UnknownCategoryException.class);
         seminarService.createNewSeminar(new SeminarBasicsDTO());
         verify(seminarRepository, times(0)).save(any(Seminar.class));
     }
 
     @Test
-    public void createNewSeminar() throws UnkownCategoryException {
+    public void createNewSeminar() throws UnknownCategoryException {
         SeminarBasicsDTO newSeminar = new SeminarBasicsDTO();
         newSeminar.setName("foo");
         newSeminar.setDescription("bar");
@@ -186,7 +186,7 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void updateNonExistingSeminar() throws NoObjectForIdException, UnkownCategoryException {
+    public void updateNonExistingSeminar() throws NoObjectForIdException, UnknownCategoryException {
         SeminarBasicsDTO seminarUpdate = new SeminarBasicsDTO();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");
@@ -197,7 +197,7 @@ public class SeminarServiceTest {
     }
 
     @Test
-    public void updateSeminarWithInvalidCategory() throws NoObjectForIdException, UnkownCategoryException {
+    public void updateSeminarWithInvalidCategory() throws NoObjectForIdException, UnknownCategoryException {
 
         Seminar actualSeminar = new Seminar();
         actualSeminar.setId((long) 10);
@@ -207,13 +207,13 @@ public class SeminarServiceTest {
         given(seminarRepository.findOne((long) 10)).willReturn(actualSeminar);
         given(categoryRepository.findAll()).willReturn(Lists.newArrayList(new Category("Hello World")));
 
-        exception.expect(UnkownCategoryException.class);
+        exception.expect(UnknownCategoryException.class);
         seminarService.updateSeminar(10, new SeminarBasicsDTO());
         verify(seminarRepository, times(0)).save(any(Seminar.class));
     }
 
     @Test
-    public void updateSeminar() throws NoObjectForIdException, UnkownCategoryException {
+    public void updateSeminar() throws NoObjectForIdException, UnknownCategoryException {
         SeminarBasicsDTO seminarUpdate = new SeminarBasicsDTO();
         seminarUpdate.setName("foo");
         seminarUpdate.setDescription("bar");

@@ -8,7 +8,7 @@ import de.fh.rosenheim.aline.model.dtos.bill.BillFactory;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
-import de.fh.rosenheim.aline.model.exceptions.UnkownCategoryException;
+import de.fh.rosenheim.aline.model.exceptions.UnknownCategoryException;
 import de.fh.rosenheim.aline.repository.CategoryRepository;
 import de.fh.rosenheim.aline.repository.SeminarRepository;
 import de.fh.rosenheim.aline.util.SeminarUtil;
@@ -90,7 +90,7 @@ public class SeminarService {
      * Creates a new seminar
      * Will always create a new seminar, even if the given seminar already has an ID
      */
-    public Seminar createNewSeminar(SeminarBasicsDTO basics) throws UnkownCategoryException {
+    public Seminar createNewSeminar(SeminarBasicsDTO basics) throws UnknownCategoryException {
         Seminar seminar = SeminarFactory.createSeminar(basics);
         checkCategory(seminar.getCategory());
         seminarRepository.save(seminar);
@@ -102,7 +102,7 @@ public class SeminarService {
      * Updates the seminar with the given ID with the given data
      * All properties of the existing seminar will be overwritten with the new data (even if it's null)
      */
-    public Seminar updateSeminar(long id, SeminarBasicsDTO newSeminarData) throws NoObjectForIdException, UnkownCategoryException {
+    public Seminar updateSeminar(long id, SeminarBasicsDTO newSeminarData) throws NoObjectForIdException, UnknownCategoryException {
         Seminar seminar = getSeminar(id);
         SeminarFactory.updateSeminar(seminar, newSeminarData);
         checkCategory(seminar.getCategory());
@@ -145,12 +145,12 @@ public class SeminarService {
      * Checks the given category against the data from the database
      *
      * @param category The name of the category
-     * @throws UnkownCategoryException if the given category is unknown
+     * @throws UnknownCategoryException if the given category is unknown
      */
-    private void checkCategory(String category) throws UnkownCategoryException {
+    private void checkCategory(String category) throws UnknownCategoryException {
         List<String> categories = getAllCategories();
         if (!categories.contains(category)) {
-            throw new UnkownCategoryException(categories);
+            throw new UnknownCategoryException(categories);
         }
     }
 
