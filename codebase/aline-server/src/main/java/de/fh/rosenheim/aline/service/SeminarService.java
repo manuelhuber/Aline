@@ -111,6 +111,9 @@ public class SeminarService {
         return seminar;
     }
 
+    /**
+     * Generates a bill for the given seminar
+     */
     public BillDTO getBill(long id) throws NoObjectForIdException {
         Seminar seminar = getSeminar(id);
         BillDTO bill = BillFactory.generateBill(seminar);
@@ -165,7 +168,7 @@ public class SeminarService {
     private List<Seminar> filterForSeminarsByDate(List<Seminar> seminars, Date referenceDate, boolean getPastSeminars) {
         return seminars.stream().filter(seminar -> {
             Date latestDate = SeminarUtil.getLastDate(seminar);
-            // If there are no dates,return it anyways
+            // If there are no dates, return it anyways to ensure no seminar is lost because it doesn't have dates
             return latestDate == null || latestDate.after(referenceDate) != getPastSeminars;
         }).collect(Collectors.toList());
     }

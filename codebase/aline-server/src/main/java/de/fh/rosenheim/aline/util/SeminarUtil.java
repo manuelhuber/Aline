@@ -4,42 +4,41 @@ import de.fh.rosenheim.aline.model.domain.Seminar;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Created by Manuel on 03.01.2017.
+ * Simple utils for everything seminar related
  */
 public class SeminarUtil {
 
     /**
-     * Returns the last date
+     * Returns the last of the seminar
      *
      * @param seminar
-     * @return
+     * @return the latest date or null
      */
     public static Date getLastDate(Seminar seminar) {
-        if (seminar.getDates() == null || seminar.getDates().length == 0) {
-            return null;
-        }
-        List<Date> dates = Arrays.asList(seminar.getDates());
-        dates.sort(Date::compareTo);
-        return dates.get(dates.size() - 1);
+        return seminar.getDates() == null || seminar.getDates().length < 1
+                ? null
+                : Collections.max(Arrays.asList(seminar.getDates()));
     }
 
     /**
      * Returns the year of the seminar (to group seminars)
-     * The last date
+     * If the seminar has no dates (yet), the current year is returned
      *
      * @param seminar
-     * @return
+     * @return the year of the last date or if no dates are set the current year
      */
     public static int getYear(Seminar seminar) {
-        if (seminar.getDates() == null || seminar.getDates().length == 0) {
-            return 0;
-        }
+        Date latestDate = getLastDate(seminar);
+
         Calendar cal = Calendar.getInstance();
-        cal.setTime(getLastDate(seminar));
+        if (latestDate != null) {
+            cal.setTime(latestDate);
+        }
+
         return cal.get(Calendar.YEAR);
     }
 }
