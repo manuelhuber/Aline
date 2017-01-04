@@ -47,6 +47,9 @@ public class BookingFactoryTest {
                 .build();
 
         BookingDTO dto = BookingFactory.toBookingDTO(booking);
+        assertThat(dto).isEqualTo(BookingFactory.toBookingDTO(booking));
+        assertThat(dto.hashCode()).isEqualTo(BookingFactory.toBookingDTO(booking).hashCode());
+
         assertThat(dto.getId()).isEqualTo(12);
         assertThat(dto.getCreated()).isEqualTo(created);
         assertThat(dto.getUpdated()).isEqualTo(updated);
@@ -79,6 +82,7 @@ public class BookingFactoryTest {
 
         UserBookingDTO dto = BookingFactory.toUserBookingDTO(booking);
         assertThat(dto).isEqualTo(BookingFactory.toUserBookingDTO(booking));
+        assertThat(dto.hashCode()).isEqualTo(BookingFactory.toUserBookingDTO(booking).hashCode());
 
         assertThat(dto.getId()).isEqualTo((long) 12);
         assertThat(dto.getStatus()).isEqualTo(BookingStatus.REQUESTED);
@@ -148,6 +152,8 @@ public class BookingFactoryTest {
 
         List<BookingSummaryDTO> dtos = BookingFactory.toBookingSummaryDTOs(Arrays.asList(booking1, booking2, booking3));
         assertThat(dtos).isEqualTo(BookingFactory.toBookingSummaryDTOs(Arrays.asList(booking1, booking2, booking3)));
+        assertThat(dtos.hashCode())
+                .isEqualTo(BookingFactory.toBookingSummaryDTOs(Arrays.asList(booking1, booking2, booking3)).hashCode());
 
         assertThat(dtos.size()).isEqualTo(2);
         Optional<BookingSummaryDTO> dto2018 = dtos.stream().filter(dto -> dto.getYear() == 2018).findAny();

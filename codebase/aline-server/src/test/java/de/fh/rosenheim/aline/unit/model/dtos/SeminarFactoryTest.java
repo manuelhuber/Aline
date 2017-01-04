@@ -78,6 +78,8 @@ public class SeminarFactoryTest {
         seminar.setUpdated(updated);
 
         SeminarDTO dto = SeminarFactory.toSeminarDTO(seminar);
+        assertThat(dto).isEqualTo(SeminarFactory.toSeminarDTO(seminar));
+        assertThat(dto.hashCode()).isEqualTo(SeminarFactory.toSeminarDTO(seminar).hashCode());
 
         assertThat(dto.getId()).isEqualTo((long) 12);
         assertThat(dto.getActiveBookings()).isEqualTo(2);
@@ -127,6 +129,8 @@ public class SeminarFactoryTest {
         basicsDTO.setDates(new Date[]{date1});
 
         Seminar seminar = SeminarFactory.createSeminar(basicsDTO);
+        assertThat(seminar).isEqualTo(SeminarFactory.createSeminar(basicsDTO));
+        assertThat(seminar.hashCode()).isEqualTo(SeminarFactory.createSeminar(basicsDTO).hashCode());
 
         assertThat(seminar.getName()).isEqualTo("name");
         assertThat(seminar.getDescription()).isEqualTo("description");
