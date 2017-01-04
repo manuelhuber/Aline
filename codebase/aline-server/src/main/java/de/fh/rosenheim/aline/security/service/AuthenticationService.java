@@ -1,9 +1,9 @@
 package de.fh.rosenheim.aline.security.service;
 
 import de.fh.rosenheim.aline.model.domain.User;
-import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
-import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
 import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationDTO;
+import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
@@ -72,7 +72,7 @@ public class AuthenticationService {
      * @return AuthenticationResponse Token & Authorities
      * @throws AuthenticationException If the token is no longer valid
      */
-    public AuthenticationDTO refreshToken(String token) throws AuthenticationException, NoObjectForIdException {
+    public AuthenticationDTO refreshToken(String token) throws NoObjectForIdException {
         SecurityUser user;
 
         try {

@@ -37,8 +37,6 @@ public class TokenUtils {
      * Only valid tokens can be refreshed
      *
      * @param token       JWT
-     * @param userDetails
-     * @return
      */
     public Boolean canTokenBeRefreshed(String token, UserDetails userDetails) {
         return isTokenValid(token, userDetails);
@@ -68,7 +66,6 @@ public class TokenUtils {
      * Password change invalidates all previous tokens.
      *
      * @param token       a JWT
-     * @param userDetails
      * @return is the token valid
      */
     public Boolean isTokenValid(String token, UserDetails userDetails) {
