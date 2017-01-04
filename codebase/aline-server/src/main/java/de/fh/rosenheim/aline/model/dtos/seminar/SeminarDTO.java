@@ -14,6 +14,9 @@ public class SeminarDTO extends SeminarBasicsDTO {
     @JsonView(View.SeminarView.class)
     private long id;
 
+    /**
+     * The number of non-denied bookings (meaning all granted and requested bookings)
+     */
     @JsonView(View.SeminarView.class)
     @ApiModelProperty(notes = SwaggerTexts.ACTIVE_BOOKINGS)
     private int activeBookings;

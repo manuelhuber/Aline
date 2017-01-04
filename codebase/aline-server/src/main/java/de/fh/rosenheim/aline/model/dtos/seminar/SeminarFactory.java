@@ -1,13 +1,18 @@
 package de.fh.rosenheim.aline.model.dtos.seminar;
 
-import de.fh.rosenheim.aline.model.domain.BookingStatus;
 import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.util.SeminarUtil;
 
 /**
- * Created by Manuel on 02.01.2017.
+ * Generates and transforms all Seminar models & DTOs
  */
 public class SeminarFactory {
 
+    /**
+     * Generates a SeminarDTO for the given seminar
+     *
+     * @return SeminarDTO
+     */
     public static SeminarDTO toSeminarDTO(Seminar seminar) {
         SeminarDTO dto = new SeminarDTO();
         dto.setName(seminar.getName());
@@ -28,32 +33,30 @@ public class SeminarFactory {
         dto.setCycle(seminar.getCycle());
         dto.setDates(seminar.getDates());
         dto.setBillGenerated(seminar.isBillGenerated());
-
-        dto.setActiveBookings(
-                (int) seminar.getBookings()
-                        .stream()
-                        .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED))
-                        .count()
-        );
-
+        dto.setActiveBookings(SeminarUtil.getActiveBookingCount(seminar));
         dto.setCreated(seminar.getCreated());
         dto.setUpdated(seminar.getUpdated());
         dto.setId(seminar.getId());
         return dto;
     }
 
+    /**
+     * Generates a new seminar from the BasicsDTO
+     *
+     * @return Seminar
+     */
     public static Seminar createSeminar(SeminarBasicsDTO basicsDTO) {
         Seminar seminar = new Seminar();
-        copyBasicDataToSeminar(seminar, basicsDTO);
+        updateSeminar(seminar, basicsDTO);
         return seminar;
     }
 
+    /**
+     * Copies the basic data from the DTO to the given seminar
+     *
+     * @return The updated Seminar
+     */
     public static Seminar updateSeminar(Seminar seminar, SeminarBasicsDTO basicsDTO) {
-        copyBasicDataToSeminar(seminar, basicsDTO);
-        return seminar;
-    }
-
-    private static void copyBasicDataToSeminar(Seminar seminar, SeminarBasicsDTO basicsDTO) {
         seminar.setName(basicsDTO.getName());
         seminar.setDescription(basicsDTO.getDescription());
         seminar.setTrainer(basicsDTO.getTrainer());
@@ -71,5 +74,6 @@ public class SeminarFactory {
         seminar.setDuration(basicsDTO.getDuration());
         seminar.setCycle(basicsDTO.getCycle());
         seminar.setDates(basicsDTO.getDates());
+        return seminar;
     }
 }

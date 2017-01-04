@@ -8,15 +8,14 @@ import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.repository.BookingRepository;
 import de.fh.rosenheim.aline.security.service.SecurityService;
+import de.fh.rosenheim.aline.util.SeminarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
 
@@ -43,9 +42,6 @@ public class BookingService {
      * If the current user (not necessarily the same as the one to whom the seminar is booked) is FRONT_OFFICE, the
      * booking will instantly be GRANTED.
      *
-     * @param seminarId
-     * @param username
-     * @return
      * @throws BookingException If the given seminar ID or username are not valid
      *                          If the seminar is not bookable
      *                          If the seminar is already fully booked
@@ -59,11 +55,7 @@ public class BookingService {
                 throw new BookingException("This seminar is not bookable");
             }
 
-            Collection<Booking> nonDeniedBookings = seminar.getBookings()
-                    .stream()
-                    .filter(booking -> booking.getStatus().equals(BookingStatus.DENIED))
-                    .collect(Collectors.toList());
-            if (nonDeniedBookings.size() >= seminar.getMaximumParticipants()) {
+            if (SeminarUtil.getActiveBookingCount(seminar) >= seminar.getMaximumParticipants()) {
                 throw new BookingException("This seminar is already fully booked");
             }
 
@@ -76,6 +68,12 @@ public class BookingService {
         }
     }
 
+    /**
+     * Returns the booking for the given ID
+     *
+     * @param id of the booking
+     * @return Booking
+     */
     public Booking getBooking(long id) throws NoObjectForIdException {
         Booking booking = bookingRepository.findOne(id);
         if (booking == null) {
@@ -84,22 +82,43 @@ public class BookingService {
         return booking;
     }
 
+    /**
+     * Set the status of the booking to granted
+     *
+     * @param id of the booking
+     * @return the updated booking
+     * @throws AuthenticationException if the user is not allowed to grant the booking
+     */
     public Booking grantBooking(long id) throws NoObjectForIdException, AuthenticationException {
         Booking booking = this.getBooking(id);
         if (securityService.canCurrentUserChangeBookingStatus(booking)) {
             booking.setStatus(BookingStatus.GRANTED);
+            log.info(currentUser() + "granted booking with id=" + id + " successfully");
             return bookingRepository.save(booking);
         } else throw deny();
     }
 
+    /**
+     * Set the status of the booking to denied
+     *
+     * @param id of the booking
+     * @return the updated booking
+     * @throws AuthenticationException if the user is not allowed to deny the booking
+     */
     public Booking denyBooking(long id) throws NoObjectForIdException, AuthenticationException {
         Booking booking = this.getBooking(id);
         if (securityService.canCurrentUserChangeBookingStatus(booking)) {
             booking.setStatus(BookingStatus.DENIED);
+            log.info(currentUser() + "denied booking with id=" + id + " successfully");
             return bookingRepository.save(booking);
         } else throw deny();
     }
 
+    /**
+     * Delete the booking
+     *
+     * @param id of the booking
+     */
     public void deleteBooking(long id) throws NoObjectForIdException {
         if (securityService.canCurrentUserDeleteBooking(getBooking(id))) {
             try {
@@ -116,14 +135,13 @@ public class BookingService {
      * Checks if the user has already booked the seminar.
      * If there is no booking it will create a new booking.
      * If there already is a DENIED booking, it will return the old booking but with status REQUESTED.
-     * If there already is a REQUESTED or GRANTED booking it otherwise it will throw a exception
+     * If there already is a REQUESTED or GRANTED booking it will throw an exception
      *
      * @return The booking with the appropriate status
      * @throws BookingException if there already exists a non-denied booking for this seminar/user combination
      */
     private Booking getValidBookingForUser(Seminar seminar, User user) throws BookingException {
         Booking booking;
-
         Optional<Booking> oldBooking = user.getBookings().stream()
                 .filter(b -> b.getSeminar().equals(seminar)).findAny();
 
