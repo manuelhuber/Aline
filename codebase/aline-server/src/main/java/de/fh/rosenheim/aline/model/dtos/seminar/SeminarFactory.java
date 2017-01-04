@@ -15,28 +15,30 @@ public class SeminarFactory {
      */
     public static SeminarDTO toSeminarDTO(Seminar seminar) {
         SeminarDTO dto = new SeminarDTO();
-        dto.setName(seminar.getName());
-        dto.setDescription(seminar.getDescription());
-        dto.setTrainer(seminar.getTrainer());
-        dto.setAgenda(seminar.getAgenda());
-        dto.setBookable(seminar.isBookable());
-        dto.setCategory(seminar.getCategory());
-        dto.setTargetLevel(seminar.getTargetLevel());
-        dto.setRequirements(seminar.getRequirements());
-        dto.setContactPerson(seminar.getContactPerson());
-        dto.setTrainingType(seminar.getTrainingType());
-        dto.setMaximumParticipants(seminar.getMaximumParticipants());
-        dto.setCostsPerParticipant(seminar.getCostsPerParticipant());
-        dto.setBookingTimelog(seminar.getBookingTimelog());
-        dto.setGoal(seminar.getGoal());
-        dto.setDuration(seminar.getDuration());
-        dto.setCycle(seminar.getCycle());
-        dto.setDates(seminar.getDates());
-        dto.setBillGenerated(seminar.isBillGenerated());
-        dto.setActiveBookings(SeminarUtil.getActiveBookingCount(seminar));
-        dto.setCreated(seminar.getCreated());
-        dto.setUpdated(seminar.getUpdated());
-        dto.setId(seminar.getId());
+        if (seminar != null) {
+            dto.setName(seminar.getName());
+            dto.setDescription(seminar.getDescription());
+            dto.setTrainer(seminar.getTrainer());
+            dto.setAgenda(seminar.getAgenda());
+            dto.setBookable(seminar.isBookable());
+            dto.setCategory(seminar.getCategory());
+            dto.setTargetLevel(seminar.getTargetLevel());
+            dto.setRequirements(seminar.getRequirements());
+            dto.setContactPerson(seminar.getContactPerson());
+            dto.setTrainingType(seminar.getTrainingType());
+            dto.setMaximumParticipants(seminar.getMaximumParticipants());
+            dto.setCostsPerParticipant(seminar.getCostsPerParticipant());
+            dto.setBookingTimelog(seminar.getBookingTimelog());
+            dto.setGoal(seminar.getGoal());
+            dto.setDuration(seminar.getDuration());
+            dto.setCycle(seminar.getCycle());
+            dto.setDates(seminar.getDates());
+            dto.setBillGenerated(seminar.isBillGenerated());
+            dto.setActiveBookings(SeminarUtil.getActiveBookingCount(seminar));
+            dto.setCreated(seminar.getCreated());
+            dto.setUpdated(seminar.getUpdated());
+            dto.setId(seminar.getId());
+        }
         return dto;
     }
 
@@ -57,6 +59,9 @@ public class SeminarFactory {
      * @return The updated Seminar
      */
     public static Seminar updateSeminar(Seminar seminar, SeminarBasicsDTO basicsDTO) {
+        if (seminar == null || basicsDTO == null) {
+            return seminar;
+        }
         seminar.setName(basicsDTO.getName());
         seminar.setDescription(basicsDTO.getDescription());
         seminar.setTrainer(basicsDTO.getTrainer());

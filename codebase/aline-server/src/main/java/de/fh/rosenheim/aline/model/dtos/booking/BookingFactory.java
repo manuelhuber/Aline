@@ -23,14 +23,16 @@ public class BookingFactory {
      * @return BookingDTO
      */
     public static BookingDTO toBookingDTO(Booking booking) {
-        return BookingDTO.builder()
-                .id(booking.getId())
-                .created(booking.getCreated())
-                .updated(booking.getUpdated())
-                .status(booking.getStatus())
-                .seminar(SeminarFactory.toSeminarDTO(booking.getSeminar()))
-                .user(UserFactory.toUserDTO(booking.getUser()))
-                .build();
+        return booking == null ?
+                BookingDTO.builder().build() :
+                BookingDTO.builder()
+                        .id(booking.getId())
+                        .created(booking.getCreated())
+                        .updated(booking.getUpdated())
+                        .status(booking.getStatus())
+                        .seminar(SeminarFactory.toSeminarDTO(booking.getSeminar()))
+                        .user(UserFactory.toUserDTO(booking.getUser()))
+                        .build();
     }
 
     /**
@@ -39,16 +41,18 @@ public class BookingFactory {
      * @return UserBookingDTO
      */
     public static UserBookingDTO toUserBookingDTO(Booking booking) {
-        return UserBookingDTO.builder()
-                .id(booking.getId())
-                .status(booking.getStatus())
-                .created(booking.getCreated())
-                .updated(booking.getUpdated())
-                .seminarId(booking.getSeminar().getId())
-                .seminarName(booking.getSeminar().getName())
-                .seminarCost(booking.getSeminar().getCostsPerParticipant())
-                .seminarYear(SeminarUtil.getYear(booking.getSeminar()))
-                .build();
+        return booking == null ?
+                UserBookingDTO.builder().build() :
+                UserBookingDTO.builder()
+                        .id(booking.getId())
+                        .status(booking.getStatus())
+                        .created(booking.getCreated())
+                        .updated(booking.getUpdated())
+                        .seminarId(booking.getSeminar().getId())
+                        .seminarName(booking.getSeminar().getName())
+                        .seminarCost(booking.getSeminar().getCostsPerParticipant())
+                        .seminarYear(SeminarUtil.getYear(booking.getSeminar()))
+                        .build();
     }
 
     /**
@@ -58,12 +62,16 @@ public class BookingFactory {
      * @return List of BookingSummaryDTO
      */
     public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
+        List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
 
+        if (bookings == null || bookings.size() == 0) {
+            return bookingSummaries;
+        }
+
+        // UserBookings grouped by year
         Map<Integer, List<UserBookingDTO>> sortedBookings = bookings.stream()
                 .map(BookingFactory::toUserBookingDTO)
                 .collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
-
-        List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
 
         sortedBookings.forEach((year, userBookingDTOS) -> bookingSummaries.add(BookingSummaryDTO.builder()
                 .year(year)
