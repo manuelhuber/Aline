@@ -14,10 +14,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by Manuel on 03.01.2017.
+ * Generates and transforms all Bill models & DTOs
  */
 public class BillFactory {
 
+    /**
+     * Generates a BillDTO for the given seminar
+     *
+     * @return BillDTO
+     */
     public static BillDTO generateBill(Seminar seminar) {
         BillDTO bill = new BillDTO();
         bill.setSeminar(SeminarFactory.toSeminarDTO(seminar));
