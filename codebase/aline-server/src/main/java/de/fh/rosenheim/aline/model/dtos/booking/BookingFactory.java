@@ -12,8 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Generates and transforms all Booking models & DTOs
+ */
 public class BookingFactory {
 
+    /**
+     * Generates a BookingDTO for the given booking
+     *
+     * @return BookingDTO
+     */
     public static BookingDTO toBookingDTO(Booking booking) {
         return BookingDTO.builder()
                 .id(booking.getId())
@@ -25,6 +33,11 @@ public class BookingFactory {
                 .build();
     }
 
+    /**
+     * Generates a UserBookingDTO for the given booking
+     *
+     * @return UserBookingDTO
+     */
     public static UserBookingDTO toUserBookingDTO(Booking booking) {
         return UserBookingDTO.builder()
                 .id(booking.getId())
@@ -38,6 +51,12 @@ public class BookingFactory {
                 .build();
     }
 
+    /**
+     * Generates BookingSummaryDTOs for the given bookings
+     *
+     * @param bookings a group of bookings that should be grouped by year
+     * @return List of BookingSummaryDTO
+     */
     public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
 
         Map<Integer, List<UserBookingDTO>> sortedBookings = bookings.stream()
