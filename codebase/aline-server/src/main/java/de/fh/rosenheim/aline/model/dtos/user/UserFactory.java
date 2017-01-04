@@ -9,8 +9,16 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Generates and transforms all User models & DTOs
+ */
 public class UserFactory {
 
+    /**
+     * Generate a UserDTO from the given user
+     *
+     * @return UserDTO
+     */
     static public UserDTO toUserDTO(User user) {
         if (user == null) {
             return null;
