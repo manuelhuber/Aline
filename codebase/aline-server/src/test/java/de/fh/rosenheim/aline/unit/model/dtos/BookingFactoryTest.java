@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -156,15 +155,17 @@ public class BookingFactoryTest {
                 .isEqualTo(BookingFactory.toBookingSummaryDTOs(Arrays.asList(booking1, booking2, booking3)).hashCode());
 
         assertThat(dtos.size()).isEqualTo(2);
-        Optional<BookingSummaryDTO> dto2018 = dtos.stream().filter(dto -> dto.getYear() == 2018).findAny();
-        assertThat(dto2018.isPresent()).isTrue();
-        assertThat(dto2018.get().getGrantedSpending()).isEqualTo(789);
-        assertThat(dto2018.get().getPlannedSpending()).isEqualTo(789 + 123);
-        assertThat(dto2018.get().getBookings().size()).isEqualTo(2);
-        Optional<BookingSummaryDTO> dto2019 = dtos.stream().filter(dto -> dto.getYear() == 2019).findAny();
-        assertThat(dto2019.isPresent()).isTrue();
-        assertThat(dto2019.get().getGrantedSpending()).isEqualTo(0);
-        assertThat(dto2019.get().getPlannedSpending()).isEqualTo(456);
-        assertThat(dto2019.get().getBookings().size()).isEqualTo(1);
+
+        BookingSummaryDTO dto2019 = dtos.get(0);
+        assertThat(dto2019.getYear()).isEqualTo(2019);
+        assertThat(dto2019.getGrantedSpending()).isEqualTo(0);
+        assertThat(dto2019.getPlannedSpending()).isEqualTo(456);
+        assertThat(dto2019.getBookings().size()).isEqualTo(1);
+
+        BookingSummaryDTO dto2018 = dtos.get(1);
+        assertThat(dto2018.getYear()).isEqualTo(2018);
+        assertThat(dto2018.getGrantedSpending()).isEqualTo(789);
+        assertThat(dto2018.getPlannedSpending()).isEqualTo(789 + 123);
+        assertThat(dto2018.getBookings().size()).isEqualTo(2);
     }
 }

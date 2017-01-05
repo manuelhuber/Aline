@@ -6,10 +6,7 @@ import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.util.SeminarUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,7 +56,7 @@ public class BookingFactory {
      * Generates BookingSummaryDTOs for the given bookings
      *
      * @param bookings a group of bookings that should be grouped by year
-     * @return List of BookingSummaryDTO
+     * @return List of BookingSummaryDTO, sorted by year (current year first)
      */
     public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
         List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
@@ -84,6 +81,9 @@ public class BookingFactory {
                         .mapToLong(UserBookingDTO::getSeminarCost).sum())
                 .build()
         ));
+
+        bookingSummaries.sort(Comparator.comparingInt(BookingSummaryDTO::getYear).reversed());
+
         return bookingSummaries;
     }
 }
