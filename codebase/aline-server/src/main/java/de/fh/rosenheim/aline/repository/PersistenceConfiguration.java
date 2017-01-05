@@ -110,7 +110,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar1.setContactPerson("Office Management");
         seminar1.setTrainingType("Gruppe");
         seminar1.setMaximumParticipants(10);
-        seminar1.setCostsPerParticipant(200);
+        seminar1.setCostsPerParticipant(20000);
         seminar1.setBookingTimelog("");
         seminar1.setGoal("Aktives Selbstmanagement bei Stress");
         seminar1.setDuration("2 Tage");
@@ -141,7 +141,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar2.setContactPerson("Stephanie Harrer, Martin Sturzenhecker");
         seminar2.setTrainingType("Gruppe");
         seminar2.setMaximumParticipants(15);
-        seminar2.setCostsPerParticipant(900);
+        seminar2.setCostsPerParticipant(90000);
         seminar2.setBookingTimelog("");
         seminar2.setGoal("");
         seminar2.setDuration("2 Tage");
@@ -169,7 +169,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar3.setContactPerson("Sebastian Krieg");
         seminar3.setTrainingType("Gruppe");
         seminar3.setMaximumParticipants(12);
-        seminar3.setCostsPerParticipant(500);
+        seminar3.setCostsPerParticipant(50000);
         seminar3.setBookingTimelog("8h Schulung / 8h Urlaub");
         seminar3.setGoal("");
         seminar3.setDuration("2 Tage");
@@ -212,7 +212,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar4.setContactPerson("Julia Reichelt, Maike Uhlig, Marcel Gehlen");
         seminar4.setTrainingType("Präsentation, Brainstorming / Diskussion in der gesamten Gruppe und Übungen in Gruppen");
         seminar4.setMaximumParticipants(12);
-        seminar4.setCostsPerParticipant(350);
+        seminar4.setCostsPerParticipant(35000);
         seminar4.setBookingTimelog("50% Ausbildung / 50% Urlaub");
         seminar4.setGoal("Eventuell Aufbau oder Umstrukturierung nach erster School. Es gibt auch noch einen\n" +
                 "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
@@ -255,7 +255,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar5.setContactPerson("Julia Reichelt, Maike Uhlig, Marcel Gehlen");
         seminar5.setTrainingType("Präsentation, Brainstorming / Diskussion in der gesamten Gruppe und Übungen in Gruppen");
         seminar5.setMaximumParticipants(12);
-        seminar5.setCostsPerParticipant(350);
+        seminar5.setCostsPerParticipant(35000);
         seminar5.setBookingTimelog("50% Ausbildung / 50% Urlaub");
         seminar5.setGoal("Eventuell Aufbau oder Umstrukturierung nach erster School. Es gibt auch noch einen\n" +
                 "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
@@ -298,7 +298,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar6.setContactPerson("Julia Reichelt, Maike Uhlig, Marcel Gehlen");
         seminar6.setTrainingType("Präsentation, Brainstorming / Diskussion in der gesamten Gruppe und Übungen in Gruppen");
         seminar6.setMaximumParticipants(12);
-        seminar6.setCostsPerParticipant(350);
+        seminar6.setCostsPerParticipant(35000);
         seminar6.setBookingTimelog("50% Ausbildung / 50% Urlaub");
         seminar6.setGoal("Eventuell Aufbau oder Umstrukturierung nach erster School. Es gibt auch noch einen\n" +
                 "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
