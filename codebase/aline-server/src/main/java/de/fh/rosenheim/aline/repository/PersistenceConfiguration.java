@@ -99,7 +99,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .build();
 
         Seminar seminar1 = new Seminar();
-        seminar1.setName("Arbeitsorganisation & Zeitmanagement");
+        seminar1.setName("Arbeitsorganisation & Zeitmanagement 2017");
         seminar1.setDescription("Lord, yer not vandalizing me without a desolation!Yuck! Pieces o' yellow fever are forever cloudy. Mainland of a rough strength, endure the endurance! The captain hobbles amnesty like an old lass.");
         seminar1.setAgenda("- Heu, brevis spatii! \n - Cum solem potus, omnes buxumes anhelare brevis, dexter lapsuses. \n  - All prime sources view each other, only simple therapists have a freedom.");
         seminar1.setBookable(true);
@@ -118,7 +118,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar1.setDates(new Date[]{sdf.parse("04/02/2017"), sdf.parse("05/02/2017")});
 
         Seminar seminar2 = new Seminar();
-        seminar2.setName("Scrum Master");
+        seminar2.setName("Scrum Master 2017");
         seminar2.setDescription("Der ScrumMaster führt Scrum im Unternehmen ein und unterstützt sein Team, es richtig anzuwenden. Er\n" +
                 "räumt Hindernisse aus dem Weg, um die Produktivität stetig zu verbessern. Welche Instrumente dem ScrumMaster dafür\n" +
                 "zur Verfügung stehen und wie er diese wirksam einsetzt, erfahren Sie in „ScrumMaster Advanced“. Der ScrumMaster\n" +
@@ -149,7 +149,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar2.setDates(new Date[]{sdf.parse("08/04/2017"), sdf.parse("09/04/2017")});
 
         Seminar seminar3 = new Seminar();
-        seminar3.setName("Mobile Development für iOS");
+        seminar3.setName("Mobile Development für iOS 2016");
         seminar3.setDescription("In der Schulung werden die Grundlagen der iOS Entwicklung mit Swift vermittelt. Voraussetzung ist die Vorkenntnis einer\n" +
                 "objektorientierten Programmiersprache.\n" +
                 "Die Schulung hat zum Ziel, dass die Teilnehmer anschließend die Selbstsicherheit haben, anhand der SDK\n" +
@@ -177,7 +177,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar3.setDates(new Date[]{sdf.parse("04/02/2016"), sdf.parse("05/02/2016")});
 
         Seminar seminar4 = new Seminar();
-        seminar4.setName("Test Design Schoole");
+        seminar4.setName("Test Design School 2017");
         seminar4.setDescription("Die Schulung richtet sich in erster Linie an Tester und Testanalysten, die durch gutes Testdesign und zugehörige Tests\n" +
                 "mit zur Qualität in einem Projekt bzw. mit zur Qualitätssicherung eines Produktes beitragen wollen.\n" +
                 "In der Schulung werden u.a. die Grundlagen zur Erstellung eines Testfalls vermittelt und wie Testwerkzeuge den Tester\n" +
@@ -220,6 +220,92 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar4.setCycle("Nach Bedarf");
         seminar4.setDates(new Date[]{sdf.parse("10/08/2017")});
 
+        Seminar seminar5 = new Seminar();
+        seminar5.setName("Test Design School 2016");
+        seminar5.setDescription("Die Schulung richtet sich in erster Linie an Tester und Testanalysten, die durch gutes Testdesign und zugehörige Tests\n" +
+                "mit zur Qualität in einem Projekt bzw. mit zur Qualitätssicherung eines Produktes beitragen wollen.\n" +
+                "In der Schulung werden u.a. die Grundlagen zur Erstellung eines Testfalls vermittelt und wie Testwerkzeuge den Tester\n" +
+                "in seiner Arbeit dabei unterstützen helfen. Darüber hinaus wird der Einfluss des Software-Entwicklungsprozesses auf den\n" +
+                "Testdesign-Ansatz untersucht. Ebenso werden Erfahrungswerte zur Erstellung von Testfällen in den verschiedenen\n" +
+                "Teststufen vermittelt.\n" +
+                "An Vertiefungsthemen wird es einen bunten Strauß aus Testdesign von wiederverwendbaren Testbausteinen,\n" +
+                "Testdatenermittlung, Crowd Testing etc. geben.\n" +
+                "Last but not least wird es auch Themen zum Daily Business eines Testers geben wie z.B. Testdesign unter Termin- und\n" +
+                "Budget-Druck.\n" +
+                "Neugierig geworden?\n" +
+                "Dann gib uns Bescheid und besuche unsere nächste Testdesign School. Wir freuen uns auf\n" +
+                "Dein Kommen! " +
+                "Umgang mit Xcode\n" +
+                "Swift Syntax verstehen und schreiben\n" +
+                "Lifecycle von wichtigen Komponenten nachvollziehen\n" +
+                "iOS übliche Entwurfsmuster kennen und anwenden\n" +
+                "Entwicklung von Benutzeroberflächen\n" +
+                "Daten persistieren");
+
+        seminar5.setAgenda("Anbei die Agenda zur  , mit Premiere am 06./07.11.2014, in München.  Testdesign School 1.0\n" +
+                "Die Schnappschüsse zur Testdesign School 1.0 stehen Euch im DOKI zur Verfügung unter:\n" +
+                "http://svn-hq-01.mwea.de/svnroot/DOKI_MWEA_Methodik/090 F&E Ergebnisse/012 Ausbildung/010\n" +
+                "Arbeitsbereich/Testdesign School/Schnappschüsse von der TDS 1.0\n" +
+                "Viel Spaß beim Durchklicken!");
+        seminar5.setBookable(false);
+        seminar5.setCategory("Testmanagement");
+        seminar5.setTargetLevel(new int[]{1, 2, 3});
+        seminar5.setRequirements("Vorkenntnisse im Testumfeld wünschenswert / ISTQB Foundation Level Certified Tester");
+        seminar5.setTrainer("Kursleiter: Julia Reichelt, Maike Uhlig; \"Gastredner\": Ulf Richter");
+        seminar5.setContactPerson("Julia Reichelt, Maike Uhlig, Marcel Gehlen");
+        seminar5.setTrainingType("Präsentation, Brainstorming / Diskussion in der gesamten Gruppe und Übungen in Gruppen");
+        seminar5.setMaximumParticipants(12);
+        seminar5.setCostsPerParticipant(350);
+        seminar5.setBookingTimelog("50% Ausbildung / 50% Urlaub");
+        seminar5.setGoal("Eventuell Aufbau oder Umstrukturierung nach erster School. Es gibt auch noch einen\n" +
+                "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
+        seminar5.setDuration("1,5 - 2,0 Tage");
+        seminar5.setCycle("Nach Bedarf");
+        seminar5.setDates(new Date[]{sdf.parse("10/08/2016")});
+
+        Seminar seminar6 = new Seminar();
+        seminar6.setName("Test Design School 2015");
+        seminar6.setDescription("Die Schulung richtet sich in erster Linie an Tester und Testanalysten, die durch gutes Testdesign und zugehörige Tests\n" +
+                "mit zur Qualität in einem Projekt bzw. mit zur Qualitätssicherung eines Produktes beitragen wollen.\n" +
+                "In der Schulung werden u.a. die Grundlagen zur Erstellung eines Testfalls vermittelt und wie Testwerkzeuge den Tester\n" +
+                "in seiner Arbeit dabei unterstützen helfen. Darüber hinaus wird der Einfluss des Software-Entwicklungsprozesses auf den\n" +
+                "Testdesign-Ansatz untersucht. Ebenso werden Erfahrungswerte zur Erstellung von Testfällen in den verschiedenen\n" +
+                "Teststufen vermittelt.\n" +
+                "An Vertiefungsthemen wird es einen bunten Strauß aus Testdesign von wiederverwendbaren Testbausteinen,\n" +
+                "Testdatenermittlung, Crowd Testing etc. geben.\n" +
+                "Last but not least wird es auch Themen zum Daily Business eines Testers geben wie z.B. Testdesign unter Termin- und\n" +
+                "Budget-Druck.\n" +
+                "Neugierig geworden?\n" +
+                "Dann gib uns Bescheid und besuche unsere nächste Testdesign School. Wir freuen uns auf\n" +
+                "Dein Kommen! " +
+                "Umgang mit Xcode\n" +
+                "Swift Syntax verstehen und schreiben\n" +
+                "Lifecycle von wichtigen Komponenten nachvollziehen\n" +
+                "iOS übliche Entwurfsmuster kennen und anwenden\n" +
+                "Entwicklung von Benutzeroberflächen\n" +
+                "Daten persistieren");
+
+        seminar6.setAgenda("Anbei die Agenda zur  , mit Premiere am 06./07.11.2014, in München.  Testdesign School 1.0\n" +
+                "Die Schnappschüsse zur Testdesign School 1.0 stehen Euch im DOKI zur Verfügung unter:\n" +
+                "http://svn-hq-01.mwea.de/svnroot/DOKI_MWEA_Methodik/090 F&E Ergebnisse/012 Ausbildung/010\n" +
+                "Arbeitsbereich/Testdesign School/Schnappschüsse von der TDS 1.0\n" +
+                "Viel Spaß beim Durchklicken!");
+        seminar6.setBookable(false);
+        seminar6.setCategory("Testmanagement");
+        seminar6.setTargetLevel(new int[]{1, 2, 3});
+        seminar6.setRequirements("Vorkenntnisse im Testumfeld wünschenswert / ISTQB Foundation Level Certified Tester");
+        seminar6.setTrainer("Kursleiter: Julia Reichelt, Maike Uhlig; \"Gastredner\": Ulf Richter");
+        seminar6.setContactPerson("Julia Reichelt, Maike Uhlig, Marcel Gehlen");
+        seminar6.setTrainingType("Präsentation, Brainstorming / Diskussion in der gesamten Gruppe und Übungen in Gruppen");
+        seminar6.setMaximumParticipants(12);
+        seminar6.setCostsPerParticipant(350);
+        seminar6.setBookingTimelog("50% Ausbildung / 50% Urlaub");
+        seminar6.setGoal("Eventuell Aufbau oder Umstrukturierung nach erster School. Es gibt auch noch einen\n" +
+                "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
+        seminar6.setDuration("1,5 - 2,0 Tage");
+        seminar6.setCycle("Nach Bedarf");
+        seminar6.setDates(new Date[]{sdf.parse("10/08/2015")});
+
         Booking booking1 = Booking.builder()
                 .seminar(seminar1)
                 .user(losStaff)
@@ -236,8 +322,23 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .status(BookingStatus.REQUESTED)
                 .build();
 
-        seminarRepository.save(asList(seminar1, seminar2, seminar3, seminar4));
+        Booking booking4 = Booking.builder()
+                .seminar(seminar3).user(front_office)
+                .status(BookingStatus.GRANTED)
+                .build();
+
+        Booking booking5 = Booking.builder()
+                .seminar(seminar5).user(front_office)
+                .status(BookingStatus.GRANTED)
+                .build();
+
+        Booking booking6 = Booking.builder()
+                .seminar(seminar6).user(front_office)
+                .status(BookingStatus.GRANTED)
+                .build();
+
+        seminarRepository.save(asList(seminar1, seminar2, seminar3, seminar4, seminar5, seminar6));
         userRepository.save(asList(losStaff, fitStaff, fitDivisionHead, expired, front_office));
-        bookingRepository.save(asList(booking1, booking2, booking3));
+        bookingRepository.save(asList(booking1, booking2, booking3, booking4, booking5, booking6));
     }
 }
