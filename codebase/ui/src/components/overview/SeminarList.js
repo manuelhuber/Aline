@@ -18,8 +18,9 @@ export class SeminarList extends React.Component {
         this.showPastSeminars = this.showPastSeminars.bind(this);
         this.state = {
             seminars: [],
-            filteredSeminars: [],
+            shownSeminars: [],
             pastSeminars: [],
+            shownPastSeminars: [],
             isFrontOffice: false,
             showPastSeminars: false
         }
@@ -58,13 +59,14 @@ export class SeminarList extends React.Component {
     saveSeminars(result) {
         this.setState({
             seminars: result,
-            filteredSeminars: result
+            shownSeminars: result
         })
     }
 
     savePastSeminars(result) {
         this.setState({
-            pastSeminars: result
+            pastSeminars: result,
+            shownPastSeminars: result
         })
     }
 
@@ -72,50 +74,46 @@ export class SeminarList extends React.Component {
         this.setState({
             showPastSeminars: showPastSeminars
         });
-        if (showPastSeminars === true) {
-            let pastSeminars = document.getElementsByClassName('past-seminar');
-            for (let i = 0; i < pastSeminars.length; i++) {
-                pastSeminars[i].classList.remove('invisible');
-            }
-        }
-        else {
-            let pastSeminars = document.getElementsByClassName('past-seminar');
-            for (let i = 0; i < pastSeminars.length; i++) {
-                pastSeminars[i].classList.add('invisible');
-            }
-        }
     }
 
     searchForText(textToSearchFor) {
-        let filteredSeminars = this.state.seminars.filter(seminar => JSON.stringify(seminar).toLowerCase().includes(textToSearchFor.toLowerCase()));
+        let shownSeminars = this.state.seminars.filter(seminar => JSON.stringify(seminar).toLowerCase().includes(textToSearchFor.toLowerCase()));
         this.setState({
-            filteredSeminars: filteredSeminars
+            shownSeminars: shownSeminars
         })
     }
 
     filterSeminars(category, targetLevel) {
-        let filteredSeminars = [];
+        let shownSeminars = [];
+        let shownPastSeminars = [];
         //Category yes && targetLevel no
         if (category && !targetLevel) {
-            filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+            shownSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+            shownPastSeminars = this.state.pastSeminars.filter(seminar => seminar.category === category);
         }
         //Category no && targetLevel yes
         else if (!category && targetLevel) {
-            filteredSeminars = this.state.seminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
+            shownSeminars = this.state.seminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
+            shownPastSeminars = this.state.pastSeminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
         }
         //Category yes && targetLevel yes
         else if (category && targetLevel) {
-            filteredSeminars = this.state.seminars.filter(seminar => seminar.category === category);
-            filteredSeminars = filteredSeminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
+            shownSeminars = this.state.seminars.filter(seminar => seminar.category === category);
+            shownSeminars = shownSeminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
+
+            shownPastSeminars = this.state.pastSeminars.filter(seminar => seminar.category === category);
+            shownPastSeminars = shownPastSeminars.filter(seminar => seminar.targetLevel.includes(targetLevel));
         }
         this.setState({
-            filteredSeminars: filteredSeminars
-        })
+            shownSeminars: shownSeminars,
+            shownPastSeminars: shownPastSeminars
+        });
     }
 
     clearFilter() {
         this.setState({
-            filteredSeminars: this.state.seminars
+            shownSeminars: this.state.seminars,
+            shownPastSeminars: this.state.pastSeminars
         })
     }
 
@@ -133,9 +131,9 @@ export class SeminarList extends React.Component {
                         </Link>
                     </div>
                     }
-                    { this.state.filteredSeminars.map(this.renderSeminar) }
-                    { this.state.isFrontOffice && this.state.pastSeminars.map(this.renderPastSeminar) }
-                    { ((this.state.filteredSeminars.length < 1 ) && ((this.state.pastSeminars.length < 1) || !(this.state.showPastSeminars))) &&
+                    { this.state.shownSeminars.map(this.renderSeminar) }
+                    { (this.state.isFrontOffice && this.state.showPastSeminars) && this.state.shownPastSeminars.map(this.renderPastSeminar) }
+                    { ((this.state.shownSeminars.length < 1 ) && ((this.state.shownPastSeminars.length < 1) || !(this.state.showPastSeminars))) &&
                     <div className="no-seminar-found">
                         <i className="material-icons md-36">sentiment_neutral</i>
                         <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>

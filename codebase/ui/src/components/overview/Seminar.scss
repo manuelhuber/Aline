@@ -29,9 +29,6 @@ $button-color: #EB0564;
     //Past seminar tile styling
     &.past-seminar{
       opacity: 0.5;
-      &.invisible{
-        display: none;
-      }
     }
   }
   .add-seminar-tile {
