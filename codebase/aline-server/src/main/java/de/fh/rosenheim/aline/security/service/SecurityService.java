@@ -74,21 +74,6 @@ public class SecurityService {
     }
 
     /**
-     * Is the given principal the division head of the given user
-     */
-    public boolean isHeadOfDivision(SecurityUser principal, String division) {
-        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
-                principal.getDivision().equals(division);
-    }
-
-    /**
-     * Does the user data belong to the given principal
-     */
-    public boolean isSelf(SecurityUser principal, String userName) {
-        return principal.getUsername().equals(userName);
-    }
-
-    /**
      * Checks if the given principal has front office authorities
      */
     public boolean isCurrentUserFrontOffice() {
@@ -103,17 +88,32 @@ public class SecurityService {
     }
 
     /**
-     * Checks if the given principal has division head authorities
-     */
-    public boolean isDivisionHead(SecurityUser principal) {
-        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
-    }
-
-    /**
      * Checks if the given principal has TOP_DOG authorities
      */
     public boolean isTopDog(String username) {
         return getUser(username).getAuthorities().contains(new SimpleGrantedAuthority(Authorities.TOP_DOG));
+    }
+
+    /**
+     * Checks if the given principal has division head authorities
+     */
+    private boolean isDivisionHead(SecurityUser principal) {
+        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD));
+    }
+
+    /**
+     * Is the given principal the division head of the given user
+     */
+    private boolean isHeadOfDivision(SecurityUser principal, String division) {
+        return principal.getAuthorities().contains(new SimpleGrantedAuthority(Authorities.DIVISION_HEAD)) &&
+                principal.getDivision().equals(division);
+    }
+
+    /**
+     * Does the user data belong to the given principal
+     */
+    private boolean isSelf(SecurityUser principal, String userName) {
+        return principal.getUsername().equals(userName);
     }
 
     /**

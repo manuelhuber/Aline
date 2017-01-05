@@ -13,10 +13,10 @@ public class AlineServerApplication {
         SpringApplication.run(AlineServerApplication.class, args);
     }
 
-    @Bean
     /**
      * Allows the inspection of the h2 database via browser
      */
+    @Bean
     public ServletRegistrationBean h2servletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
         registration.addUrlMappings("/console/*");
