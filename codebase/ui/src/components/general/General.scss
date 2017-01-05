@@ -18,16 +18,16 @@
     margin-left: 20px;
     vertical-align: middle;
   }
-  .dropdown, button{
+  .dropdown, button {
     vertical-align: middle;
   }
-  input[type=checkbox]{
-    font-size:16px;
+  input[type=checkbox] {
+    font-size: 16px;
   }
 }
 
 .error-page,
-.not-found{
+.not-found {
   margin: 0 15px 0 15px;
 }
 
@@ -49,4 +49,9 @@
     border-bottom: 1px solid $gray;
     margin-bottom: 20px;
   }
+}
+
+//Smaller text showing informations/tipps for the user
+.tipp-text {
+  font-size: 80%;
 }

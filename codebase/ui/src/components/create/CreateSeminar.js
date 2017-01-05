@@ -381,6 +381,7 @@ export class CreateSeminar extends React.Component {
                             <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen} contentStyle={dialogStyle}
                                     onRequestClose={this.close}>
                                 <h3>Kopiere die Daten aus einem vorherigen Seminar:</h3>
+                                <p className="tipp-text">(Tipp: Positioniere den Mauszeiger über gekürzt dargestellten Texten, um den kompletten Text zu sehen)</p>
                                 <PastSeminarList chooseSeminar={this.chooseSeminarToCopy}/>
                             </Dialog>
                         </RaisedButton>

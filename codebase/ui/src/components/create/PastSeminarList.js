@@ -31,11 +31,11 @@ export class PastSeminarList extends React.Component {
 
     renderRow(seminar) {
         return (
-            <TableRow>
+            <TableRow key={seminar.id}>
                 <TableRowColumn>{seminar.id}</TableRowColumn>
-                <TableRowColumn>{seminar.name}</TableRowColumn>
-                <TableRowColumn>{seminar.trainer}</TableRowColumn>
-                <TableRowColumn>{seminar.category}</TableRowColumn>
+                <TableRowColumn title={seminar.name}>{seminar.name}</TableRowColumn>
+                <TableRowColumn title={seminar.trainer}>{seminar.trainer}</TableRowColumn>
+                <TableRowColumn title={seminar.category}>{seminar.category}</TableRowColumn>
                 <TableRowColumn><FlatButton label="Auswählen" primary={true} onClick={this.chooseSeminar} name={seminar.id}/></TableRowColumn>
             </TableRow>
         )
