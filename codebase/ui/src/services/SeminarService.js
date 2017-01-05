@@ -19,7 +19,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -35,7 +35,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
 
@@ -52,7 +52,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -68,7 +68,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -84,7 +84,7 @@ module.exports = {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             }
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -100,7 +100,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -117,7 +117,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: JSON.stringify(seminar)
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
     /**
      * Delete the seminar with the given id
@@ -132,7 +132,7 @@ module.exports = {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             }
-        }).then(Util.checkStatus)
+        }).then(Util.checkStatus).then(Util.checkStatus)
     },
 
     /**

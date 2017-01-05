@@ -88,7 +88,7 @@ export class SearchBar extends React.Component {
 
     renderSelectMenuItems(value) {
         return (
-            <MenuItem value={value} primaryText={value} id={value}/>
+            <MenuItem value={value} primaryText={value} key={value}/>
         )
     }
 
@@ -105,7 +105,7 @@ export class SearchBar extends React.Component {
         let showRelevantEmployees = !(this.state.relEmployee)
         this.setState({
             relEmployee:showRelevantEmployees
-        })
+        });
         this.props.showRelevantEmployees(showRelevantEmployees); //Call the handed method
     }
 

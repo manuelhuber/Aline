@@ -18,7 +18,6 @@ var SeminarTexts = {
     contactPerson: 'Ansprechpartner bei Interesse',
     trainingType: 'Schulungsformat',
     maximumParticipants: 'Maximale Teilnehmeranzahl',
-    costsPerParticipant: 'Kosten pro Teilnehmer (in Euro)',
     goal: 'Geplante Weiterentwicklungen',
     duration: 'Dauer',
     cycle: 'Turnus',
@@ -37,7 +36,6 @@ export class SeminarDetail extends React.Component {
         this.handleSeminarUpdate = this.handleSeminarUpdate.bind(this);
         this.renderProperties = this.renderProperties.bind(this);
         this.renderDates = this.renderDates.bind(this);
-        this.renderBookings = this.renderBookings.bind(this);
 
         this.checkIfCurrentUserHasAlreadyBooked = this.checkIfCurrentUserHasAlreadyBooked.bind(this);
         this.maximumParticipantsAchieved = this.maximumParticipantsAchieved.bind(this);
@@ -63,10 +61,7 @@ export class SeminarDetail extends React.Component {
     }
 
     maximumParticipantsAchieved() {
-        if (this.state.seminar.bookings) {
-            return !(this.state.seminar.bookings.length <= this.state.seminar.maximumParticipants)
-        }
-        return false;
+        return this.state.seminar.activeBookings >= this.state.seminar.maximumParticipants;
     }
 
     checkIfCurrentUserHasAlreadyBooked() {
@@ -169,7 +164,7 @@ export class SeminarDetail extends React.Component {
 
     renderProperties(key) {
         return (
-            <div className="property">
+            <div className="property" key={key}>
                 <output>
                     <label>{SeminarTexts[key]}</label>
                     {this.state.seminar[key]}
@@ -179,24 +174,17 @@ export class SeminarDetail extends React.Component {
     }
 
     renderDates(date) {
+        let formattedDate = new Date(date).toLocaleDateString();
         return (
-            <p>
-                {new Date(date).toLocaleDateString()}
-            </p>
-        )
-    }
-
-    renderBookings(booking) {
-        return (
-            <p>
-                {booking.username}
+            <p key={formattedDate}>
+                {formattedDate}
             </p>
         )
     }
 
     renderTargetLevels(targetLevel) {
         return (
-            <p>
+            <p key={targetLevel}>
                 {targetLevel}
             </p>
         )
@@ -243,19 +231,20 @@ export class SeminarDetail extends React.Component {
                     <div className="output-properties">
                         { Object.keys(SeminarTexts).map(this.renderProperties)}
                         <div className="property seminar-property target-level">
-                            <label>Zielgruppe</label>
+                            <label>Zielgruppe(n)</label>
                             {this.state.seminar.targetLevel && this.state.seminar.targetLevel.map(this.renderTargetLevels)}
                         </div>
+                        <div className="property seminar-property costs-per-participant">
+                            <label>Kosten pro Teilnehmer</label>
+                            {this.state.seminar.costsPerParticipant / 100 /*divide with 100 because the backend provides in cent*/} €
+                        </div>
                         <div className="property seminar-property dates">
-                            <label>Termine</label>
+                            <label>Termin(e)</label>
                             {this.state.seminar.dates && this.state.seminar.dates.map(this.renderDates)}
                         </div>
                         <div className="property seminar-property participants">
-                            {this.state.seminar.bookings &&
-                            <label>Buchungen
-                                ({this.state.seminar.bookings.length}/{this.state.seminar.maximumParticipants})</label>
-                            }
-                            {this.state.seminar.bookings && this.state.seminar.bookings.map(this.renderBookings)}
+                            <label>Buchungen</label>
+                            {this.state.seminar.activeBookings} von {this.state.seminar.maximumParticipants}
                         </div>
                     </div>
                 }

@@ -18,8 +18,8 @@ $button-color: #EB0564;
     }
     .name {
       color: $accentColor;
-      height: 40px;
-      word-break: break-all;
+      height: 50px;
+      word-wrap: break-word
     }
     .trainer {
       height: 90px;

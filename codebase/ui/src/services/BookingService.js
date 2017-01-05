@@ -22,7 +22,7 @@ module.exports = {
                 seminarId: id,
                 userName: userName
             })
-        }).then(checkStatus).then(parseJson)
+        }).then(Util.checkStatus).then(parseJson)
     },
 
     /**
@@ -39,7 +39,7 @@ module.exports = {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             }
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 };
 
@@ -49,18 +49,4 @@ module.exports = {
  */
 function parseJson(response) {
     return response.json();
-}
-
-/**
- * Check the status of the response
- * @param response the response got by the server
- */
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response;
-    } else {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-    }
 }

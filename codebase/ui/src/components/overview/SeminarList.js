@@ -29,10 +29,12 @@ export class SeminarList extends React.Component {
         this.setState({
             isFrontOffice: AuthService.isFrontOffice()
         });
+        this.props.showLoadingIndicator(true);
         let seminars = SeminarService.getCurrentSeminars();
         seminars.then(
             result => {
                 this.saveSeminars(result);
+                this.props.showLoadingIndicator(false)
             },
             failureResult => {
                 this.props.router.replace('/error');

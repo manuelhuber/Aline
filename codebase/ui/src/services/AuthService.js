@@ -8,7 +8,7 @@ const AUTHORITIES = {
     EMPLOYEE: 'EMPLOYEE',
     DIVISION_HEAD: 'DIVISION_HEAD',
     FRONT_OFFICE: 'FRONT_OFFICE',
-    TOP_DOG: 'TOP_DOGy'
+    TOP_DOG: 'TOP_DOG'
 };
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
                 username: userName,
                 password: userPwd,
             })
-        }).then(Util.parseJson).then(result => {
+        }).then(Util.checkStatus).then(Util.parseJson).then(result => {
             if (result.token && result.user) {
                 StorageService.storeUserToken(result.token);
                 StorageService.storeCurrentUser(result.user);

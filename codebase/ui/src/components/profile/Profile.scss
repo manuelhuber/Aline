@@ -1,5 +1,6 @@
-/**------- Profile ---------**/
-.profile {
+/**------- Profile and Booking history ---------**/
+.profile,
+.booking-history {
   h3 {
     margin: 0 0 10px 0;
   }
@@ -18,12 +19,28 @@
       align-items: center;
       padding: 10px;
     }
+    .booking + .booking{
+      margin-top: 10px;
+    }
   }
 }
 
-/**------- Seminar history ---------**/
-.seminar-history {
+/**------- Booking history ---------**/
+.booking-history {
   .back-button {
     display: block;
+  }
+  .summary-item + .summary-item{
+    margin-top: 30px;
+  }
+}
+
+/**------- Total Cost Item ---------**/
+.output-properties.total-cost-item{
+  flex-wrap: nowrap;
+  align-items: center;
+  .symbol{
+    font-size: 30px;
+    padding: 0 10px 0 10px;
   }
 }

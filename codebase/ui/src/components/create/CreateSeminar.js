@@ -128,7 +128,7 @@ export class CreateSeminar extends React.Component {
                         description: result.duration || '',
                         dates: result.dates || [],
                         contactPerson: result.contactPerson || '',
-                        costsPerParticipant: result.costsPerParticipant || 0,
+                        costsPerParticipant: (result.costsPerParticipant / 100) || 0, //Backend provides the cost in cent. So we have to convert
                         cycle: result.cycle || '',
                         duration: result.duration || '',
                         goal: result.goal || '',
@@ -283,10 +283,10 @@ export class CreateSeminar extends React.Component {
             })
         }
         else {
-            //Create and fill the seminar object
+            //Create and fill the seminar object (costsPerParticipant is multiplied with 100, because the backend wants the costs in cent)
             var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, this.state.bookable, this.state.category, this.state.targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
-                this.state.costsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
+                (this.state.costsPerParticipant * 100), this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
             //Make the call
             var response;
             if (this.state.updatingExistingSeminar) {
@@ -339,7 +339,7 @@ export class CreateSeminar extends React.Component {
 
     renderPickedDates(date, index) {
         return (
-            <p>
+            <p key={index}>
                 {new Date(date).toLocaleDateString()}
                 <IconButton iconClassName="material-icons" name={index}
                             onClick={this.removeDate}>remove_circle_outline</IconButton>
@@ -349,9 +349,9 @@ export class CreateSeminar extends React.Component {
 
     renderTargetLevels(targetLevel, index) {
         return (
-            <p>
+            <p key={index}>
                 {targetLevel}
-                <IconButton iconClassName="material-icons" name={index}
+                <IconButton iconClassName="material-icons" name={index} key={index}
                             onClick={this.removeTargetLevel}>remove_circle_outline</IconButton>
             </p>
         )
@@ -359,7 +359,7 @@ export class CreateSeminar extends React.Component {
 
     renderSelectMenuItems(value) {
         return (
-            <MenuItem value={value} primaryText={value} id={value}/>
+            <MenuItem value={value} primaryText={value} key={value}/>
         )
     }
 

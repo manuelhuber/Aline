@@ -1,15 +1,14 @@
 import React from 'react';
 import UserService from '../../services/UserService';
-import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import Paper from 'material-ui/Paper';
-import Checkbox from 'material-ui/Checkbox';
+import {BookingSummaryItem} from './BookingSummaryItem';
 
 export class Profile extends React.Component {
     constructor() {
         super();
         this.saveUser = this.saveUser.bind(this);
+        this.getCurrentYearsBookingSummary = this.getCurrentYearsBookingSummary.bind(this);
         this.navigateToSeminarHistory = this.navigateToSeminarHistory.bind(this);
         this.state = {
             ownProfile: false,
@@ -17,23 +16,25 @@ export class Profile extends React.Component {
             lastName: '',
             division: '',
             authorities: '',
-            bookings: []
+            bookings: [],
+            currentYearsBookingSummary: {}
         }
     }
 
     componentDidMount() {
         var currentUser;
-        //Show other user
+        //Show profile for: other user
         if (this.props.location.query.userName) {
             currentUser = UserService.getUser(this.props.location.query.userName);
         }
-        //Show own profile
+        //Show profile for: owner
         else {
             currentUser = UserService.getUser();
             this.setState({
                 ownProfile: true
             })
         }
+        //Save User in either cases
         currentUser.then(
             result => {
                 this.saveUser(result);
@@ -45,30 +46,26 @@ export class Profile extends React.Component {
     }
 
     saveUser(userData) {
+        let currentYearsBookingSummary = this.getCurrentYearsBookingSummary(userData.bookings);
         this.setState({
             firstName: userData.firstName,
             lastName: userData.lastName,
             division: userData.division,
             authorities: userData.authorities,
-            bookings: userData.bookings
-        })
+            bookings: userData.bookings,
+            currentYearsBookingSummary: currentYearsBookingSummary
+        });
+        console.log('Saved userData: ' + userData);
     }
 
     navigateToSeminarHistory() {
         this.props.router.replace('/history');
     }
 
-    /**
-     * Booking state can be " DENIED, REQUESTED, or GRANTED
-     */
-    renderSingleBooking(booking) {
-        return (
-            <Paper className="booking" zDepth={1}>
-                <div className="name">{booking.seminarId}</div>
-                <div className="date">{ new Date(booking.created).toLocaleDateString()}</div>
-                <div className="status"><Checkbox label="Bestätigt" value={(booking.status == 'GRANTED')} disabled={true}/></div>
-            </Paper>
-        )
+    getCurrentYearsBookingSummary(bookings) {
+        return bookings.find((booking)=> {
+            return booking.year === (new Date().getFullYear());
+        });
     }
 
     render() {
@@ -81,31 +78,24 @@ export class Profile extends React.Component {
                     {!(this.state.ownProfile) &&
                     <h2>{this.state.firstName} {this.state.lastName}</h2>
                     }
-                    <h3>Gesamtkosten</h3>
-                    <div className="output-properties">
-                        <div className="property">
-                            <output>
-                                <label>Vergangene Seminare: (erfolgreich stattgefunden)</label>
-                                2000,00 €
-                            </output>
+                    {this.state.currentYearsBookingSummary.year &&
+                    <span>
+                        <div className="bookings">
+                            <h3>Meine Buchungen</h3>
+                            {this.state.ownProfile &&
+                            <span className="history-button">
+                                <FlatButton onClick={this.navigateToSeminarHistory} label="Buchungshistorie"
+                                            title={this.state.bookings.length <=1? 'Keine Buchungshistorie vorhanden': 'Zur Buchungshistorie navigieren'}
+                                            labelPosition="before" disabled={this.state.bookings.length <= 1}
+                                            icon={<FontIcon className="material-icons">subdirectory_arrow_right</FontIcon>}/>
+                            </span>
+                            }
+                            {/* Show the current years bookings */}
+                            <BookingSummaryItem bookingSummary={this.state.currentYearsBookingSummary}/>
                         </div>
-                        <div className="property">
-                            <output>
-                                <label>Geplante Seminare: (sowohl unbestätigt wie bestätigt)</label>
-                                2000,00 €
-                            </output>
-                        </div>
-                    </div>
-                    <div className="bookings">
-                        <h3>Meine Buchungen ( {new Date().getFullYear()} )</h3>
-                        <span className="history-button">
-                            <FlatButton onClick={this.navigateToSeminarHistory} label="Buchungshistorie"
-                                        labelPosition="before"
-                                        icon={<FontIcon
-                                            className="material-icons">subdirectory_arrow_right</FontIcon>}/>
-                        </span>
-                        {this.state.bookings.map(this.renderSingleBooking)}
-                    </div>
+                    </span>
+                    }
+                    {!this.state.currentYearsBookingSummary.year && <span>Keine Buchungen vorhanden.</span>}
                 </main>
             </div>
         );

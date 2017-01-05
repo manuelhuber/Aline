@@ -43,8 +43,12 @@ module.exports = {
      * @param response the response got by the server
      */
     checkStatus(response) {
-        if (!response.ok) {
-            console.log('Der Response des Servers beim Aufruf der addSeminar Methode war nicht in Ordnung:' + response);
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw error
         }
     }
 };

@@ -2,6 +2,7 @@
  * Created by Zebrata on 03.12.2016.
  */
 import StorageService from "./StorageService";
+import Util from "./Util";
 
 module.exports = {
     /**
@@ -24,11 +25,8 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
 };
 
-function parseJson(response) {
-    return response.json();
-}

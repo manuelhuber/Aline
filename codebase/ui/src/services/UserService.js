@@ -18,7 +18,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -35,7 +35,7 @@ module.exports = {
                 'X-Auth-Token': token
             },
             body: {}
-        }).then(Util.parseJson)
+        }).then(Util.checkStatus).then(Util.parseJson)
     },
 
     /**
@@ -53,7 +53,6 @@ module.exports = {
             body: {
                 name: userName
             }
-        }).then(Util.parseJson)
-    },
-
+        }).then(Util.checkStatus).then(Util.parseJson)
+    }
 };
