@@ -10,6 +10,7 @@ import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.repository.UserRepository;
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
 import de.fh.rosenheim.aline.service.UserService;
+import de.fh.rosenheim.aline.util.DateUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,8 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
 public class AuthenticationService {
 
@@ -29,13 +28,15 @@ public class AuthenticationService {
     private final UserDetailsService userDetailsService;
     private final TokenUtils tokenUtils;
     private final UserService userService;
+    private final UserFactory userFactory;
 
-    public AuthenticationService(UserRepository u, TokenUtils t, AuthenticationManager a, UserDetailsService ud, UserService userService) {
+    public AuthenticationService(UserRepository u, TokenUtils t, AuthenticationManager a, UserDetailsService ud, UserService userService, UserFactory userFactory) {
         this.userRepository = u;
         this.tokenUtils = t;
         this.authenticationManager = a;
         this.userDetailsService = ud;
         this.userService = userService;
+        this.userFactory = userFactory;
     }
 
     /**
@@ -61,7 +62,7 @@ public class AuthenticationService {
         String token = this.tokenUtils.generateToken(userDetails);
         return new AuthenticationDTO(
                 token,
-                UserFactory.toUserDTO(userService.getUserByName(username))
+                userFactory.toUserDTO(userService.getUserByName(username))
         );
     }
 
@@ -86,7 +87,7 @@ public class AuthenticationService {
             String refreshedToken = this.tokenUtils.refreshToken(token);
             return new AuthenticationDTO(
                     refreshedToken,
-                    UserFactory.toUserDTO(userService.getUserByName(user.getUsername()))
+                    userFactory.toUserDTO(userService.getUserByName(user.getUsername()))
             );
         } else throw invalidToken();
     }
@@ -98,8 +99,9 @@ public class AuthenticationService {
         try {
             securityUser = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
             if (this.tokenUtils.isTokenValid(token, securityUser)) {
+                DateUtil dateUtil = new DateUtil();
                 User user = this.userRepository.findByUsername(username);
-                user.setLastLogout(new Date());
+                user.setLastLogout(dateUtil.getCurrentDate());
                 this.userRepository.save(user);
             } else throw invalidToken();
         } catch (AuthenticationException e) {

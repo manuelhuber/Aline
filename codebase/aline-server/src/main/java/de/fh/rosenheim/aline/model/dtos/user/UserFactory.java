@@ -15,12 +15,18 @@ import java.util.stream.Collectors;
  */
 public class UserFactory {
 
+    private final BookingFactory bookingFactory;
+
+    public UserFactory(BookingFactory bookingFactory) {
+        this.bookingFactory = bookingFactory;
+    }
+
     /**
      * Generate a UserDTO from the given user
      *
      * @return UserDTO
      */
-    static public UserDTO toUserDTO(User user) {
+    public UserDTO toUserDTO(User user) {
         if (user == null) {
             return null;
         }
@@ -37,7 +43,7 @@ public class UserFactory {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
 
-        List<BookingSummaryDTO> bookings = BookingFactory.toBookingSummaryDTOs(user.getBookings());
+        List<BookingSummaryDTO> bookings = bookingFactory.toBookingSummaryDTOs(user.getBookings());
         dto.setBookings(bookings);
 
         return dto;

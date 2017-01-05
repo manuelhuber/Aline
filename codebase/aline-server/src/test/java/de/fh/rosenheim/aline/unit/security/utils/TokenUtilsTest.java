@@ -2,6 +2,7 @@ package de.fh.rosenheim.aline.unit.security.utils;
 
 import de.fh.rosenheim.aline.model.security.SecurityUser;
 import de.fh.rosenheim.aline.security.utils.TokenUtils;
+import de.fh.rosenheim.aline.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +18,12 @@ public class TokenUtilsTest {
     private static final long EXPIRATION_IN_SECONDS = 10000;
     private TokenUtils tokenUtils;
     private UserDetails userDetails;
+    private DateUtil dateUtil;
 
     @Before
     public void setUp() {
-        tokenUtils = new TokenUtils();
+        dateUtil = new DateUtil();
+        tokenUtils = new TokenUtils(dateUtil);
         ReflectionTestUtils.setField(tokenUtils, "secret", "foobar123");
         ReflectionTestUtils.setField(tokenUtils, "expiration", EXPIRATION_IN_SECONDS);
         userDetails = new SecurityUser("John", null, null, null, null, null);

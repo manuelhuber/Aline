@@ -18,19 +18,25 @@ import java.util.stream.Collectors;
  */
 public class BillFactory {
 
+    private final UserFactory userFactory;
+
+    public BillFactory(UserFactory userFactory) {
+        this.userFactory = userFactory;
+    }
+
     /**
      * Generates a BillDTO for the given seminar
      *
      * @return BillDTO
      */
-    public static BillDTO generateBill(Seminar seminar) {
+    public BillDTO generateBill(Seminar seminar) {
         BillDTO bill = new BillDTO();
         bill.setSeminar(SeminarFactory.toSeminarDTO(seminar));
         List<UserDTO> users = seminar.getBookings()
                 .stream()
                 .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED))
                 .map(Booking::getUser)
-                .map(UserFactory::toUserDTO)
+                .map(userFactory::toUserDTO)
                 .collect(Collectors.toList());
         int participantCount = users.size();
         bill.setParticipants(users);

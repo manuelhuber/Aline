@@ -28,10 +28,12 @@ public class BookingsController {
 
     private final BookingService bookingService;
     private final ControllerUtil controllerUtil;
+    private final BookingFactory bookingFactory;
 
-    public BookingsController(BookingService bookingService, ControllerUtil controllerUtil) {
+    public BookingsController(BookingService bookingService, ControllerUtil controllerUtil, BookingFactory bookingFactory) {
         this.bookingService = bookingService;
         this.controllerUtil = controllerUtil;
+        this.bookingFactory = bookingFactory;
     }
 
     // ------------------------------------------------------------------------------------------------- Booking Handler
@@ -54,7 +56,7 @@ public class BookingsController {
         String name = requestName != null && requestName.length() > 0
                 ? requestName
                 : controllerUtil.getUsername(httpServletRequest);
-        return BookingFactory.toBookingDTO(bookingService.book(bookingRequest.getSeminarId(), name));
+        return bookingFactory.toBookingDTO(bookingService.book(bookingRequest.getSeminarId(), name));
     }
 
     /**
@@ -67,7 +69,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO getBookingById(@PathVariable long id) throws NoObjectForIdException {
-        return BookingFactory.toBookingDTO(bookingService.getBooking(id));
+        return bookingFactory.toBookingDTO(bookingService.getBooking(id));
     }
 
     /**
@@ -80,7 +82,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO grantBooking(@PathVariable long id) throws NoObjectForIdException {
-        return BookingFactory.toBookingDTO(bookingService.grantBooking(id));
+        return bookingFactory.toBookingDTO(bookingService.grantBooking(id));
     }
 
     /**
@@ -93,7 +95,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO denyBooking(@PathVariable long id) throws NoObjectForIdException {
-        return BookingFactory.toBookingDTO(bookingService.denyBooking(id));
+        return bookingFactory.toBookingDTO(bookingService.denyBooking(id));
     }
 
     /**

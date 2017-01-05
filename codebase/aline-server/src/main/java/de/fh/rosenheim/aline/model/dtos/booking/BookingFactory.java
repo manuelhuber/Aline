@@ -2,8 +2,10 @@ package de.fh.rosenheim.aline.model.dtos.booking;
 
 import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.domain.BookingStatus;
+import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.util.DateUtil;
 import de.fh.rosenheim.aline.util.SeminarUtil;
 
 import java.util.*;
@@ -14,12 +16,20 @@ import java.util.stream.Collectors;
  */
 public class BookingFactory {
 
+    private final DateUtil dateUtil;
+    private final UserFactory userFactory;
+
+    public BookingFactory(DateUtil dateUtil, UserFactory userFactory) {
+        this.dateUtil = dateUtil;
+        this.userFactory = userFactory;
+    }
+
     /**
      * Generates a BookingDTO for the given booking
      *
      * @return BookingDTO
      */
-    public static BookingDTO toBookingDTO(Booking booking) {
+    public BookingDTO toBookingDTO(Booking booking) {
         return booking == null ?
                 BookingDTO.builder().build() :
                 BookingDTO.builder()
@@ -28,7 +38,7 @@ public class BookingFactory {
                         .updated(booking.getUpdated())
                         .status(booking.getStatus())
                         .seminar(SeminarFactory.toSeminarDTO(booking.getSeminar()))
-                        .user(UserFactory.toUserDTO(booking.getUser()))
+                        .user(userFactory.toUserDTO(booking.getUser()))
                         .build();
     }
 
@@ -37,19 +47,19 @@ public class BookingFactory {
      *
      * @return UserBookingDTO
      */
-    public static UserBookingDTO toUserBookingDTO(Booking booking) {
-        return booking == null ?
-                UserBookingDTO.builder().build() :
-                UserBookingDTO.builder()
-                        .id(booking.getId())
-                        .status(booking.getStatus())
-                        .created(booking.getCreated())
-                        .updated(booking.getUpdated())
-                        .seminarId(booking.getSeminar().getId())
-                        .seminarName(booking.getSeminar().getName())
-                        .seminarCost(booking.getSeminar().getCostsPerParticipant())
-                        .seminarYear(SeminarUtil.getYear(booking.getSeminar()))
-                        .build();
+    public UserBookingDTO toUserBookingDTO(Booking booking) {
+        Seminar seminar = booking.getSeminar();
+        return UserBookingDTO.builder()
+                .id(booking.getId())
+                .status(booking.getStatus())
+                .created(booking.getCreated())
+                .updated(booking.getUpdated())
+                .seminarId(seminar.getId())
+                .seminarName(seminar.getName())
+                .seminarCost(seminar.getCostsPerParticipant())
+                .seminarYear(SeminarUtil.getYear(seminar))
+                .seminarOver(SeminarUtil.getLastDate(seminar).before(dateUtil.getCurrentDate()))
+                .build();
     }
 
     /**
@@ -58,7 +68,7 @@ public class BookingFactory {
      * @param bookings a group of bookings that should be grouped by year
      * @return List of BookingSummaryDTO, sorted by year (current year first)
      */
-    public static List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
+    public List<BookingSummaryDTO> toBookingSummaryDTOs(Collection<Booking> bookings) {
         List<BookingSummaryDTO> bookingSummaries = new ArrayList<>();
 
         if (bookings == null || bookings.size() == 0) {
@@ -67,17 +77,26 @@ public class BookingFactory {
 
         // UserBookings grouped by year
         Map<Integer, List<UserBookingDTO>> sortedBookings = bookings.stream()
-                .map(BookingFactory::toUserBookingDTO)
+                .map(this::toUserBookingDTO)
                 .collect(Collectors.groupingBy(UserBookingDTO::getSeminarYear));
 
         sortedBookings.forEach((year, userBookingDTOS) -> bookingSummaries.add(BookingSummaryDTO.builder()
                 .year(year)
                 .bookings(userBookingDTOS)
-                .plannedSpending(userBookingDTOS.stream()
+                .plannedTotalSpending(userBookingDTOS.stream()
+                        // Remove all denied seminars
                         .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED))
+                        // Only allow future or past and granted seminars
+                        .filter(booking -> !booking.isSeminarOver() || booking.getStatus().equals(BookingStatus.GRANTED))
+                        .mapToLong(UserBookingDTO::getSeminarCost).sum())
+                .plannedAdditionalSpending(userBookingDTOS.stream()
+                        .filter(booking -> !booking.getStatus().equals(BookingStatus.DENIED) && !booking.isSeminarOver())
                         .mapToLong(UserBookingDTO::getSeminarCost).sum())
                 .grantedSpending(userBookingDTOS.stream()
                         .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED))
+                        .mapToLong(UserBookingDTO::getSeminarCost).sum())
+                .issuedSpending(userBookingDTOS.stream()
+                        .filter(booking -> booking.getStatus().equals(BookingStatus.GRANTED) && booking.isSeminarOver())
                         .mapToLong(UserBookingDTO::getSeminarCost).sum())
                 .build()
         ));

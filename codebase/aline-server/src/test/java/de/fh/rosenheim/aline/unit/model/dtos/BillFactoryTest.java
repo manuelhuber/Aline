@@ -7,6 +7,9 @@ import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.dtos.bill.BillDTO;
 import de.fh.rosenheim.aline.model.dtos.bill.BillFactory;
 import de.fh.rosenheim.aline.model.dtos.bill.DivisionSumDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -14,10 +17,22 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 
 public class BillFactoryTest {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+    private BillFactory billFactory;
+    private UserFactory userFactory;
+
+    @Before
+    public void setUp() {
+        userFactory = mock(UserFactory.class);
+        billFactory = new BillFactory(userFactory);
+    }
 
     @Test
     public void generateBillTest() throws ParseException {
@@ -100,9 +115,16 @@ public class BillFactoryTest {
         bookings.add(booking5);
         seminar.setBookings(bookings);
 
-        BillDTO bill = BillFactory.generateBill(seminar);
-        assertThat(bill).isEqualTo(BillFactory.generateBill(seminar));
-        assertThat(bill.hashCode()).isEqualTo(BillFactory.generateBill(seminar).hashCode());
+        given(userFactory.toUserDTO(any())).willAnswer(invocation -> {
+            User user = (User) invocation.getArguments()[0];
+            UserDTO dto = new UserDTO();
+            dto.setDivision(user.getDivision());
+            return dto;
+        });
+
+        BillDTO bill = billFactory.generateBill(seminar);
+        assertThat(bill).isEqualTo(billFactory.generateBill(seminar));
+        assertThat(bill.hashCode()).isEqualTo(billFactory.generateBill(seminar).hashCode());
 
         assertThat(bill.getParticipantCount()).isEqualTo(3);
         assertThat(bill.getParticipants()).hasSize(3);

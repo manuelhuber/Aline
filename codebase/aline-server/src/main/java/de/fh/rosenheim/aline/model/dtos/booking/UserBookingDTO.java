@@ -33,8 +33,11 @@ public class UserBookingDTO {
     private long seminarCost;
 
     @ApiModelProperty(position = 6)
-    private Date created;
+    private boolean seminarOver;
 
     @ApiModelProperty(position = 7)
+    private Date created;
+
+    @ApiModelProperty(position = 8)
     private Date updated;
 }

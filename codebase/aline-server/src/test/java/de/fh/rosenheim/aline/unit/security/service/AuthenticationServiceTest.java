@@ -3,6 +3,8 @@ package de.fh.rosenheim.aline.unit.security.service;
 import de.fh.rosenheim.aline.model.domain.User;
 import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationDTO;
 import de.fh.rosenheim.aline.model.dtos.authentication.AuthenticationRequestDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.model.exceptions.InvalidTokenException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.security.SecurityUser;
@@ -40,6 +42,7 @@ public class AuthenticationServiceTest {
     private UserDetailsService userDetailsService;
     private TokenUtils tokenUtils;
     private UserService userService;
+    private UserFactory userFactory;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -51,7 +54,8 @@ public class AuthenticationServiceTest {
         userDetailsService = mock(UserDetailsService.class);
         tokenUtils = mock(TokenUtils.class);
         userService = mock(UserService.class);
-        authenticationService = new AuthenticationService(userRepository, tokenUtils, authenticationManager, userDetailsService, userService);
+        userFactory = mock(UserFactory.class);
+        authenticationService = new AuthenticationService(userRepository, tokenUtils, authenticationManager, userDetailsService, userService, userFactory);
     }
 
     @Test
@@ -64,6 +68,9 @@ public class AuthenticationServiceTest {
         given(authenticationManager.authenticate(any())).willReturn(authentication);
         given(userService.getUserByName(any())).willReturn(User.builder().username(USERNAME).build());
         given(tokenUtils.generateToken(any())).willReturn("thetoken");
+        UserDTO user = new UserDTO();
+        user.setUserName(USERNAME);
+        given(userFactory.toUserDTO(any())).willReturn(user);
 
         AuthenticationDTO authenticationDTO = authenticationService.loginUser(generateRequest());
         assertThat(authenticationDTO.getUser().getUserName()).isEqualTo(USERNAME);
@@ -89,8 +96,11 @@ public class AuthenticationServiceTest {
         given(tokenUtils.canTokenBeRefreshed(any(), any())).willReturn(true);
         given(tokenUtils.refreshToken(any())).willReturn("freshToken");
         given(userService.getUserByName(any())).willReturn(User.builder().username(USERNAME).build());
-        SecurityUser user = new SecurityUser("John", null, null, null, null, null);
-        given(userDetailsService.loadUserByUsername(any())).willReturn(user);
+        SecurityUser securityUser = new SecurityUser("John", null, null, null, null, null);
+        given(userDetailsService.loadUserByUsername(any())).willReturn(securityUser);
+        UserDTO user = new UserDTO();
+        user.setUserName(USERNAME);
+        given(userFactory.toUserDTO(any())).willReturn(user);
 
         AuthenticationDTO fresh = authenticationService.refreshToken("foobarfoobarfoobarfoobar");
         assertThat(fresh.getUser().getUserName()).isEqualTo(USERNAME);

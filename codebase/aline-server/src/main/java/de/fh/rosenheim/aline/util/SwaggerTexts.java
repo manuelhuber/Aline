@@ -18,6 +18,8 @@ public class SwaggerTexts {
 
     public final static String ACTIVE_BOOKINGS = "All non-denied bookings (including requested but not yet granted)";
 
-    public final static String PLANNED_SPENDING = "The total cost of all granted & requested seminars. " + CURRENCY;
+    public final static String PLANNED_ADDITIONAL_SPENDING = "The total cost of all granted & requested seminars that have not taken place yet. " + CURRENCY;
+    public final static String PLANNED_TOTAL_SPENDING = "The total cost of all granted & requested seminars. " + CURRENCY;
     public final static String GRANTED_SPENDING = "The total cost of all granted seminars. " + CURRENCY;
+    public final static String ISSUED_SPENDING = "The total cost of all seminars that have already taken place. " + CURRENCY;
 }

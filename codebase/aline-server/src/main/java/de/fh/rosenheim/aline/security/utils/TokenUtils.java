@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.security.utils;
 
 import de.fh.rosenheim.aline.model.security.SecurityUser;
+import de.fh.rosenheim.aline.util.DateUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,23 +21,29 @@ public class TokenUtils {
     @Value("${token.secret}")
     private String secret;
 
+    private final DateUtil dateUtil;
+
     /**
      * Expiration in seconds
      */
     @Value("${token.expiration}")
     private Long expiration;
 
+    public TokenUtils(DateUtil dateUtil) {
+        this.dateUtil = dateUtil;
+    }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", userDetails.getUsername());
-        claims.put(CREATED, this.generateCurrentDate());
+        claims.put(CREATED, dateUtil.getCurrentDate());
         return this.generateToken(claims);
     }
 
     /**
      * Only valid tokens can be refreshed
      *
-     * @param token       JWT
+     * @param token JWT
      */
     public Boolean canTokenBeRefreshed(String token, UserDetails userDetails) {
         return isTokenValid(token, userDetails);
@@ -52,7 +59,7 @@ public class TokenUtils {
         String refreshedToken;
         try {
             final Claims claims = this.getClaimsFromToken(token);
-            claims.put(CREATED, this.generateCurrentDate());
+            claims.put(CREATED, dateUtil.getCurrentDate());
             refreshedToken = this.generateToken(claims);
         } catch (Exception e) {
             refreshedToken = null;
@@ -65,7 +72,7 @@ public class TokenUtils {
      * Logging out invalidates all previous tokens.
      * Password change invalidates all previous tokens.
      *
-     * @param token       a JWT
+     * @param token a JWT
      * @return is the token valid
      */
     public Boolean isTokenValid(String token, UserDetails userDetails) {
@@ -124,17 +131,13 @@ public class TokenUtils {
         return claims;
     }
 
-    private Date generateCurrentDate() {
-        return new Date();
-    }
-
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + this.expiration * 1000);
     }
 
     private Boolean isTokenExpired(String token) {
         final Date expiration = this.getExpirationDateFromToken(token);
-        return expiration.before(this.generateCurrentDate());
+        return expiration.before(dateUtil.getCurrentDate());
     }
 
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {

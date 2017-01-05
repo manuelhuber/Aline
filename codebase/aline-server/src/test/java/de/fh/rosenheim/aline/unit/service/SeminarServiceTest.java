@@ -2,6 +2,7 @@ package de.fh.rosenheim.aline.unit.service;
 
 import de.fh.rosenheim.aline.model.domain.Category;
 import de.fh.rosenheim.aline.model.domain.Seminar;
+import de.fh.rosenheim.aline.model.dtos.bill.BillFactory;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.model.exceptions.UnknownCategoryException;
@@ -39,6 +40,7 @@ public class SeminarServiceTest {
     private SeminarRepository seminarRepository;
     private CategoryRepository categoryRepository;
     private SeminarService seminarService;
+    private BillFactory billFactory;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     @Rule
@@ -48,7 +50,8 @@ public class SeminarServiceTest {
     public void createService() {
         seminarRepository = mock(SeminarRepository.class);
         categoryRepository = mock(CategoryRepository.class);
-        seminarService = new SeminarService(seminarRepository, categoryRepository);
+        billFactory = mock(BillFactory.class);
+        seminarService = new SeminarService(seminarRepository, categoryRepository, billFactory);
     }
 
     @Before

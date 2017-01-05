@@ -30,10 +30,12 @@ public class SeminarService {
 
     private final SeminarRepository seminarRepository;
     private final CategoryRepository categoryRepository;
+    private final BillFactory billFactory;
 
-    public SeminarService(SeminarRepository seminarRepository, CategoryRepository categoryRepository) {
+    public SeminarService(SeminarRepository seminarRepository, CategoryRepository categoryRepository, BillFactory billFactory) {
         this.seminarRepository = seminarRepository;
         this.categoryRepository = categoryRepository;
+        this.billFactory = billFactory;
     }
 
     /**
@@ -116,7 +118,7 @@ public class SeminarService {
      */
     public BillDTO getBill(long id) throws NoObjectForIdException {
         Seminar seminar = getSeminar(id);
-        BillDTO bill = BillFactory.generateBill(seminar);
+        BillDTO bill = billFactory.generateBill(seminar);
         seminar.setBillGenerated(true);
         seminarRepository.save(seminar);
         return bill;

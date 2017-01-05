@@ -1,12 +1,12 @@
 package de.fh.rosenheim.aline.controller.rest;
 
-import de.fh.rosenheim.aline.util.SwaggerTexts;
-import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
 import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
+import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.service.UserService;
 import de.fh.rosenheim.aline.util.ControllerUtil;
+import de.fh.rosenheim.aline.util.SwaggerTexts;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
@@ -29,10 +29,12 @@ public class UsersController {
 
     private final UserService userService;
     private final ControllerUtil controllerUtil;
+    private final UserFactory userFactory;
 
-    public UsersController(UserService userService, ControllerUtil controllerUtil) {
+    public UsersController(UserService userService, ControllerUtil controllerUtil, UserFactory userFactory) {
         this.userService = userService;
         this.controllerUtil = controllerUtil;
+        this.userFactory = userFactory;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -42,7 +44,7 @@ public class UsersController {
             @ApiParam(value = SwaggerTexts.SENSITIVE_DATA) @RequestParam(required = false, name = "name") String queryName,
             HttpServletRequest request) throws NoObjectForIdException {
         String name = queryName != null ? queryName : controllerUtil.getUsername(request);
-        return UserFactory.toUserDTO(userService.getUserByName(name));
+        return userFactory.toUserDTO(userService.getUserByName(name));
     }
 
     @RequestMapping(value = "${route.user.all}", method = RequestMethod.GET)
@@ -66,7 +68,7 @@ public class UsersController {
 
         return StreamSupport
                 .stream(userService.getUsersForDivision(division).spliterator(), false)
-                .map(UserFactory::toUserDTO)
+                .map(userFactory::toUserDTO)
                 .collect(Collectors.toList());
     }
 
