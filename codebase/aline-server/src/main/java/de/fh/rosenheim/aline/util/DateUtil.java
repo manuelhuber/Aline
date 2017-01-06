@@ -1,10 +1,10 @@
 package de.fh.rosenheim.aline.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
-/**
- * Created by Manuel on 05.01.2017.
- */
+@Component
 public class DateUtil {
 
     public Date getCurrentDate() {

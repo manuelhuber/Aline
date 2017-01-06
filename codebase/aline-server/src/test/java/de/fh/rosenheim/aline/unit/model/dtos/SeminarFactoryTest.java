@@ -7,6 +7,7 @@ import de.fh.rosenheim.aline.model.dtos.seminar.SeminarBasicsDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarDTO;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -15,8 +16,9 @@ import java.util.Set;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
- * Created by Manuel on 04.01.2017.
+ * Generates and transforms all seminar models & DTOs
  */
+@Component
 public class SeminarFactoryTest {
 
     @Test

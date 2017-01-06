@@ -7,7 +7,7 @@ import de.fh.rosenheim.aline.model.dtos.booking.BookingDTO;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingFactory;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingSummaryDTO;
 import de.fh.rosenheim.aline.model.dtos.booking.UserBookingDTO;
-import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import de.fh.rosenheim.aline.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,14 +26,12 @@ public class BookingFactoryTest {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private BookingFactory bookingFactory;
-    private UserFactory userFactory;
     private DateUtil dateUtil;
 
     @Before
     public void setUp() {
         dateUtil = mock(DateUtil.class);
-        userFactory = mock(UserFactory.class);
-        bookingFactory = new BookingFactory(dateUtil, userFactory);
+        bookingFactory = new BookingFactory(dateUtil);
     }
 
     @Test
@@ -60,14 +58,17 @@ public class BookingFactoryTest {
                 .updated(updated)
                 .build();
 
-        BookingDTO dto = bookingFactory.toBookingDTO(booking);
-        assertThat(dto).isEqualTo(bookingFactory.toBookingDTO(booking));
-        assertThat(dto.hashCode()).isEqualTo(bookingFactory.toBookingDTO(booking).hashCode());
+        UserDTO userDTO = new UserDTO();
+
+        BookingDTO dto = bookingFactory.toBookingDTO(booking, userDTO);
+        assertThat(dto).isEqualTo(bookingFactory.toBookingDTO(booking, userDTO));
+        assertThat(dto.hashCode()).isEqualTo(bookingFactory.toBookingDTO(booking, userDTO).hashCode());
 
         assertThat(dto.getId()).isEqualTo(12);
         assertThat(dto.getCreated()).isEqualTo(created);
         assertThat(dto.getUpdated()).isEqualTo(updated);
         assertThat(dto.getStatus()).isEqualTo(BookingStatus.REQUESTED);
+        assertThat(dto.getUser() == userDTO).isTrue();
     }
 
     @Test
