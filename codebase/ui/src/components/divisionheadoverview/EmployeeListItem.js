@@ -8,7 +8,6 @@ import {Popover} from 'material-ui/Popover';
 import FlatButton from 'material-ui/FlatButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import BookingService from '../../services/BookingService';
 
 export class EmployeeListItem extends React.Component {
     constructor(props) {
@@ -59,16 +58,6 @@ export class EmployeeListItem extends React.Component {
             this.props.confirmSingleBooking(bookingId);
         }
     }
-    /**    var response = BookingService.grantSingleBooking(bookingId);
-           response.then(
-            result => {
-                this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
-            },
-            failureResult => {
-                this.props.router.replace('/error');
-            }
-        );
-    }*/
 
     renderSingleBooking(booking) {
         return (

@@ -19,7 +19,9 @@ export class EmployeeList extends React.Component {
             employees: [],
             filteredEmployees: [],
             filteredEmployeesBackup: [],
-            showRelevantEmployees: false
+            showRelevantEmployees: false,
+            totalIssuedSpending: 0,
+            totalPlannedSpending: 0,
         }
     }
     componentDidMount() {
@@ -27,9 +29,28 @@ export class EmployeeList extends React.Component {
         employ.then(
             result => {
                 this.saveEmployee(result)
+                this.calculateSeminareTotalAmount(result)
             }
         )
     }
+
+    calculateSeminareTotalAmount(employees){
+        var totalIssuedSpendings = 0;
+        var totalPlannedSpendings= 0;
+        employees.map( employee => {
+                if(employee.bookings.length > 0) {
+                    totalIssuedSpendings += employee.bookings[0].issuedSpending
+                    totalPlannedSpendings += employee.bookings[0].plannedTotalSpending
+                }
+                }
+        )
+        this.setState({
+            totalIssuedSpending: totalIssuedSpendings,
+            totalPlannedSpending: totalPlannedSpendings
+        })
+    }
+
+
 
     saveEmployee(result) {
         this.setState({
@@ -85,6 +106,8 @@ export class EmployeeList extends React.Component {
                     employee.then(
                         result => {
                             this.saveEmployee(result)
+                            this.calculateSeminareTotalAmount(result)
+                            console.log(this.state.totalIssuedSpending)
                         }
                     )
                 this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
@@ -94,7 +117,7 @@ export class EmployeeList extends React.Component {
                 }
                 )
     }
-    
+
 
     render() {
         return (
@@ -103,9 +126,9 @@ export class EmployeeList extends React.Component {
                            showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}
                 />
+                <div> <h1>Verbrauchtes Budget: {this.state.totalIssuedSpending} / Geplantes Budget: {this.state.totalPlannedSpending}</h1></div>
                 <main className="employee-names">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
-
                 { this.state.filteredEmployees.length < 1 &&
                 <Popover className="no-employee-found">
                     <i className="material-icons md-36">sentiment_neutral</i>
