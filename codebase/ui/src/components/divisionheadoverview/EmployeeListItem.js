@@ -46,10 +46,21 @@ export class EmployeeListItem extends React.Component {
             }
         )
     }
-
-    confirmSingleBooking(bookingId) {
-        var response = BookingService.grantSingleBooking(bookingId);
-        response.then(
+    confirmAllBookings(employeeBookings){//this just calls a parent method so that parent state data can be renewed (especially for toggle)
+        if (typeof this.props.confirmAllBookings === 'function') {
+            console.log(employeeBookings)
+            employeeBookings[0].bookings.map(booking => {
+                this.props.confirmAllBookings(booking.id);
+            })
+        }
+    }
+    confirmSingleBooking(bookingId) { //this just calls a parent method so that parent state data can be renewed (especially for toggle)
+        if (typeof this.props.confirmSingleBooking === 'function') {
+            this.props.confirmSingleBooking(bookingId);
+        }
+    }
+    /**    var response = BookingService.grantSingleBooking(bookingId);
+           response.then(
             result => {
                 this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
             },
@@ -57,13 +68,14 @@ export class EmployeeListItem extends React.Component {
                 this.props.router.replace('/error');
             }
         );
-    }
+    }*/
 
     renderSingleBooking(booking) {
         return (
-            <MenuItem primaryText={(new Date(booking.created).toLocaleDateString()) + ' für ' + booking.seminarId}
-                      onClick={()=>{this.confirmSingleBooking(booking.id)}}
-                      title="Nur dieses Seminar bestätigen"/>
+            <MenuItem primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
+                      onClick={()=>{this.confirmSingleBooking(booking.bookings[0].id)}}
+                      title="Nur dieses Seminar bestätigen"
+                      key={booking.bookings[0].id}/>
         )
     }
 
@@ -78,7 +90,8 @@ export class EmployeeListItem extends React.Component {
                 <div className="seminar-proof">
                     <FlatButton label="Buchungen bestätigen" onMouseOver={this.showBookingList}
                                 disabled={this.props.employee.bookings.length < 1}
-                                title="Alle offenen Buchungen bestätigen" id="seminar-lable"/>
+                                title="Alle offenen Buchungen bestätigen" id="seminar-lable"
+                                onClick={()=>{this.confirmAllBookings(this.props.employee.bookings)}}/>
                     {(this.props.employee.bookings.length > 0) &&
                     <Popover open={this.state.bookingListOpen} anchorEl={this.state.anchorEl}
                              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}

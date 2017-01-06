@@ -32,13 +32,17 @@ module.exports = {
      */
     grantSingleBooking(bookingId){
         let token = StorageService.getUserToken();
+        let userName = StorageService.getCurrentUser().userName;
         return fetch(Util.getBasicBookingPath() + '/' + bookingId + '/grant', {
-            method: 'GET',
+            method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
-            }
+            },
+            body: JSON.stringify({
+                seminarId: bookingId,
+                userName: userName
+            })
         }).then(Util.checkStatus).then(Util.parseJson)
     },
 };

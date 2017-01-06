@@ -4,6 +4,8 @@ import {EmployeeListItem} from './EmployeeListItem';
 import {SearchBar} from '../general/SearchBar';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
 
+import BookingService from '../../services/BookingService';
+
 
 export class EmployeeList extends React.Component {
     constructor() {
@@ -12,13 +14,12 @@ export class EmployeeList extends React.Component {
         this.clearFilter = this.clearFilter.bind(this);
         this.filterEmployees = this.filterEmployees.bind(this);
         this.showRelevantEmployees = this.showRelevantEmployees.bind(this);
+        this.grantSingleBooking = this.grantSingleBooking.bind(this);
         this.state = {
             employees: [],
             filteredEmployees: [],
             filteredEmployeesBackup: [],
-            showRelevantEmployees: false,
-            alreadyDone: 0,
-            totalToDo: 0
+            showRelevantEmployees: false
         }
     }
     componentDidMount() {
@@ -27,27 +28,7 @@ export class EmployeeList extends React.Component {
             result => {
                 this.saveEmployee(result)
             }
-        ).then(result =>
-            this.countSeminars()
         )
-    }
-
-    countSeminars(){
-        let SeminarCount = 0;
-        let AllSeminars = 0;
-        this.state.employees.map(function(employee){
-            let RequestedSeminarsForEmployee = employee.bookings.filter( booking => JSON.stringify(booking).toUpperCase().includes('REQUESTED'))
-            let ToDoSeminarCounter = RequestedSeminarsForEmployee.length;
-            let AllCounter = employee.bookings.length;
-            SeminarCount = SeminarCount + ToDoSeminarCounter;
-            AllSeminars = AllSeminars + AllCounter;
-            RequestedSeminarsForEmployee = 0;
-            ToDoSeminarCounter = 0;
-        });
-        this.setState({
-            totalToDo:SeminarCount,
-            alreadyDone:AllSeminars
-        })
     }
 
     saveEmployee(result) {
@@ -95,6 +76,26 @@ export class EmployeeList extends React.Component {
         })
     }
 
+    grantSingleBooking(bookingId) {
+        console.log('grant single booking')
+        var response = BookingService.grantSingleBooking(bookingId);
+        response.then(
+            result =>{
+                var employee = EmployeeService.getEmployeesForCurrentDivision();
+                    employee.then(
+                        result => {
+                            this.saveEmployee(result)
+                        }
+                    )
+                this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
+                },
+            failureResult => {
+                this.props.router.replace('/error');
+                }
+                )
+    }
+    
+
     render() {
         return (
             <div>
@@ -117,6 +118,8 @@ export class EmployeeList extends React.Component {
 
     renderEmployee(currentEmployee) {
         return <EmployeeListItem employee={currentEmployee} router={this.props.router}
-                                key={currentEmployee.id}/>;
+                                key={currentEmployee.userName}
+                                confirmSingleBooking={this.grantSingleBooking}
+                                confirmAllBookings={this.grantSingleBooking}/>;
     }
 }
