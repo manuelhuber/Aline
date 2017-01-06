@@ -5,6 +5,7 @@ import de.fh.rosenheim.aline.model.dtos.booking.BookingFactory;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingSummaryDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Generates and transforms all User models & DTOs
  */
+@Component
 public class UserFactory {
 
     private final BookingFactory bookingFactory;

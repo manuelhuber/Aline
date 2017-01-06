@@ -2,13 +2,13 @@ package de.fh.rosenheim.aline.controller.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingDTO;
-import de.fh.rosenheim.aline.model.dtos.booking.BookingFactory;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingRequestDTO;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
 import de.fh.rosenheim.aline.model.dtos.json.view.View;
 import de.fh.rosenheim.aline.model.exceptions.BookingException;
 import de.fh.rosenheim.aline.model.exceptions.NoObjectForIdException;
 import de.fh.rosenheim.aline.service.BookingService;
+import de.fh.rosenheim.aline.util.BookingUtil;
 import de.fh.rosenheim.aline.util.ControllerUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -28,12 +28,12 @@ public class BookingsController {
 
     private final BookingService bookingService;
     private final ControllerUtil controllerUtil;
-    private final BookingFactory bookingFactory;
+    private final BookingUtil bookingUtil;
 
-    public BookingsController(BookingService bookingService, ControllerUtil controllerUtil, BookingFactory bookingFactory) {
+    public BookingsController(BookingService bookingService, ControllerUtil controllerUtil, BookingUtil bookingUtil) {
         this.bookingService = bookingService;
         this.controllerUtil = controllerUtil;
-        this.bookingFactory = bookingFactory;
+        this.bookingUtil = bookingUtil;
     }
 
     // ------------------------------------------------------------------------------------------------- Booking Handler
@@ -56,7 +56,7 @@ public class BookingsController {
         String name = requestName != null && requestName.length() > 0
                 ? requestName
                 : controllerUtil.getUsername(httpServletRequest);
-        return bookingFactory.toBookingDTO(bookingService.book(bookingRequest.getSeminarId(), name));
+        return bookingUtil.generateBookingDTO(bookingService.book(bookingRequest.getSeminarId(), name));
     }
 
     /**
@@ -69,7 +69,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO getBookingById(@PathVariable long id) throws NoObjectForIdException {
-        return bookingFactory.toBookingDTO(bookingService.getBooking(id));
+        return bookingUtil.generateBookingDTO(bookingService.getBooking(id));
     }
 
     /**
@@ -82,7 +82,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO grantBooking(@PathVariable long id) throws NoObjectForIdException {
-        return bookingFactory.toBookingDTO(bookingService.grantBooking(id));
+        return bookingUtil.generateBookingDTO(bookingService.grantBooking(id));
     }
 
     /**
@@ -95,7 +95,7 @@ public class BookingsController {
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
     @JsonView(View.BookingSummaryView.class)
     public BookingDTO denyBooking(@PathVariable long id) throws NoObjectForIdException {
-        return bookingFactory.toBookingDTO(bookingService.denyBooking(id));
+        return bookingUtil.generateBookingDTO(bookingService.denyBooking(id));
     }
 
     /**

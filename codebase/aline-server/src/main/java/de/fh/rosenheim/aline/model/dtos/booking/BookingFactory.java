@@ -4,9 +4,10 @@ import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.domain.BookingStatus;
 import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
-import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import de.fh.rosenheim.aline.util.DateUtil;
 import de.fh.rosenheim.aline.util.SeminarUtil;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,14 +15,13 @@ import java.util.stream.Collectors;
 /**
  * Generates and transforms all Booking models & DTOs
  */
+@Component
 public class BookingFactory {
 
     private final DateUtil dateUtil;
-    private final UserFactory userFactory;
 
-    public BookingFactory(DateUtil dateUtil, UserFactory userFactory) {
+    public BookingFactory(DateUtil dateUtil) {
         this.dateUtil = dateUtil;
-        this.userFactory = userFactory;
     }
 
     /**
@@ -29,7 +29,7 @@ public class BookingFactory {
      *
      * @return BookingDTO
      */
-    public BookingDTO toBookingDTO(Booking booking) {
+    public BookingDTO toBookingDTO(Booking booking, UserDTO userDTO) {
         return booking == null ?
                 BookingDTO.builder().build() :
                 BookingDTO.builder()
@@ -38,7 +38,7 @@ public class BookingFactory {
                         .updated(booking.getUpdated())
                         .status(booking.getStatus())
                         .seminar(SeminarFactory.toSeminarDTO(booking.getSeminar()))
-                        .user(userFactory.toUserDTO(booking.getUser()))
+                        .user(userDTO)
                         .build();
     }
 

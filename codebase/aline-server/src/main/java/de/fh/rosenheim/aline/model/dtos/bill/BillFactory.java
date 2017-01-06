@@ -6,6 +6,7 @@ import de.fh.rosenheim.aline.model.domain.Seminar;
 import de.fh.rosenheim.aline.model.dtos.seminar.SeminarFactory;
 import de.fh.rosenheim.aline.model.dtos.user.UserDTO;
 import de.fh.rosenheim.aline.model.dtos.user.UserFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Generates and transforms all Bill models & DTOs
  */
+@Component
 public class BillFactory {
 
     private final UserFactory userFactory;
