@@ -3,7 +3,6 @@ import EmployeeService from '../../services/EmployeeService';
 import {EmployeeListItem} from './EmployeeListItem';
 import {SearchBar} from '../general/SearchBar';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
-
 import BookingService from '../../services/BookingService';
 
 
@@ -28,7 +27,7 @@ export class EmployeeList extends React.Component {
         let employ = EmployeeService.getEmployeesForCurrentDivision();
         employ.then(
             result => {
-                this.saveEmployee(result)
+                this.saveEmployee(result);
                 this.calculateSeminareTotalAmount(result)
             }
         )
@@ -39,11 +38,11 @@ export class EmployeeList extends React.Component {
         var totalPlannedSpendings= 0;
         employees.map( employee => {
                 if(employee.bookings.length > 0) {
-                    totalIssuedSpendings += employee.bookings[0].issuedSpending
+                    totalIssuedSpendings += employee.bookings[0].issuedSpending;
                     totalPlannedSpendings += employee.bookings[0].plannedTotalSpending
                 }
                 }
-        )
+        );
         this.setState({
             totalIssuedSpending: totalIssuedSpendings,
             totalPlannedSpending: totalPlannedSpendings
@@ -75,7 +74,7 @@ export class EmployeeList extends React.Component {
     showRelevantEmployees(showRelevant){
         this.setState({
             showRelevantEmployees: showRelevant
-        })
+        });
         if (showRelevant === true) {
             let filtered = this.state.filteredEmployees.filter(employee => JSON.stringify(employee.bookings).toUpperCase().includes('REQUESTED'));
             this.setState({
@@ -90,26 +89,18 @@ export class EmployeeList extends React.Component {
         }
     }
 
-    saveRelevantEmployee(employee){
-        console.log(employee)
-        this.setState({
-            filteredEmployees : employee
-        })
-    }
 
     grantSingleBooking(bookingId) {
-        console.log('grant single booking')
         var response = BookingService.grantSingleBooking(bookingId);
         response.then(
             result =>{
                 var employee = EmployeeService.getEmployeesForCurrentDivision();
                     employee.then(
                         result => {
-                            this.saveEmployee(result)
+                            this.saveEmployee(result);
                             this.calculateSeminareTotalAmount(result)
-                            console.log(this.state.totalIssuedSpending)
                         }
-                    )
+                    );
                 this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
                 },
             failureResult => {
@@ -126,7 +117,7 @@ export class EmployeeList extends React.Component {
                            showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}
                 />
-                <div> <h1>Verbrauchtes Budget: {this.state.totalIssuedSpending} / Geplantes Budget: {this.state.totalPlannedSpending}</h1></div>
+                <div className="devision-budget"> <h2>Verbrauchtes Budget: {this.state.totalIssuedSpending} / Geplantes Budget: {this.state.totalPlannedSpending}</h2></div>
                 <main className="employee-names">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
                 { this.state.filteredEmployees.length < 1 &&

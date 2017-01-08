@@ -18,10 +18,10 @@ export class EmployeeListItem extends React.Component {
         this.renderSingleBooking = this.renderSingleBooking.bind(this);
         this.confirmSingleBooking = this.confirmSingleBooking.bind(this);
         this.state = {
-            bookingListOpen: false
+            bookingListOpen: false,
+            buttonDisabled: true,
         };
         //todo nur unbestätigte Buchungen werden im Popup gezeigt
-        //todo Änderungen von Manu einpflegen
     }
 
     closeBookingList() {
@@ -47,7 +47,6 @@ export class EmployeeListItem extends React.Component {
     }
     confirmAllBookings(employeeBookings){//this just calls a parent method so that parent state data can be renewed (especially for toggle)
         if (typeof this.props.confirmAllBookings === 'function') {
-            console.log(employeeBookings)
             employeeBookings[0].bookings.map(booking => {
                 this.props.confirmAllBookings(booking.id);
             })
@@ -59,13 +58,36 @@ export class EmployeeListItem extends React.Component {
         }
     }
 
+    checkForUngrantedBookings(bookings) {
+        if (!typeof bookings === 'undefined') {
+            if (bookings[0].grantedSpending == bookings[0].plannedTotalSpending) {
+                this.setState({
+                    buttonDisabled: true,
+                })
+            }
+            this.setState({
+                buttonDisabled: false,
+            })
+        }
+        return this.state.buttonDisabled;
+    }
+
+    checkIfBookingIsAlreadyGranted(booking){
+        if(booking.bookings[0].status == 'GRANTED'){
+            return true;
+        }
+        return false;
+    }
+
     renderSingleBooking(booking) {
-        return (
-            <MenuItem primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
-                      onClick={()=>{this.confirmSingleBooking(booking.bookings[0].id)}}
-                      title="Nur dieses Seminar bestätigen"
-                      key={booking.bookings[0].id}/>
-        )
+            return (
+                <MenuItem
+                    primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
+                    onClick={()=> {this.confirmSingleBooking(booking.bookings[0].id)}}
+                    title="Nur dieses Seminar bestätigen"
+                    key={booking.bookings[0].id}
+                    disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
+            )
     }
 
     render() {
@@ -78,14 +100,15 @@ export class EmployeeListItem extends React.Component {
                 </div>
                 <div className="seminar-proof">
                     <FlatButton label="Buchungen bestätigen" onMouseOver={this.showBookingList}
-                                disabled={this.props.employee.bookings.length < 1}
+                                disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}
                                 title="Alle offenen Buchungen bestätigen" id="seminar-lable"
                                 onClick={()=>{this.confirmAllBookings(this.props.employee.bookings)}}/>
                     {(this.props.employee.bookings.length > 0) &&
                     <Popover open={this.state.bookingListOpen} anchorEl={this.state.anchorEl}
                              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                              targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                             onRequestClose={this.closeBookingList}>
+                             onRequestClose={this.closeBookingList}
+                             disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}>
                         <Menu>
                             {this.props.employee.bookings.map(this.renderSingleBooking)}
                         </Menu>
