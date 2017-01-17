@@ -19,9 +19,9 @@ export class EmployeeListItem extends React.Component {
         this.confirmSingleBooking = this.confirmSingleBooking.bind(this);
         this.state = {
             bookingListOpen: false,
-            buttonDisabled: true,
         };
-        //todo nur unbestätigte Buchungen werden im Popup gezeigt
+        //todo nur unbestätigte Buchungen werden im Popup gezeigt -> grantedEmployees in List
+        //todo refresh Button showing on granting seminar
     }
 
     closeBookingList() {
@@ -47,9 +47,11 @@ export class EmployeeListItem extends React.Component {
     }
     confirmAllBookings(employeeBookings){//this just calls a parent method so that parent state data can be renewed (especially for toggle)
         if (typeof this.props.confirmAllBookings === 'function') {
-            employeeBookings[0].bookings.map(booking => {
-                this.props.confirmAllBookings(booking.id);
-            })
+            if(employeeBookings.length != 0) {
+                employeeBookings[0].bookings.map(booking => {
+                    this.props.confirmAllBookings(booking.id);
+                })
+            }
         }
     }
     confirmSingleBooking(bookingId) { //this just calls a parent method so that parent state data can be renewed (especially for toggle)
@@ -58,18 +60,8 @@ export class EmployeeListItem extends React.Component {
         }
     }
 
-    checkForUngrantedBookings(bookings) {
-        if (!typeof bookings === 'undefined') {
-            if (bookings[0].grantedSpending == bookings[0].plannedTotalSpending) {
-                this.setState({
-                    buttonDisabled: true,
-                })
-            }
-            this.setState({
-                buttonDisabled: false,
-            })
-        }
-        return this.state.buttonDisabled;
+    checkForUngrantedBookings($bookings){
+        return this.props.checkForUngrantedBookings($bookings);
     }
 
     checkIfBookingIsAlreadyGranted(booking){

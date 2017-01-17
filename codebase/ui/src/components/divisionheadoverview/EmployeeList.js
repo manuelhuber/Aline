@@ -14,6 +14,7 @@ export class EmployeeList extends React.Component {
         this.filterEmployees = this.filterEmployees.bind(this);
         this.showRelevantEmployees = this.showRelevantEmployees.bind(this);
         this.grantSingleBooking = this.grantSingleBooking.bind(this);
+        this.checkForUngrantedBookings = this.checkForUngrantedBookings.bind(this);
         this.state = {
             employees: [],
             filteredEmployees: [],
@@ -109,6 +110,17 @@ export class EmployeeList extends React.Component {
                 )
     }
 
+    checkForUngrantedBookings(bookings) {
+        if(bookings.length != 0 ) {
+            if (bookings[0].grantedSpending == bookings[0].plannedTotalSpending) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     render() {
         return (
@@ -134,6 +146,7 @@ export class EmployeeList extends React.Component {
         return <EmployeeListItem employee={currentEmployee} router={this.props.router}
                                 key={currentEmployee.userName}
                                 confirmSingleBooking={this.grantSingleBooking}
-                                confirmAllBookings={this.grantSingleBooking}/>;
+                                confirmAllBookings={this.grantSingleBooking}
+                                checkForUngrantedBookings={this.checkForUngrantedBookings}/>;
     }
 }
