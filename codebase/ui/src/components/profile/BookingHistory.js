@@ -17,10 +17,10 @@ export class BookingHistory extends React.Component {
     componentDidMount() {
         let currentUser = UserService.getUser(this.props.location.query.userName);
         currentUser.then(
-            result => {
-                let filteredBookings = this.removeCurrentYearsBookings(userData.bookings);
+            userData => {
+                let pastBookings = this.removeCurrentYearsBookings(userData.bookings);
                 this.setState({
-                    bookings: filteredBookings
+                    bookings: pastBookings
                 })
             })
             .catch(failureResult => {
@@ -29,11 +29,11 @@ export class BookingHistory extends React.Component {
     }
 
     removeCurrentYearsBookings(bookings){
-        let filteredBookings = bookings;
-        let bookingsOfCurrentYear = filteredBookings.find( (booking)=>{return booking.year === new Date().getFullYear()});
-        let indexOfBookingsOfCurrentYear = filteredBookings.indexOf(bookingsOfCurrentYear);
-        filteredBookings.splice(indexOfBookingsOfCurrentYear, 1);
-        return filteredBookings;
+        let pastBookings = bookings;
+        let bookingsOfCurrentYear = pastBookings.find( (booking)=>{return booking.year === new Date().getFullYear()});
+        let indexOfBookingsOfCurrentYear = pastBookings.indexOf(bookingsOfCurrentYear);
+        pastBookings.splice(indexOfBookingsOfCurrentYear, 1);
+        return pastBookings;
     }
 
     navigateBack() {

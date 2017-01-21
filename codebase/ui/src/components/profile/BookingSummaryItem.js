@@ -16,7 +16,7 @@ export class BookingSummaryItem extends React.Component {
 
     renderSingleBooking(booking) {
         return (
-            <Paper className="booking" zDepth={1}>
+            <Paper className="booking" zDepth={1} key={booking.id}>
                 <Link to={`seminars/${booking.seminarId}`}
                       title={'Zum Seminar "' + booking.seminarName + '" navigieren'}>
                     <div className="name">Seminar: {booking.seminarName}</div>
