@@ -17,16 +17,15 @@ export class BookingHistory extends React.Component {
     componentDidMount() {
         let currentUser = UserService.getUser(this.props.location.query.userName);
         currentUser.then(
-            userData => {
+            result => {
                 let filteredBookings = this.removeCurrentYearsBookings(userData.bookings);
                 this.setState({
                     bookings: filteredBookings
                 })
-            },
-            failureResult => {
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
     }
 
     removeCurrentYearsBookings(bookings){

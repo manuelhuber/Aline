@@ -2,7 +2,6 @@
  * Created by Zebrata on 30.11.2016.
  */
 import React from 'react';
-import {Link} from 'react-router'
 import Paper from 'material-ui/Paper';
 import {Popover} from 'material-ui/Popover';
 import FlatButton from 'material-ui/FlatButton';
@@ -45,41 +44,42 @@ export class EmployeeListItem extends React.Component {
             }
         )
     }
-    confirmAllBookings(employeeBookings){//this just calls a parent method so that parent state data can be renewed (especially for toggle)
+
+    confirmAllBookings(employeeBookings) {//this just calls a parent method so that parent state data can be renewed (especially for toggle)
         if (typeof this.props.confirmAllBookings === 'function') {
-            if(employeeBookings.length != 0) {
+            if (employeeBookings.length != 0) {
                 employeeBookings[0].bookings.map(booking => {
                     this.props.confirmAllBookings(booking.id);
                 })
             }
         }
     }
+
     confirmSingleBooking(bookingId) { //this just calls a parent method so that parent state data can be renewed (especially for toggle)
         if (typeof this.props.confirmSingleBooking === 'function') {
             this.props.confirmSingleBooking(bookingId);
         }
     }
 
-    checkForUngrantedBookings($bookings){
-        return this.props.checkForUngrantedBookings($bookings);
+    checkForUngrantedBookings(bookings) {
+        return this.props.checkForUngrantedBookings(bookings);
     }
 
-    checkIfBookingIsAlreadyGranted(booking){
-        if(booking.bookings[0].status == 'GRANTED'){
-            return true;
-        }
-        return false;
+    checkIfBookingIsAlreadyGranted(booking) {
+        return booking.bookings[0].status == 'GRANTED';
     }
 
     renderSingleBooking(booking) {
-            return (
-                <MenuItem
-                    primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
-                    onClick={()=> {this.confirmSingleBooking(booking.bookings[0].id)}}
-                    title="Nur dieses Seminar bestätigen"
-                    key={booking.bookings[0].id}
-                    disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
-            )
+        return (
+            <MenuItem
+                primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
+                onClick={()=> {
+                    this.confirmSingleBooking(booking.bookings[0].id)
+                }}
+                title="Nur dieses Seminar bestätigen"
+                key={booking.bookings[0].id}
+                disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
+        )
     }
 
     render() {
@@ -94,7 +94,9 @@ export class EmployeeListItem extends React.Component {
                     <FlatButton label="Buchungen bestätigen" onMouseOver={this.showBookingList}
                                 disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}
                                 title="Alle offenen Buchungen bestätigen" id="seminar-lable"
-                                onClick={()=>{this.confirmAllBookings(this.props.employee.bookings)}}/>
+                                onClick={()=> {
+                                    this.confirmAllBookings(this.props.employee.bookings)
+                                }}/>
                     {(this.props.employee.bookings.length > 0) &&
                     <Popover open={this.state.bookingListOpen} anchorEl={this.state.anchorEl}
                              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}

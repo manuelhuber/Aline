@@ -34,7 +34,8 @@ export class Login extends React.Component {
     }
 
     handleSubmit() {
-        LoginService.loginUser(this.state.loginName, this.state.loginPassword).then(() => {
+        LoginService.loginUser(this.state.loginName, this.state.loginPassword)
+            .then(() => {
             if (LoginService.isLoggedIn()) {
                 this.props.router.replace('/')
             }

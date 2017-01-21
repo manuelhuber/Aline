@@ -31,28 +31,28 @@ export class SeminarList extends React.Component {
             isFrontOffice: AuthService.isFrontOffice()
         });
         this.props.showLoadingIndicator(true);
+
         let seminars = SeminarService.getCurrentSeminars();
         seminars.then(
             result => {
                 this.saveSeminars(result);
-                this.props.showLoadingIndicator(false)
-            },
-            failureResult => {
+                this.props.showLoadingIndicator(false);
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
+
         if (AuthService.isFrontOffice()) {
             this.props.showLoadingIndicator(true);
             let pastSeminars = SeminarService.getPastSeminars();
             pastSeminars.then(
                 result => {
                     this.savePastSeminars(result);
-                    this.props.showLoadingIndicator(false)
-                },
-                failureResult => {
+                    this.props.showLoadingIndicator(false);
+                })
+                .catch(failureResult => {
                     this.props.router.replace('/error');
-                }
-            );
+                });
         }
     }
 

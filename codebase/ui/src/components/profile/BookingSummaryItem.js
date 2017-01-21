@@ -23,7 +23,7 @@ export class BookingSummaryItem extends React.Component {
                 <div className="date">Gebucht am: { new Date(booking.created).toLocaleDateString()}</div>
                 <div className="date">Aktualisiert am: { new Date(booking.updated).toLocaleDateString()}</div>
                 <div className="status">
-                    <Checkbox label="Bestätigt" value={(booking.status == 'GRANTED')} disabled={true}/>
+                    <Checkbox label="Bestätigt" checked={(booking.status == 'GRANTED')} disabled={true}/>
                 </div>
             </Paper>
         )

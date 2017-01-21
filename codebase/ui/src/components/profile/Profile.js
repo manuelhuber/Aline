@@ -38,11 +38,10 @@ export class Profile extends React.Component {
         currentUser.then(
             result => {
                 this.saveUser(result);
-            },
-            failureResult => {
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
     }
 
     saveUser(userData) {
