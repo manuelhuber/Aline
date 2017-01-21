@@ -3,43 +3,37 @@ import React from 'react';
 export class TotalCostItem extends React.Component {
     constructor() {
         super();
-        this.state = {
-            grantedSpendingFormatted: 0,
-            plannedSpendingFormatted: 0,
-            sumFormatted: 0
-        }
-    }
-
-    componentDidMount() {
-        //Format the spending amount, because the backend hands it over in cent
-        this.setState({
-            grantedSpendingFormatted: (this.props.grantedSpending) / 100,
-            plannedSpendingFormatted: (this.props.plannedSpending) / 100,
-            sumFormatted: (this.props.grantedSpending + this.props.plannedSpending) / 100
-        })
     }
 
     render() {
         return (
             <div className="output-properties total-cost-item">
-                <div className="property past">
-                    <output>
-                        <label>Vergangen (erfolgreich stattgefunden)</label>
-                        {this.state.grantedSpendingFormatted} €
+                {/*The total cost of all seminars that have already taken place*/}
+                <div className="property">
+                    <output title="Die summierten Kosten aller erfolgreich stattgefundener Seminare.">
+                        <label>Absolute Gesamtkosten</label>
+                        {this.props.issuedSpending} €
                     </output>
                 </div>
-                <span className="symbol">+</span>
-                <div className="property future">
-                    <output>
-                        <label>Geplant (sowohl unbestätigt wie bestätigt)</label>
-                        {this.state.plannedSpendingFormatted} €
+                {/*The total cost of all granted & requested seminars*/}
+                <div className="property">
+                    <output title="Die Gesamtkosten aller bestätigten sowie unbestätigten Seminare.">
+                        <label>Vorraussichtliche Gesamtkosten</label>
+                        {this.props.plannedTotalSpending} €
                     </output>
                 </div>
-                <span className="symbol">=</span>
-                <div className="property sum">
-                    <output>
-                        <label>Gesamt</label>
-                        {this.state.sumFormatted} €
+                {/*The total cost of all granted seminars*/}
+                <div className="property">
+                    <output title="Die Kosten aller bestätigten Seminare (sowohl vergangene, wie in der Zukunft liegende Seminare)">
+                        <label>Kosten bestätigter Seminare (vergangen wie noch stattfindend)</label>
+                        {this.props.grantedSpending} €
+                    </output>
+                </div>
+                {/*The total cost of all granted & requested seminars that have not taken place yet*/}
+                <div className="property">
+                    <output title="Die Kosten aller in der Zukunft liegender Seminare (sowohl bestätigt, wie unbestätigt)">
+                        <label>Voraussichtlich zukünftige Kosten (bestätigt wie unbestätigt)</label>
+                        {this.props.plannedAdditionalSpending} €
                     </output>
                 </div>
             </div>

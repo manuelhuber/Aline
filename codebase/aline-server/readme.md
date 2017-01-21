@@ -24,7 +24,16 @@ Execute the gradle jacocoTestReport task to generate test coverage. It can be fo
 #### Test Data
 Dummy data is created in the `PersistenceConfiguration.java` and resets with every server restart.
 
-##### Project structure:
+#### Auth
+Currently there are hardcoded dummy users and no way to add / delete them (since most people will want to integrate Aline into an existing system).
+ 
+You can change the `configureAuthentication` function in `WebSecurityConfig` to use ldap instead of userDetailsService. 
+
+Alternatively: In the `UserDetailsServiceImpl` the function `loadUserByUsername` is used to authenticate the user. Instead of loading data from the `userRepository`, simply check your LDAP (or whatever you're using). Example code for LDAP communication: http://www.adamretter.org.uk/blog/entries/LDAPTest.java
+
+You might still want a user database in Aline for info like logout and authorities but the authentication can be connected to your existing system. 
+
+#### Project structure:
 
     |-- java
         |-- AlineServerApplication.java  <- main
@@ -44,4 +53,4 @@ The content of "security" could have been split between the other packages (i.e.
 - Add CORS urls as necessary in the `corsConfigurer` function
 - The `PersistenceConfiguration.java` adds dummy data - You probably don't want that going live
 - Check the `WebSecurityConfig.java` if everything is up to your standards
-- There is no option to create users since most people will want to integrate it with their existing LDAP / whatever 
+- There is no option to create users since most people will want to integrate it with their existing LDAP / whatever (see Development-Auth)

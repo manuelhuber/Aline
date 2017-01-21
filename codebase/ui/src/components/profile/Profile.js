@@ -8,7 +8,6 @@ export class Profile extends React.Component {
     constructor() {
         super();
         this.saveUser = this.saveUser.bind(this);
-        this.getCurrentYearsBookingSummary = this.getCurrentYearsBookingSummary.bind(this);
         this.navigateToSeminarHistory = this.navigateToSeminarHistory.bind(this);
         this.state = {
             ownProfile: false,
@@ -17,7 +16,7 @@ export class Profile extends React.Component {
             division: '',
             authorities: '',
             bookings: [],
-            currentYearsBookingSummary: {}
+            currentYearBookingSummary: {}
         }
     }
 
@@ -38,24 +37,22 @@ export class Profile extends React.Component {
         currentUser.then(
             result => {
                 this.saveUser(result);
-            },
-            failureResult => {
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
     }
 
     saveUser(userData) {
-        let currentYearsBookingSummary = this.getCurrentYearsBookingSummary(userData.bookings);
+        let foundCurrentYearsBookingSummary = this.getCurrentYearsBookingSummary(userData.bookings);
         this.setState({
             firstName: userData.firstName,
             lastName: userData.lastName,
             division: userData.division,
             authorities: userData.authorities,
             bookings: userData.bookings,
-            currentYearsBookingSummary: currentYearsBookingSummary
+            currentYearBookingSummary: foundCurrentYearsBookingSummary
         });
-        console.log('Saved userData: ' + userData);
     }
 
     navigateToSeminarHistory() {
@@ -78,24 +75,26 @@ export class Profile extends React.Component {
                     {!(this.state.ownProfile) &&
                     <h2>{this.state.firstName} {this.state.lastName}</h2>
                     }
-                    {this.state.currentYearsBookingSummary.year &&
+                    { typeof this.state.currentYearBookingSummary.year !== 'undefined' &&
                     <span>
                         <div className="bookings">
                             <h3>Meine Buchungen</h3>
                             {this.state.ownProfile &&
                             <span className="history-button">
                                 <FlatButton onClick={this.navigateToSeminarHistory} label="Buchungshistorie"
-                                            title={this.state.bookings.length <=1? 'Keine Buchungshistorie vorhanden': 'Zur Buchungshistorie navigieren'}
+                                            title={this.state.bookings.length <= 1 ? 'Keine Buchungshistorie vorhanden' : 'Zur Buchungshistorie navigieren'}
                                             labelPosition="before" disabled={this.state.bookings.length <= 1}
-                                            icon={<FontIcon className="material-icons">subdirectory_arrow_right</FontIcon>}/>
+                                            icon={<FontIcon
+                                                className="material-icons">subdirectory_arrow_right</FontIcon>}/>
                             </span>
                             }
                             {/* Show the current years bookings */}
-                            <BookingSummaryItem bookingSummary={this.state.currentYearsBookingSummary}/>
+                            <BookingSummaryItem bookingSummary={this.state.currentYearBookingSummary}/>
                         </div>
                     </span>
                     }
-                    {!this.state.currentYearsBookingSummary.year && <span>Keine Buchungen vorhanden.</span>}
+                    { typeof this.state.currentYearBookingSummary.year === 'undefined' &&
+                    <span>Keine Buchungen vorhanden.</span>}
                 </main>
             </div>
         );

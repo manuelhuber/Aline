@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router'
 import SeminarService from '../../services/SeminarService';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
@@ -21,8 +20,10 @@ export class PastSeminarList extends React.Component {
                 this.setState({
                     seminars: result
                 })
-            }
-        );
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
     }
 
     chooseSeminar(event) {
@@ -36,7 +37,8 @@ export class PastSeminarList extends React.Component {
                 <TableRowColumn title={seminar.name}>{seminar.name}</TableRowColumn>
                 <TableRowColumn title={seminar.trainer}>{seminar.trainer}</TableRowColumn>
                 <TableRowColumn title={seminar.category}>{seminar.category}</TableRowColumn>
-                <TableRowColumn><FlatButton label="Auswählen" primary={true} onClick={this.chooseSeminar} name={seminar.id}/></TableRowColumn>
+                <TableRowColumn><FlatButton label="Auswählen" primary={true} onClick={this.chooseSeminar}
+                                            name={seminar.id}/></TableRowColumn>
             </TableRow>
         )
     }
@@ -47,7 +49,8 @@ export class PastSeminarList extends React.Component {
             overflowX: 'auto'
         };
         return (
-            <Table multiSelectable={false} onRowSelection={this.chooseSeminar} selectable={false} bodyStyle={tableStyle}>
+            <Table multiSelectable={false} onRowSelection={this.chooseSeminar} selectable={false}
+                   bodyStyle={tableStyle}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
                         <TableHeaderColumn>ID</TableHeaderColumn>

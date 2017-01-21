@@ -91,8 +91,10 @@ export class CreateSeminar extends React.Component {
                 this.setState({
                     availableCategories: result
                 })
-            }
-        );
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
 
         this.setState({
             isFrontOffice: AuthService.isFrontOffice(),
@@ -140,8 +142,10 @@ export class CreateSeminar extends React.Component {
                         bookingTimelog: result.bookingTimelog || '',
                         bookable: result.bookable || true
                     })
-                }
-            );
+                })
+                .catch(failureResult => {
+                    this.props.router.replace('/error');
+                });
         }
     }
 
@@ -234,7 +238,7 @@ export class CreateSeminar extends React.Component {
     }
 
     targetLevelInput(event, index, value) {
-        var targetLevel = this.state.targetLevel;
+        let targetLevel = this.state.targetLevel;
         targetLevel.push(value);
         this.setState({
             targetLevel: targetLevel,
@@ -298,7 +302,12 @@ export class CreateSeminar extends React.Component {
             //Handle the response
             response.then(
                 result => {
-                    this.props.showSnackbar('Seminar erfolgreich erstellt');
+                    if (this.props.location.query.changeExisting) {
+                        this.props.showSnackbar('Seminar erfolgreich bearbeitet');
+                    }
+                    else {
+                        this.props.showSnackbar('Seminar erfolgreich erstellt');
+                    }
                     if (this.state.createAnotherOne) {
                         window.setTimeout(function () {
                             location.reload();
@@ -306,11 +315,10 @@ export class CreateSeminar extends React.Component {
                     } else {
                         this.props.router.replace('/seminars/' + result.id);
                     }
-                },
-                failureResult => {
+                })
+                .catch(failureResult => {
                     this.props.router.replace('/error');
-                }
-            );
+                });
         }
     }
 
@@ -378,10 +386,12 @@ export class CreateSeminar extends React.Component {
                 <form className="create-seminar">
                     <div className="copy-button">
                         <RaisedButton label="Inhalte reinkopieren" onClick={this.openCopyDialog} secondary={true}>
-                            <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen} contentStyle={dialogStyle}
+                            <Dialog actions={copyActions} modal={false} open={this.state.copyAlertOpen}
+                                    contentStyle={dialogStyle}
                                     onRequestClose={this.close}>
                                 <h3>Kopiere die Daten aus einem vorherigen Seminar:</h3>
-                                <p className="tipp-text">(Tipp: Positioniere den Mauszeiger über gekürzt dargestellten Texten, um den kompletten Text zu sehen)</p>
+                                <p className="tipp-text">(Tipp: Positioniere den Mauszeiger über gekürzt dargestellten
+                                    Texten, um den kompletten Text zu sehen)</p>
                                 <PastSeminarList chooseSeminar={this.chooseSeminarToCopy}/>
                             </Dialog>
                         </RaisedButton>
@@ -478,7 +488,8 @@ export class CreateSeminar extends React.Component {
                     </div>
                     <div></div>
                     <div className="toggle-element">
-                        <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable} defaultToggled={true}
+                        <Toggle label="Seminar ist buchbar" labelPosition="right" value={this.state.bookable}
+                                defaultToggled={true}
                                 onToggle={this.bookableInput}/>
                     </div>
                     <div className="action-elements">

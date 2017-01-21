@@ -56,8 +56,10 @@ export class SeminarDetail extends React.Component {
         seminar.then(
             result => {
                 this.setSeminar(result)
-            }
-        );
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
     }
 
     maximumParticipantsAchieved() {
@@ -89,7 +91,6 @@ export class SeminarDetail extends React.Component {
      */
     handleBooking() {
         var response = BookingService.bookSeminar(this.state.seminar.id);
-        //Handle the response
         response.then(
             result => {
                 this.props.showSnackbar('Buchungsanfrage erfolgreich erstellt');
@@ -97,11 +98,10 @@ export class SeminarDetail extends React.Component {
                 window.setTimeout(function () {
                     location.reload();
                 }, 2000);
-            },
-            failureResult => {
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
     }
 
     openBookingDialog() {
@@ -120,10 +120,16 @@ export class SeminarDetail extends React.Component {
      * Delete
      */
     handleDelete() {
-        SeminarService.deleteSeminar(this.state.seminar.id);
-        this.closeDeleteDialog();
-        this.props.showSnackbar('Seminar wurde erfolgreich gelöscht.');
-        window.setTimeout(this.redirectToOverview, 2000);
+        var response = SeminarService.deleteSeminar(this.state.seminar.id);
+        response.then(
+            result => {
+                this.closeDeleteDialog();
+                this.props.showSnackbar('Seminar wurde erfolgreich gelöscht.');
+                window.setTimeout(this.redirectToOverview, 2000);
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
     }
 
     redirectToOverview() {
@@ -236,7 +242,8 @@ export class SeminarDetail extends React.Component {
                         </div>
                         <div className="property seminar-property costs-per-participant">
                             <label>Kosten pro Teilnehmer</label>
-                            {this.state.seminar.costsPerParticipant / 100 /*divide with 100 because the backend provides in cent*/} €
+                            {this.state.seminar.costsPerParticipant / 100 /*divide with 100 because the backend provides in cent*/}
+                            €
                         </div>
                         <div className="property seminar-property dates">
                             <label>Termin(e)</label>

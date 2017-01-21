@@ -25,9 +25,9 @@ token:
   secret: foobar123
 # Token header key
   header: X-Auth-Token
-# Time in ms
-# 864000000ms = 10 day
-  expiration: 864000000
+# Time in s
+# 864000s  = 10 day
+  expiration: 864000
 
 # The variables used to build the URLs of all endpoints
 route:

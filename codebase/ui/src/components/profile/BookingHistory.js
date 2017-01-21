@@ -18,23 +18,22 @@ export class BookingHistory extends React.Component {
         let currentUser = UserService.getUser(this.props.location.query.userName);
         currentUser.then(
             userData => {
-                let filteredBookings = this.removeCurrentYearsBookings(userData.bookings);
+                let pastBookings = this.removeCurrentYearsBookings(userData.bookings);
                 this.setState({
-                    bookings: filteredBookings
+                    bookings: pastBookings
                 })
-            },
-            failureResult => {
+            })
+            .catch(failureResult => {
                 this.props.router.replace('/error');
-            }
-        );
+            });
     }
 
     removeCurrentYearsBookings(bookings){
-        let filteredBookings = bookings;
-        let bookingsOfCurrentYear = filteredBookings.find( (booking)=>{return booking.year === new Date().getFullYear()});
-        let indexOfBookingsOfCurrentYear = filteredBookings.indexOf(bookingsOfCurrentYear);
-        filteredBookings.splice(indexOfBookingsOfCurrentYear, 1);
-        return filteredBookings;
+        let pastBookings = bookings;
+        let bookingsOfCurrentYear = pastBookings.find( (booking)=>{return booking.year === new Date().getFullYear()});
+        let indexOfBookingsOfCurrentYear = pastBookings.indexOf(bookingsOfCurrentYear);
+        pastBookings.splice(indexOfBookingsOfCurrentYear, 1);
+        return pastBookings;
     }
 
     navigateBack() {

@@ -20,6 +20,8 @@ export class EmployeeListItem extends React.Component {
         this.state = {
             bookingListOpen: false,
         };
+        //todo nur unbestätigte Buchungen werden im Popup gezeigt -> grantedEmployees in List
+        //todo refresh Button showing on granting seminar
     }
 
     closeBookingList() {
@@ -45,7 +47,11 @@ export class EmployeeListItem extends React.Component {
     }
     confirmAllBookings(employeeBookings){//this just calls a parent method so that parent state data can be renewed (especially for toggle)
         if (typeof this.props.confirmAllBookings === 'function') {
-            var result = this.props.confirmAllBookings(employeeBookings);
+            if(employeeBookings.length != 0) {
+                employeeBookings[0].bookings.map(booking => {
+                    this.props.confirmAllBookings(booking.id);
+                })
+            }
         }
     }
     confirmSingleBooking(bookingId) { //this just calls a parent method so that parent state data can be renewed (especially for toggle)
@@ -54,8 +60,8 @@ export class EmployeeListItem extends React.Component {
         }
     }
 
-    checkForUngrantedBookings(bookings){
-        return this.props.checkForUngrantedBookings(bookings);
+    checkForUngrantedBookings($bookings){
+        return this.props.checkForUngrantedBookings($bookings);
     }
 
     checkIfBookingIsAlreadyGranted(booking){
@@ -66,18 +72,14 @@ export class EmployeeListItem extends React.Component {
     }
 
     renderSingleBooking(booking) {
-        if(booking.bookings[0].status != 'GRANTED') {
             return (
                 <MenuItem
                     primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
-                    onClick={()=> {
-                        this.confirmAllBookings(booking.bookings[0].id)
-                    }}
+                    onClick={()=> {this.confirmSingleBooking(booking.bookings[0].id)}}
                     title="Nur dieses Seminar bestätigen"
                     key={booking.bookings[0].id}
                     disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
             )
-        }
     }
 
     render() {
@@ -89,24 +91,17 @@ export class EmployeeListItem extends React.Component {
                     {this.props.employee.firstName}, {this.props.employee.lastName}
                 </div>
                 <div className="seminar-proof">
-                    <FlatButton label="Buchungsübersicht" onMouseOver={this.showBookingList}
+                    <FlatButton label="Buchungen bestätigen" onMouseOver={this.showBookingList}
                                 disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}
                                 title="Alle offenen Buchungen bestätigen" id="seminar-lable"
-                                labelStyle={{height: '50px'}}
                                 onClick={()=>{this.confirmAllBookings(this.props.employee.bookings)}}/>
-                    {(this.props.employee.bookings.length > 0 && !this.checkForUngrantedBookings(this.props.employee.bookings)) &&
+                    {(this.props.employee.bookings.length > 0) &&
                     <Popover open={this.state.bookingListOpen} anchorEl={this.state.anchorEl}
                              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                              targetOrigin={{horizontal: 'left', vertical: 'top'}}
                              onRequestClose={this.closeBookingList}
                              disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}>
-
                         <Menu>
-                            <MenuItem
-                                primaryText='Alle Seminare bestätigen'
-                                onClick={()=> {this.confirmAllBookings(this.props.employee.bookings)}}
-                                title="Alle Seminare bestätigen"
-                                key='999'/>
                             {this.props.employee.bookings.map(this.renderSingleBooking)}
                         </Menu>
                     </Popover>
