@@ -45,7 +45,27 @@ module.exports = {
             })
         }).then(Util.checkStatus).then(Util.parseJson)
     },
+    grantAllBookings(employee){
+        let token = StorageService.getUserToken();
+        let userName = StorageService.getCurrentUser().userName;
+        var result;
+        employee[0].bookings.map(booking => {
+            result = fetch(Util.getBasicBookingPath() + '/' + booking.id + '/grant', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Auth-Token': token
+                },
+                body: JSON.stringify({
+                    seminarId: booking.id,
+                    userName: userName
+                })
+            }).then(Util.checkStatus).then(Util.parseJson)
+        })
+        return result;
+    }
 };
+
 
 /**
  * @param response the response to parse
