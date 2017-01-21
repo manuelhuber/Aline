@@ -17,7 +17,8 @@ export class BookingSummaryItem extends React.Component {
     renderSingleBooking(booking) {
         return (
             <Paper className="booking" zDepth={1}>
-                <Link to={`seminars/${booking.seminarId}`} title={'Zum Seminar "' + booking.seminarName + '" navigieren'}>
+                <Link to={`seminars/${booking.seminarId}`}
+                      title={'Zum Seminar "' + booking.seminarName + '" navigieren'}>
                     <div className="name">Seminar: {booking.seminarName}</div>
                 </Link>
                 <div className="date">Gebucht am: { new Date(booking.created).toLocaleDateString()}</div>
@@ -34,8 +35,16 @@ export class BookingSummaryItem extends React.Component {
             <div className="bookings summary-item">
                 <h3>{this.props.bookingSummary.year}</h3>
                 <TotalCostItem grantedSpending={this.props.bookingSummary.grantedSpending}
-                               plannedSpending={this.props.bookingSummary.plannedSpending}/>
-                {this.props.bookingSummary.bookings.map(this.renderSingleBooking)}
+                               plannedAdditionalSpending = {this.props.bookingSummary.plannedAdditionalSpending}
+                               issuedSpending = {this.props.bookingSummary.issuedSpending}
+                               plannedTotalSpending={this.props.bookingSummary.plannedTotalSpending}/>
+
+                { this.props.bookingSummary.bookings.length > 0 &&
+                this.props.bookingSummary.bookings.map(this.renderSingleBooking)
+                }
+                { this.props.bookingSummary.bookings.length < 1 &&
+                <div>Keine Buchungen für das aktuelle Jahr verfügbar.</div>
+                }
             </div>
         )
     }
