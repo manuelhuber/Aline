@@ -1,7 +1,7 @@
 import React from 'react';
 import SeminarService from '../../services/SeminarService';
 import BookingService from '../../services/BookingService';
-import StorageService from '../../services/StorageService';
+import UserService from '../../services/UserService';
 import AuthService from '../../services/AuthService';
 import Util from '../../services/Util';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -32,6 +32,7 @@ export class SeminarDetail extends React.Component {
             seminar: {},
             bookingAlertOpen: false,
             deleteAlertOpen: false,
+            userBookings: []
         };
         this.setSeminar = this.setSeminar.bind(this);
         this.handleSeminarUpdate = this.handleSeminarUpdate.bind(this);
@@ -53,10 +54,22 @@ export class SeminarDetail extends React.Component {
     }
 
     componentDidMount() {
+        //Get Seminar
         let seminar = SeminarService.getSeminarById(this.props.params.seminarId);
         seminar.then(
             result => {
                 this.setSeminar(result)
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
+        //Get user
+        let user = UserService.getUser();
+        user.then(
+            result => {
+                this.setState({
+                    userBookings: result.bookings
+                })
             })
             .catch(failureResult => {
                 this.props.router.replace('/error');
@@ -68,13 +81,12 @@ export class SeminarDetail extends React.Component {
     }
 
     checkIfCurrentUserHasAlreadyBooked() {
-        var currentUser = StorageService.getCurrentUser().userName;
-        if (this.state.seminar.bookings) {
-            return this.state.seminar.bookings.find((element) => {
-                return element.username === currentUser;
-            });
-        }
-        return false;
+        let result = this.state.userBookings.map((bookingSummary)=>{
+            return bookingSummary.bookings.find((booking) => {
+                return booking.seminarId === this.state.seminar.id;
+            })
+        })[0];
+        return typeof  result !== 'undefined';
     }
 
     isBookable() {
@@ -204,7 +216,7 @@ export class SeminarDetail extends React.Component {
             <div className="seminar">
                 <h2>{this.state.seminar.name}</h2>
                 <div className="seminar-info-chips">
-                    {this.checkIfCurrentUserHasAlreadyBooked() &&
+                    { this.checkIfCurrentUserHasAlreadyBooked() &&
                     <Chip backgroundColor="rgb(255, 64, 129)">Von dir gebucht</Chip>
                     }
                     {this.maximumParticipantsAchieved() &&
@@ -252,7 +264,7 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        <Link target="_blank"  to={`invoice/${this.state.seminar.id}`}>
+                        <Link target="_blank" to={`invoice/${this.state.seminar.id}`}>
                             <RaisedButton label="Rechnung generieren"/>
                         </Link>
                     </div>
