@@ -1,10 +1,10 @@
 import React from "react";
+import Util from "../../services/Util";
 import EmployeeService from "../../services/EmployeeService";
 import {EmployeeListItem} from "./EmployeeListItem";
 import {SearchBar} from "../general/SearchBar";
 import {Popover, PopoverAnimationVertical} from "material-ui/Popover";
 import BookingService from "../../services/BookingService";
-
 
 export class EmployeeList extends React.Component {
     constructor() {
@@ -41,8 +41,8 @@ export class EmployeeList extends React.Component {
         var totalPlannedSpendings = 0;
         employees.map(employee => {
                 if (employee.bookings.length > 0) {
-                    totalIssuedSpendings += employee.bookings[0].issuedSpending / 100;
-                    totalPlannedSpendings += employee.bookings[0].plannedTotalSpending / 100;
+                    totalIssuedSpendings += Util.formatMoneyFromCent(employee.bookings[0].issuedSpending);
+                    totalPlannedSpendings += Util.formatMoneyFromCent(employee.bookings[0].plannedTotalSpending);
                 }
             }
         );

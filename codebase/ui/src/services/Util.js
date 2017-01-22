@@ -31,6 +31,22 @@ module.exports = {
     },
 
     /**
+     * @param sumInCent the sum in cent
+     * @returns {number} formats the sum from cent to full euro
+     */
+    formatMoneyFromCent(sumInCent){
+        return sumInCent / 100;
+    },
+
+    /**
+     * @param sumInEuro the sum in euro
+     * @returns {number} formats the sum from euro to cent
+     */
+    formatMoneyToCent(sumInEuro){
+        return sumInEuro * 100;
+    },
+
+    /**
      * @param response the response to parse
      * @returns {*} the response, parsed to json
      */

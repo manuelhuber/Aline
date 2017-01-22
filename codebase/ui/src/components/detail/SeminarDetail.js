@@ -3,6 +3,7 @@ import SeminarService from '../../services/SeminarService';
 import BookingService from '../../services/BookingService';
 import StorageService from '../../services/StorageService';
 import AuthService from '../../services/AuthService';
+import Util from '../../services/Util';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
@@ -235,7 +236,7 @@ export class SeminarDetail extends React.Component {
                         </div>
                         <div className="property seminar-property costs-per-participant">
                             <label>Kosten pro Teilnehmer</label>
-                            {this.state.seminar.costsPerParticipant / 100 /*divide with 100 because the backend provides in cent*/}
+                            {Util.formatMoneyFromCent(this.state.seminar.costsPerParticipant)}
                             €
                         </div>
                         <div className="property seminar-property dates">
@@ -251,7 +252,8 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        <Link target="_blank" to={`invoice/${this.state.seminar.id}`}>
+                        {/*target="_blank"*/}
+                        <Link  to={`invoice/${this.state.seminar.id}`}>
                             <RaisedButton label="Rechnung generieren"/>
                         </Link>
                     </div>

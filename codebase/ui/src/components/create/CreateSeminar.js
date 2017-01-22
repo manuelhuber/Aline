@@ -1,4 +1,5 @@
 import React from 'react';
+import Util from '../../services/Util';
 import SeminarService from '../../services/SeminarService';
 import AuthService from '../../services/AuthService';
 import Seminar from '../../models/Seminar';
@@ -120,6 +121,7 @@ export class CreateSeminar extends React.Component {
             }
             seminarToUpdate.then(
                 result => {
+                    let formattedCostsPerParticipants = Util.formatMoneyFromCent(result.costsPerParticipant);
                     this.setState({
                         updatingExistingSeminar: true,
 
@@ -130,7 +132,7 @@ export class CreateSeminar extends React.Component {
                         description: result.duration || '',
                         dates: result.dates || [],
                         contactPerson: result.contactPerson || '',
-                        costsPerParticipant: (result.costsPerParticipant / 100) || 0, //Backend provides the cost in cent. So we have to convert
+                        costsPerParticipant: formattedCostsPerParticipants || 0,
                         cycle: result.cycle || '',
                         duration: result.duration || '',
                         goal: result.goal || '',
@@ -287,10 +289,10 @@ export class CreateSeminar extends React.Component {
             })
         }
         else {
-            //Create and fill the seminar object (costsPerParticipant is multiplied with 100, because the backend wants the costs in cent)
+            let formattedCostsPerParticipant = Util.formatMoneyToCent(this.state.costsPerParticipant);
             var seminar = new Seminar(this.state.name, this.state.description, this.state.agenda, this.state.bookable, this.state.category, this.state.targetLevel,
                 this.state.requirements, this.state.trainer, this.state.contactPerson, this.state.trainingType, this.state.maximumParticipants,
-                (this.state.costsPerParticipant * 100), this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
+                formattedCostsPerParticipant, this.state.bookingTimelog, this.state.goal, this.state.duration, this.state.cycle, this.state.dates);
             //Make the call
             var response;
             if (this.state.updatingExistingSeminar) {
