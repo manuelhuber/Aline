@@ -57,14 +57,8 @@ export class PrintableInvoice extends React.Component {
                 </div>
                 <div>
                     <output title="Termine des Seminars">
-                        <label>Termine</label>
+                        <label>Termin(e)</label>
                         {this.state.seminar.dates && this.state.seminar.dates.map(this.renderDates)}
-                    </output>
-                </div>
-                <div >
-                    <output title="Die Location wo das Seminar stattfand">
-                        <label>Location</label>
-                        <span>Fehlt</span>
                     </output>
                 </div>
                 <div >
