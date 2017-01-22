@@ -1,13 +1,13 @@
 .seminar {
   margin: 0 15px 0 15px;
   position: relative;
-  h2{
+  h2 {
     margin-bottom: 10px;
     max-width: 76%; //Because of the floating buttons
   }
-  .seminar-info-chips{
+  .seminar-info-chips {
     margin-bottom: 10px;
-    *{
+    * {
       display: inline-block !important;
     }
     * + * {
@@ -31,13 +31,24 @@
     width: auto;
   }
 }
+
 //Special properties
-.output-properties{
+.output-properties {
   .property.seminar-property.dates p,
   .property.seminar-property.participants p,
-  .property.seminar-property.target-level p{
+  .property.seminar-property.target-level p {
     display: inline-block;
     margin: 0;
     margin-right: 20px;
+  }
+}
+
+/*----------Invoice------------------------------------*/
+.invoice {
+  margin: 0 15px 0 15px;
+  table .no-participants {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
   }
 }
