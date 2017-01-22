@@ -69,10 +69,27 @@
     padding: 5px;
   }
 
+  //Seminar Infos
+  .seminar-infos{
+    label {
+      font-weight: bold;
+      width: 300px;
+      display: inline-block;
+    }
+    div + div{
+      margin-top: 5px;
+    }
+    .date + .date{
+      margin-left: 20px;
+    }
+  }
+
   //Costs
   .costs {
+    margin-top: 20px;
     width: 500px;
     label {
+      font-weight: bold;
       width: 300px;
       display: inline-block;
     }
