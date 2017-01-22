@@ -32,6 +32,12 @@
     }
   }
 
+  table,
+  th,
+  td {
+    border: 1px solid #000 !important;
+  }
+
   /*----Seminar Overview--------*/
   .seminar-tiles:before{
     content: 'Seminarübersicht';

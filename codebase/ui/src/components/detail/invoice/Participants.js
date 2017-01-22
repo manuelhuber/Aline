@@ -12,7 +12,6 @@ export class Participants extends React.Component {
             <tr key={participant.userName}>
                 <td title={participant.firstName + ' ' + participant.lastName}>{participant.firstName + ' ' + participant.lastName}</td>
                 <td title={participant.division}>{participant.division}</td>
-                <td title={Util.formatMoneyFromCent(this.props.costsPerParticipant) + '€'}>{Util.formatMoneyFromCent(this.props.costsPerParticipant)}€ </td>
             </tr>
         )
     }
@@ -30,7 +29,6 @@ export class Participants extends React.Component {
                     <tr>
                         <th>Teilnehmer</th>
                         <th>Bereich</th>
-                        <th>Betrag</th>
                     </tr>
                     </thead>
                     <tbody>
