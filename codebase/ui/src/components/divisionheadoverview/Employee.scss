@@ -1,9 +1,17 @@
 $employee-background: #D7EB05;
 $button-color: #EB0564;
-.devision-budget{
+.devision-budget {
   width: 100%;
-  text-align: center;
+  table {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    .value {
+      text-align: right;
+    }
+  }
 }
+
 .employee-names {
   margin-top: 10px;
   margin-left: 15px;
@@ -34,6 +42,9 @@ $button-color: #EB0564;
       width: 200px;
       margin-right: 50px;
       align-self: center;
+      span {
+        height: 50px;
+      }
       #seminar-lable {
         position: absolute;
         top: 50%;

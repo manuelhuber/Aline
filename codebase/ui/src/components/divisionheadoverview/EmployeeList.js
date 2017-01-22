@@ -1,9 +1,10 @@
-import React from 'react';
-import EmployeeService from '../../services/EmployeeService';
-import {EmployeeListItem} from './EmployeeListItem';
-import {SearchBar} from '../general/SearchBar';
-import {Popover} from 'material-ui/Popover';
-import BookingService from '../../services/BookingService';
+import React from "react";
+import EmployeeService from "../../services/EmployeeService";
+import {EmployeeListItem} from "./EmployeeListItem";
+import {SearchBar} from "../general/SearchBar";
+import {Popover, PopoverAnimationVertical} from "material-ui/Popover";
+import BookingService from "../../services/BookingService";
+
 
 export class EmployeeList extends React.Component {
     constructor() {
@@ -13,6 +14,7 @@ export class EmployeeList extends React.Component {
         this.filterEmployees = this.filterEmployees.bind(this);
         this.showRelevantEmployees = this.showRelevantEmployees.bind(this);
         this.grantSingleBooking = this.grantSingleBooking.bind(this);
+        this.grantAllBookings = this.grantAllBookings.bind(this);
         this.checkForUngrantedBookings = this.checkForUngrantedBookings.bind(this);
         this.state = {
             employees: [],
@@ -25,22 +27,22 @@ export class EmployeeList extends React.Component {
     }
 
     componentDidMount() {
-        let employee = EmployeeService.getEmployeesForCurrentDivision();
-        employee.then(
+        let employ = EmployeeService.getEmployeesForCurrentDivision();
+        employ.then(
             result => {
                 this.saveEmployee(result);
-                this.calculateTotalSeminarsAmount(result)
+                this.calculateSeminareTotalAmount(result)
             }
         )
     }
 
-    calculateTotalSeminarsAmount(employees) {
+    calculateSeminareTotalAmount(employees) {
         var totalIssuedSpendings = 0;
         var totalPlannedSpendings = 0;
         employees.map(employee => {
                 if (employee.bookings.length > 0) {
-                    totalIssuedSpendings += employee.bookings[0].issuedSpending;
-                    totalPlannedSpendings += employee.bookings[0].plannedTotalSpending
+                    totalIssuedSpendings += employee.bookings[0].issuedSpending / 100;
+                    totalPlannedSpendings += employee.bookings[0].plannedTotalSpending / 100;
                 }
             }
         );
@@ -49,6 +51,7 @@ export class EmployeeList extends React.Component {
             totalPlannedSpending: totalPlannedSpendings
         })
     }
+
 
     saveEmployee(result) {
         this.setState({
@@ -88,6 +91,25 @@ export class EmployeeList extends React.Component {
         }
     }
 
+    grantAllBookings(bookings) {
+        var response = BookingService.grantAllBookings(bookings);
+        response.then(
+            result => {
+                var employee = EmployeeService.getEmployeesForCurrentDivision();
+                employee.then(
+                    result => {
+                        this.saveEmployee(result);
+                        this.calculateSeminareTotalAmount(result)
+                    }
+                );
+                this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
+            },
+            failureResult => {
+                this.props.router.replace('/error');
+            }
+        )
+    }
+
     grantSingleBooking(bookingId) {
         var response = BookingService.grantSingleBooking(bookingId);
         response.then(
@@ -96,24 +118,28 @@ export class EmployeeList extends React.Component {
                 employee.then(
                     result => {
                         this.saveEmployee(result);
-                        this.calculateTotalSeminarsAmount(result)
-                    })
-                    .catch(failureResult => {
-                        this.props.router.replace('/error');
-                    });
+                        this.calculateSeminareTotalAmount(result)
+                    }
+                );
                 this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
-            })
-            .catch(failureResult => {
+            },
+            failureResult => {
                 this.props.router.replace('/error');
-            });
+            }
+        )
     }
 
     checkForUngrantedBookings(bookings) {
         if (bookings.length != 0) {
-            return bookings[0].grantedSpending == bookings[0].plannedTotalSpending;
+            if (bookings[0].grantedSpending == bookings[0].plannedTotalSpending) {
+                return true;
+            } else {
+                return false;
+            }
         }
         return true;
     }
+
 
     render() {
         return (
@@ -122,8 +148,20 @@ export class EmployeeList extends React.Component {
                            showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}
                 />
-                <div className="devision-budget"><h2>Verbrauchtes Budget: {this.state.totalIssuedSpending} / Geplantes
-                    Budget: {this.state.totalPlannedSpending}</h2></div>
+                <div className="devision-budget">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><h3>Verbrauchtes Budget: </h3></td>
+                            <td className="value"><h3>{this.state.totalIssuedSpending} € </h3></td>
+                        </tr>
+                        <tr>
+                            <td><h3>Geplantes Budget: </h3></td>
+                            <td className="value"><h3>{this.state.totalPlannedSpending} €</h3></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <main className="employee-names">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
                     { this.state.filteredEmployees.length < 1 &&
@@ -140,7 +178,7 @@ export class EmployeeList extends React.Component {
         return <EmployeeListItem employee={currentEmployee} router={this.props.router}
                                  key={currentEmployee.userName}
                                  confirmSingleBooking={this.grantSingleBooking}
-                                 confirmAllBookings={this.grantSingleBooking}
+                                 confirmAllBookings={this.grantAllBookings}
                                  checkForUngrantedBookings={this.checkForUngrantedBookings}/>;
     }
 }
