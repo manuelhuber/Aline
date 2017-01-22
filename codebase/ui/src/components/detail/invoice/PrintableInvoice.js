@@ -1,6 +1,7 @@
 import React from 'react';
 import SeminarService from '../../../services/SeminarService';
 import {Participants} from './Participants';
+import {Divisions} from './Divisions';
 
 export class PrintableInvoice extends React.Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export class PrintableInvoice extends React.Component {
                 <Participants participants={this.state.participants}
                               costsPerParticipant={this.state.seminar.costsPerParticipant}/>
                 <h3>Kosten pro Bereich</h3>
+                <Divisions divisionSums={this.state.divisionSums}/>
             </div>
         )
     }
