@@ -1,6 +1,7 @@
 import {MainWrapper} from './components/mainwrapper/MainWrapper';
 import {SeminarList} from './components/overview/SeminarList';
 import {SeminarDetail} from './components/detail/SeminarDetail';
+import {PrintableInvoice} from './components/detail/PrintableInvoice';
 import {Profile} from './components/profile/Profile';
 import {BookingHistory} from './components/profile/BookingHistory';
 import {CreateSeminar} from './components/create/CreateSeminar';
@@ -56,9 +57,9 @@ ReactDOM.render(
             <Route path="profile" component={Profile}/>
             <Route path="bereichuebersicht" component={EmployeeList}/>
             <Route path="history" component={BookingHistory}/>
-            <Route path="/error" component={Error}/>
+            <Route path="invoice" component={PrintableInvoice}/>
+            <Route path="error" component={Error}/>
             <Route path="*" component={NotFound}/>
         </Route>
-
     </Router>
     , document.getElementById('content'));

@@ -1,0 +1,40 @@
+@media print {
+  body {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+  .header {
+    display: none;
+  }
+  .content {
+    margin: 20px !important;
+    width: 210mm !important;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  /*----Seminar Overview--------*/
+  .seminar-tiles:before{
+    content: 'Seminarübersicht';
+    font-size: 21px;
+    width: 100%;
+    font-family: $headerFont;
+    color: $primaryColor;
+  }
+
+  .search-bar,
+  .add-seminar-tile{
+    display: none !important;
+  }
+
+  /*----Seminar Details--------*/
+  .seminar {
+    .output-properties .property label {
+      color: #000;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}

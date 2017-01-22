@@ -161,13 +161,6 @@ export class SeminarDetail extends React.Component {
         )
     }
 
-    /**
-     * Create invoice
-     */
-    createInvoice() {
-        //todo in neuem tab öffnen
-    }
-
     renderProperties(key) {
         return (
             <div className="property" key={key}>
@@ -258,7 +251,9 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        <RaisedButton label="Rechnung generieren" onClick={this.createInvoice}/>
+                        <Link to="/invoice" target="_blank">
+                            <RaisedButton label="Rechnung generieren"/>
+                        </Link>
                     </div>
                     }
                     <RaisedButton label="Buchen" onClick={this.openBookingDialog} primary={true}
