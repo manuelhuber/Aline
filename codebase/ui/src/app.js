@@ -52,12 +52,12 @@ ReactDOM.render(
         <Route path="/" component={MainWrapper} onEnter={redirectToLogin}>
             <IndexRedirect to="/seminars"/>
             <Route path="seminars" component={SeminarList}/>
-            <Route path="seminars/:seminarName" component={SeminarDetail}/>
+            <Route path="seminars/:seminarId" component={SeminarDetail}/>
             <Route path="create" component={CreateSeminar} onEnter={checkIfFrontoffice}/>
             <Route path="profile" component={Profile}/>
             <Route path="bereichuebersicht" component={EmployeeList}/>
             <Route path="history" component={BookingHistory}/>
-            <Route path="invoice" component={PrintableInvoice}/>
+            <Route path="invoice/:seminarId" component={PrintableInvoice}/>
             <Route path="error" component={Error}/>
             <Route path="*" component={NotFound}/>
         </Route>

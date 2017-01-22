@@ -52,7 +52,7 @@ export class SeminarDetail extends React.Component {
     }
 
     componentDidMount() {
-        let seminar = SeminarService.getSeminarById(this.props.params.seminarName);
+        let seminar = SeminarService.getSeminarById(this.props.params.seminarId);
         seminar.then(
             result => {
                 this.setSeminar(result)
@@ -251,7 +251,7 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        <Link to="/invoice" target="_blank">
+                        <Link target="_blank" to={`invoice/${this.state.seminar.id}`}>
                             <RaisedButton label="Rechnung generieren"/>
                         </Link>
                     </div>

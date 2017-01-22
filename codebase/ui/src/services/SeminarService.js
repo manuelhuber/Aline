@@ -136,6 +136,22 @@ module.exports = {
     },
 
     /**
+     * @param seminarId the id of the seminar to get the bill for
+     * @returns {*|Promise.<TResult>} The seminars bill with the given ID as a promise
+     */
+    generateBillForSeminar(seminarId){
+        let token = StorageService.getUserToken();
+        return fetch(Util.getBasicSeminarsPath() + '/' + seminarId + '/bill', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        }).then(Util.checkStatus).then(Util.parseJson)
+    },
+
+    /**
      * @returns {number[]} the available targetLevels
      */
     getTargetLevels(){
