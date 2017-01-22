@@ -252,8 +252,7 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        {/*target="_blank"*/}
-                        <Link  to={`invoice/${this.state.seminar.id}`}>
+                        <Link target="_blank"  to={`invoice/${this.state.seminar.id}`}>
                             <RaisedButton label="Rechnung generieren"/>
                         </Link>
                     </div>
