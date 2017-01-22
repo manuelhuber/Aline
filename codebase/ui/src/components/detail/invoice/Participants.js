@@ -1,6 +1,5 @@
 import React from 'react';
 import Util from '../../../services/Util';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 export class Participants extends React.Component {
     constructor(props) {
@@ -10,36 +9,36 @@ export class Participants extends React.Component {
 
     renderRow(participant) {
         return (
-            <TableRow key={participant.userName}>
-                <TableRowColumn
-                    title={participant.firstName + ' ' + participant.lastName}>{participant.firstName + ' ' + participant.lastName}</TableRowColumn>
-                <TableRowColumn title={participant.division}>{participant.division}</TableRowColumn>
-                <TableRowColumn
-                    title={Util.formatMoneyFromCent(this.props.costsPerParticipant) + '€'}>{Util.formatMoneyFromCent(this.props.costsPerParticipant)}€</TableRowColumn>
-            </TableRow>
+            <tr key={participant.userName}>
+                <td title={participant.firstName + ' ' + participant.lastName}>{participant.firstName + ' ' + participant.lastName}</td>
+                <td title={participant.division}>{participant.division}</td>
+                <td title={Util.formatMoneyFromCent(this.props.costsPerParticipant) + '€'}>{Util.formatMoneyFromCent(this.props.costsPerParticipant)}€ </td>
+            </tr>
         )
     }
 
     render() {
-        return (
-            <Table multiSelectable={false} selectable={false}>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                        <TableHeaderColumn>Teilnehmer</TableHeaderColumn>
-                        <TableHeaderColumn>Bereich</TableHeaderColumn>
-                        <TableHeaderColumn>Betrag</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    { this.props.participants.length > 0 &&
-                    this.props.participants.map(this.renderRow)
-                    }
-                    { this.props.participants.length < 1 &&
-                    <div className="no-participants">Keine Teilnehmer vorhanden.</div>
-                    }
-                </TableBody>
-            </Table>
-        )
+        if (this.props.participants.length < 1) {
+            return (
+                <div>Keine Teilnehmer vorhanden</div>
+            )
+        }
+        else {
+            return (
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Teilnehmer</th>
+                        <th>Bereich</th>
+                        <th>Betrag</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    { this.props.participants.map(this.renderRow)}
+                    </tbody>
+                </table>
+            )
+        }
     }
 }
 
