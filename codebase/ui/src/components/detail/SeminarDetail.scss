@@ -46,9 +46,27 @@
 /*----------Invoice------------------------------------*/
 .invoice {
   margin: 0 15px 0 15px;
-  table .no-participants {
+  table .no-participants,
+  table .no-divisions {
     width: 100%;
     text-align: center;
     padding: 5px;
+  }
+  .costs{
+    width: 500px;
+    label{
+      width: 300px;
+      display: inline-block;
+    }
+    .money-amount{
+      width: 200px;
+      text-align: right;
+      display: inline-block;
+    }
+    .participant-count{
+      border-bottom: 1px solid;
+      margin-bottom: 5px;
+      padding-bottom: 5px;
+    }
   }
 }

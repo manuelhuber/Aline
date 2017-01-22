@@ -3,9 +3,16 @@
     background-color: #fff !important;
     color: #000 !important;
   }
+
+  h1, h2, h3, h4 {
+    font-family: inherit !important;
+    color: #000 !important;
+  }
+
   .header {
     display: none;
   }
+
   .content {
     margin: 20px !important;
     width: 210mm !important;
@@ -15,13 +22,22 @@
     display: none !important;
   }
 
+  //table header black + border schwarz drunter
+  table {
+    thead tr{
+      border-color: #000 !important;
+    }
+    th{
+      color: #000 !important;
+    }
+  }
+
   /*----Seminar Overview--------*/
   .seminar-tiles:before{
     content: 'Seminarübersicht';
     font-size: 21px;
     width: 100%;
     font-family: $headerFont;
-    color: $primaryColor;
   }
 
   .search-bar,

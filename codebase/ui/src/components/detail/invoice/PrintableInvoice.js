@@ -1,11 +1,13 @@
 import React from 'react';
 import SeminarService from '../../../services/SeminarService';
+import Util from '../../../services/Util';
 import {Participants} from './Participants';
 import {Divisions} from './Divisions';
 
 export class PrintableInvoice extends React.Component {
     constructor(props) {
         super(props);
+        this.renderCosts = this.renderCosts.bind(this);
         this.state = {
             seminar: {},
             participants: [],
@@ -32,14 +34,40 @@ export class PrintableInvoice extends React.Component {
             });
     }
 
+    renderCosts() {
+        return (
+            <div className="costs">
+                <div>
+                    <output title="Gesamtkosten">
+                        <label>Gesamtkosten</label>
+                        <span className="money-amount">{Util.formatMoneyFromCent(this.state.totalCost)} €</span>
+                    </output>
+                </div>
+                <div>
+                    <output title="Anzahl Teilnehmer am Seminar">
+                        <label>TN gesamt</label>
+                        <span className="money-amount participant-count">{this.state.participantCount}</span>
+                    </output>
+                </div>
+                <div >
+                    <output title="Kosten pro Teilnehmer am Seminar">
+                        <label>Kosten/TN</label>
+                        <span className="money-amount">{Util.formatMoneyFromCent(this.state.seminar.costsPerParticipant)} €</span>
+                    </output>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="invoice">
                 Your Invoice for the seminar with id {this.props.params.seminarId} here
-                {/*Tabelle mit Spalten "Nutzer" "Bereich" "Betrag"*/}
                 <h3>Teilnehmerliste</h3>
                 <Participants participants={this.state.participants}
                               costsPerParticipant={this.state.seminar.costsPerParticipant}/>
+                <h3>Kosten</h3>
+                {this.renderCosts()}
                 <h3>Kosten pro Bereich</h3>
                 <Divisions divisionSums={this.state.divisionSums}/>
             </div>
