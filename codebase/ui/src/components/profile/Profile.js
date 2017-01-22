@@ -51,7 +51,7 @@ export class Profile extends React.Component {
             division: userData.division,
             authorities: userData.authorities,
             bookings: userData.bookings,
-            currentYearBookingSummary: foundCurrentYearsBookingSummary
+            currentYearBookingSummary: foundCurrentYearsBookingSummary || {}
         });
     }
 
