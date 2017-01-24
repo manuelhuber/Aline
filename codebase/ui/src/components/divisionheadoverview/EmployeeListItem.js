@@ -62,18 +62,18 @@ export class EmployeeListItem extends React.Component {
     }
 
     checkIfBookingIsAlreadyGranted(booking) {
-        return booking.bookings[0].status == 'GRANTED';
+        return booking.status == 'GRANTED';
     }
 
     renderSingleBooking(booking) {
         return (
             <MenuItem
-                primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
+                primaryText={(new Date(booking.created).toLocaleDateString()) + ' für ' + booking.seminarName}
                 onClick={()=> {
-                    this.confirmSingleBooking(booking.bookings[0].id)
+                    this.confirmSingleBooking(booking.id)
                 }}
                 title="Nur dieses Seminar bestätigen"
-                key={booking.bookings[0].id}
+                key={booking.id}
                 disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
         )
     }
@@ -105,7 +105,7 @@ export class EmployeeListItem extends React.Component {
                                 <RaisedButton label="Alle Seminare bestätigen" onClick={()=> {this.confirmAllBookings(this.props.employee.bookings)}}
                                               primary={true}/>
                             </div>
-                            {this.props.employee.bookings.map(this.renderSingleBooking)}
+                            {this.props.employee.bookings[0].bookings.map(this.renderSingleBooking)}
                         </Menu>
                     </Popover>
                     }
