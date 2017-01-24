@@ -150,6 +150,7 @@ export class EmployeeList extends React.Component {
                            showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}
                 />
+                <h3>Budget</h3>
                 <div className="division-budget output-properties">
                     <div className="property">
                         <output title="Das bereits verbrauchte Budget">
@@ -164,13 +165,15 @@ export class EmployeeList extends React.Component {
                         </output>
                     </div>
                 </div>
+                <h3>Mitarbeiter</h3>
                 <main className="employees">
-                    {this.state.filteredEmployees.map(this.renderEmployee)}
+                    {this.state.filteredEmployees.length > 0 && this.state.filteredEmployees.map(this.renderEmployee)}
                     { this.state.filteredEmployees.length < 1 &&
-                    <Popover className="no-employee-found">
+                    <div className="no-employee-found">
                         <i className="material-icons md-36">sentiment_neutral</i>
                         <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
-                    </Popover>}
+                    </div>
+                    }
                 </main>
             </div>
         );

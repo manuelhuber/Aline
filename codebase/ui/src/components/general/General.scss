@@ -31,6 +31,16 @@
   margin: 0 15px 0 15px;
 }
 
+
+.no-seminar-found,
+.no-employee-found{
+  width: 100%;
+  text-align: center;
+  p {
+    margin: 0;
+  }
+}
+
 //Output Properties with label and text
 .output-properties {
   display: flex;
