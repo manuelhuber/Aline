@@ -39,7 +39,7 @@ export class EmployeeListItem extends React.Component {
         this.props.router.replace(
             {
                 pathname: '/profile',
-                query: {userName: this.props.employee.username},
+                query: {userName: this.props.employee.userName},
             }
         )
     }
