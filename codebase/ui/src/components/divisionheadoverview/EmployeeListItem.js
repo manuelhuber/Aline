@@ -6,6 +6,7 @@ import {Link, hashHistory} from 'react-router'
 import Paper from "material-ui/Paper";
 import {Popover} from "material-ui/Popover";
 import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 
@@ -61,22 +62,19 @@ export class EmployeeListItem extends React.Component {
     }
 
     checkIfBookingIsAlreadyGranted(booking) {
-        if (booking.bookings[0].status == 'GRANTED') {
-            return true;
-        }
-        return false;
+        return booking.bookings[0].status == 'GRANTED';
     }
 
     renderSingleBooking(booking) {
         return (
-                <MenuItem
-                    primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
-                    onClick={()=> {
-                        this.confirmSingleBooking(booking.bookings[0].id)
-                    }}
-                    title="Nur dieses Seminar bestätigen"
-                    key={booking.bookings[0].id}
-                    disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
+            <MenuItem
+                primaryText={(new Date(booking.bookings[0].created).toLocaleDateString()) + ' für ' + booking.bookings[0].seminarName}
+                onClick={()=> {
+                    this.confirmSingleBooking(booking.bookings[0].id)
+                }}
+                title="Nur dieses Seminar bestätigen"
+                key={booking.bookings[0].id}
+                disabled={this.checkIfBookingIsAlreadyGranted(booking)}/>
         )
     }
 
@@ -103,13 +101,10 @@ export class EmployeeListItem extends React.Component {
                              onRequestClose={this.closeBookingList}
                              disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}>
                         <Menu>
-                            <MenuItem
-                                primaryText='Alle Seminare bestätigen'
-                                onClick={()=> {
-                                    this.confirmAllBookings(this.props.employee.bookings)
-                                }}
-                                title="Alle Seminare bestätigen"
-                                key='999'/>
+                            <div className="confirm-all-button" title="Alle Seminare bestätigen">
+                                <RaisedButton label="Alle Seminare bestätigen" onClick={()=> {this.confirmAllBookings(this.props.employee.bookings)}}
+                                              primary={true}/>
+                            </div>
                             {this.props.employee.bookings.map(this.renderSingleBooking)}
                         </Menu>
                     </Popover>
