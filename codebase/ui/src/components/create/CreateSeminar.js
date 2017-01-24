@@ -130,7 +130,7 @@ export class CreateSeminar extends React.Component {
                         category: result.category || '',
                         agenda: result.agenda || '',
                         description: result.duration || '',
-                        dates: result.dates || [],
+                        dates: (seminarId ? [] : result.dates) || [],
                         contactPerson: result.contactPerson || '',
                         costsPerParticipant: formattedCostsPerParticipants || 0,
                         cycle: result.cycle || '',
