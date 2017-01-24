@@ -41,14 +41,7 @@ $button-color: #EB0564;
       float: right;
       width: 200px;
       margin-right: 50px;
-      align-self: center;
-      span {
-        height: 50px;
-      }
-      #seminar-lable {
-        position: absolute;
-        top: 50%;
-      }
+      height: 50px;
     }
   }
   .employee + .employee {

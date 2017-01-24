@@ -102,7 +102,7 @@ export class EmployeeList extends React.Component {
                         this.calculateSeminareTotalAmount(result)
                     }
                 );
-                this.props.showSnackbar('Seminarbuchung erfolgreich bestätigt.');
+                this.props.showSnackbar('Seminarbuchungen erfolgreich bestätigt.');
             },
             failureResult => {
                 this.props.router.replace('/error');

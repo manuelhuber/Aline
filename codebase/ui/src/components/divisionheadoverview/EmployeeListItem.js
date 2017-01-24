@@ -2,7 +2,7 @@
  * Created by Zebrata on 30.11.2016.
  */
 import React from "react";
-import {Link} from "react-router";
+import {Link, hashHistory} from 'react-router'
 import Paper from "material-ui/Paper";
 import {Popover} from "material-ui/Popover";
 import FlatButton from "material-ui/FlatButton";
@@ -92,7 +92,7 @@ export class EmployeeListItem extends React.Component {
                     <FlatButton label="Buchungsübersicht" onMouseOver={this.showBookingList}
                                 disabled={this.checkForUngrantedBookings(this.props.employee.bookings)}
                                 title="Alle offenen Buchungen bestätigen" id="seminar-lable"
-                                labelStyle={{height: '50px'}}
+                                style={{height: '50px'}}
                                 onClick={()=> {
                                     this.confirmAllBookings(this.props.employee.bookings)
                                 }}/>
