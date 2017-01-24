@@ -20,7 +20,7 @@ export class SearchBar extends React.Component {
             categories: [],
             availableTiers: [],
             showPastSeminars: false,
-            relEmployee: false
+            relevantEmployee: false
         };
         this.handleTextSearch = this.handleTextSearch.bind(this);
         this.searchForText = this.searchForText.bind(this);
@@ -29,7 +29,7 @@ export class SearchBar extends React.Component {
         this.handlePastSeminarsToggle = this.handlePastSeminarsToggle.bind(this);
         this.saveCategories = this.saveCategories.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
-        this.handleShowRelevantEmployees = this.handleShowRelevantEmployees.bind(this);
+        this.showRelevantEmployees = this.showRelevantEmployees.bind(this);
     }
 
     componentDidMount() {
@@ -101,10 +101,10 @@ export class SearchBar extends React.Component {
         this.props.clearFilter();
     }
 
-    handleShowRelevantEmployees(){
-        let showRelevantEmployees = !(this.state.relEmployee)
+    showRelevantEmployees(){
+        let showRelevantEmployees = !(this.state.relevantEmployee)
         this.setState({
-            relEmployee:showRelevantEmployees
+            relevantEmployee:showRelevantEmployees
         });
         this.props.showRelevantEmployees(showRelevantEmployees); //Call the handed method
     }
@@ -119,9 +119,9 @@ export class SearchBar extends React.Component {
                         <IconButton onClick={this.searchForText} iconClassName="material-icons">search</IconButton>
                     </div>
                     <div className="checkbox-wrapper">
-                        <Toggle label="Mitarbeiter anzeigen die noch unbestätige Seminare haben"
-                                value={this.state.relEmployee}
-                                onToggle={this.handleShowRelevantEmployees} labelPosition="right"/>
+                        <Toggle label="Nur Mitarbeiter mit unbestätigen Seminaren zeigen"
+                                value={this.state.relevantEmployee}
+                                onToggle={this.showRelevantEmployees} labelPosition="right"/>
                     </div>
                 </div>
             )

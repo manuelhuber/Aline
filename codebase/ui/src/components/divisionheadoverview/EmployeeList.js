@@ -143,26 +143,26 @@ export class EmployeeList extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="division">
                 <SearchBar searchBarType="department" searchForText={this.filterEmployees}
                            showRelevantEmployees={this.showRelevantEmployees}
                            clearFilter={this.clearFilter}
                 />
-                <div className="devision-budget">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td><h3>Verbrauchtes Budget: </h3></td>
-                            <td className="value"><h3>{this.state.totalIssuedSpending} € </h3></td>
-                        </tr>
-                        <tr>
-                            <td><h3>Geplantes Budget: </h3></td>
-                            <td className="value"><h3>{this.state.totalPlannedSpending} €</h3></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div className="division-budget output-properties">
+                    <div className="property">
+                        <output title="Das bereits verbrauchte Budget">
+                            <label>Verbrauchtes Budget:</label>
+                            {this.state.totalIssuedSpending} €
+                        </output>
+                    </div>
+                    <div className="property">
+                        <output title="Die geplanten Ausgaben">
+                            <label>Geplantes Budget:</label>
+                            {this.state.totalPlannedSpending} €
+                        </output>
+                    </div>
                 </div>
-                <main className="employee-names">
+                <main className="employees">
                     {this.state.filteredEmployees.map(this.renderEmployee)}
                     { this.state.filteredEmployees.length < 1 &&
                     <Popover className="no-employee-found">
