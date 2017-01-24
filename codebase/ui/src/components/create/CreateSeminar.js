@@ -99,7 +99,8 @@ export class CreateSeminar extends React.Component {
 
         this.setState({
             isFrontOffice: AuthService.isFrontOffice(),
-            availableTargetLevels: SeminarService.getTargetLevels()
+            availableTargetLevels: SeminarService.getTargetLevels(),
+            updatingExistingSeminar: (this.props.location.query && this.props.location.query.changeExisting) ? true: false
         });
 
         this.preFillSeminarData();
@@ -123,8 +124,6 @@ export class CreateSeminar extends React.Component {
                 result => {
                     let formattedCostsPerParticipants = Util.formatMoneyFromCent(result.costsPerParticipant);
                     this.setState({
-                        updatingExistingSeminar: (seminarId ? true : false),
-
                         id: result.id || 0,
                         name: result.name,
                         category: result.category || '',
@@ -383,7 +382,8 @@ export class CreateSeminar extends React.Component {
         ];
         return (
             <div className="create">
-                <h2>Neues Seminar erstellen: </h2>
+                {!this.state.updatingExistingSeminar && <h2>Neues Seminar erstellen:</h2>}
+                {this.state.updatingExistingSeminar && <h2>Seminar bearbeiten:</h2>}
                 {this.state.isFrontOffice &&
                 <form className="create-seminar">
                     <div className="copy-button">
@@ -412,15 +412,15 @@ export class CreateSeminar extends React.Component {
                         </SelectField>
                     </div>
                     <div>
-                        <TextField onChange={this.agendaInput} fullWidth={true}
-                                   floatingLabelText="Agenda" floatingLabelFixed={true}
-                                   value={this.state.agenda} id="agenda"
-                                   multiLine={true} rows={2} rowsMax={4}/>
-                    </div>
-                    <div>
                         <TextField onChange={this.descriptionInput} fullWidth={true}
                                    floatingLabelText="Beschreibung" floatingLabelFixed={true}
                                    value={this.state.description} id="description"
+                                   multiLine={true} rows={2} rowsMax={4}/>
+                    </div>
+                    <div>
+                        <TextField onChange={this.agendaInput} fullWidth={true}
+                                   floatingLabelText="Agenda" floatingLabelFixed={true}
+                                   value={this.state.agenda} id="agenda"
                                    multiLine={true} rows={2} rowsMax={4}/>
                     </div>
                     <div className="datepicker">
