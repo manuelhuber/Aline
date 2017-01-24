@@ -58,7 +58,7 @@ public class BookingFactory {
                 .seminarName(seminar.getName())
                 .seminarCost(seminar.getCostsPerParticipant())
                 .seminarYear(SeminarUtil.getYear(seminar))
-                .seminarOver(SeminarUtil.getLastDate(seminar).before(dateUtil.getCurrentDate()))
+                .seminarOver(isOver(seminar))
                 .build();
     }
 
@@ -104,5 +104,10 @@ public class BookingFactory {
         bookingSummaries.sort(Comparator.comparingInt(BookingSummaryDTO::getYear).reversed());
 
         return bookingSummaries;
+    }
+
+    private boolean isOver(Seminar seminar) {
+        return SeminarUtil.getLastDate(seminar) != null
+                && SeminarUtil.getLastDate(seminar).before(dateUtil.getCurrentDate());
     }
 }
