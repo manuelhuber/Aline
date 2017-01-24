@@ -12,7 +12,7 @@ export class TotalCostItem extends React.Component {
                 {/*The total cost of all seminars that have already taken place*/}
                 <div className="property">
                     <output title="Die summierten Kosten aller erfolgreich stattgefundener Seminare.">
-                        <label>Absolute Gesamtkosten</label>
+                        <label>Bereits ausgegeben</label>
                         {Util.formatMoneyFromCent(this.props.issuedSpending)} €
                     </output>
                 </div>
@@ -21,20 +21,6 @@ export class TotalCostItem extends React.Component {
                     <output title="Die Gesamtkosten aller bestätigten sowie unbestätigten Seminare.">
                         <label>Vorraussichtliche Gesamtkosten</label>
                         {Util.formatMoneyFromCent(this.props.plannedTotalSpending)} €
-                    </output>
-                </div>
-                {/*The total cost of all granted seminars*/}
-                <div className="property">
-                    <output title="Die Kosten aller bestätigten Seminare (sowohl vergangene, wie in der Zukunft liegende Seminare)">
-                        <label>Kosten bestätigter Seminare (vergangen wie noch stattfindend)</label>
-                        {Util.formatMoneyFromCent(this.props.grantedSpending)} €
-                    </output>
-                </div>
-                {/*The total cost of all granted & requested seminars that have not taken place yet*/}
-                <div className="property">
-                    <output title="Die Kosten aller in der Zukunft liegender Seminare (sowohl bestätigt, wie unbestätigt)">
-                        <label>Voraussichtlich zukünftige Kosten (bestätigt wie unbestätigt)</label>
-                        {Util.formatMoneyFromCent(this.props.plannedAdditionalSpending)} €
                     </output>
                 </div>
             </div>
