@@ -6,12 +6,15 @@ import de.fh.rosenheim.aline.util.SwaggerTexts;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
 public class SeminarBasicsDTO {
 
     @JsonView(View.SeminarBasicsView.class)
+    @NotNull
+    @ApiModelProperty(required = true)
     private String name;
 
     @JsonView(View.SeminarBasicsView.class)

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -70,11 +71,11 @@ public class SeminarsController {
      * @param seminar The basic info about the seminar
      * @return The complete newly created seminar
      * @throws UnknownCategoryException if the category is not a known category (all categories will be listed in the
-     *                                 response)
+     *                                  response)
      */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
-    public ResponseEntity<SeminarDTO> addSeminar(@RequestBody SeminarBasicsDTO seminar) throws UnknownCategoryException {
+    public ResponseEntity<SeminarDTO> addSeminar(@RequestBody @Valid SeminarBasicsDTO seminar) throws UnknownCategoryException {
         return new ResponseEntity<>(
                 SeminarFactory.toSeminarDTO(seminarService.createNewSeminar(seminar)),
                 HttpStatus.CREATED
@@ -100,9 +101,9 @@ public class SeminarsController {
      * @param id      of the seminar that should be updated
      * @param seminar the basic data that will be set
      * @return The updated Seminar
-     * @throws NoObjectForIdException  if there is no seminar for the given ID
+     * @throws NoObjectForIdException   if there is no seminar for the given ID
      * @throws UnknownCategoryException if the category is not a known category (all categories will be listed in the
-     *                                 response)
+     *                                  response)
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.isFrontOffice(principal)")
