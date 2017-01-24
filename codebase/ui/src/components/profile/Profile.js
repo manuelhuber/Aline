@@ -78,7 +78,7 @@ export class Profile extends React.Component {
                     { typeof this.state.currentYearBookingSummary.year !== 'undefined' &&
                     <span>
                         <div className="bookings">
-                            <h3>Meine Buchungen</h3>
+                            <h3>Buchungen</h3>
                             {this.state.ownProfile &&
                             <span className="history-button">
                                 <FlatButton onClick={this.navigateToSeminarHistory} label="Buchungshistorie"
