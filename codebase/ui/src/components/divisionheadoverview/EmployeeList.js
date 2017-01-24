@@ -32,8 +32,10 @@ export class EmployeeList extends React.Component {
             result => {
                 this.saveEmployee(result);
                 this.calculateSeminareTotalAmount(result)
-            }
-        )
+            })
+            .catch(failureResult => {
+                this.props.router.replace('/error');
+            });
     }
 
     calculateSeminareTotalAmount(employees) {
