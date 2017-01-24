@@ -70,7 +70,7 @@ export class Profile extends React.Component {
             <div>
                 <main className="profile">
                     {this.state.ownProfile &&
-                    <h2>Profil</h2>
+                    <h2>Mein Profil</h2>
                     }
                     {!(this.state.ownProfile) &&
                     <h2>{this.state.firstName} {this.state.lastName}</h2>
