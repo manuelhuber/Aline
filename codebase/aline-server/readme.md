@@ -1,4 +1,4 @@
-##Development:
+#Development:
 
 ##### Layers
 Repositories - Database access
@@ -11,10 +11,10 @@ This Project uses Lombok which auto-generates boilerplate code (like getter and 
 
 ##### Database
 Spring Boot uses by default (if nothing else is configured) a embedded H2 database.
-You can access the DB console via `${serveraddress}/${contextPath}/console `. Default JDBC URL is `jdbc:h2:mem:testdb`, user is `sa` with empty password
+You can access the DB console via `${serveraddress}/${contextPath}/console ` (see `application.yml`).   Default JDBC URL is `jdbc:h2:mem:testdb`, user is `sa` with empty password
 
 ##### Swagger
-Url: ${serveraddress}/${contextPath}/swagger-ui.html
+Url: ${serveraddress}/${contextPath}/swagger-ui.html (see `application.yml`)  
 Use the login endpoint to generate a token. Enter this token at the top right into the api_key field to automatically attach it to every call.
 
 #### Tests
@@ -47,13 +47,15 @@ You might still want a user database in Aline for info like logout and authoriti
 
 The content of "security" could have been split between the other packages (i.e. services under "service" etc.) but I liked having all of the security code separate from the domain / business code. Only exception is the AuthenticationController since Swagger wants all of the controllers to be in the same package. 
 
-##Production:
+#### TODOs:
+- Change REST api to conform more to conventions (i.e. /users resource)
+- Add integration tests
+
+#Production:
 - The token received from the login endpoint has to be put in the header of requests with the key `X-Auth-Token`.
-- Change the secret in the properties
+- Check property file `application.yml` and change what's necessary (like the secret)
 - Add CORS urls as necessary in the `corsConfigurer` function
 - The `PersistenceConfiguration.java` adds dummy data - You probably don't want that going live
 - Check the `WebSecurityConfig.java` if everything is up to your standards
 - There is no option to create users since most people will want to integrate it with their existing LDAP / whatever (see Development-Auth)
 - remove `h2servletRegistration` from `AlineServerApplication`
-
-seminare: 1,2,4,

@@ -248,7 +248,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar4.setDates(new Date[]{sdf.parse("10/08/2017")});
 
         Seminar seminar5 = new Seminar();
-        seminar5.setName("Test Design School 2016");
+        seminar5.setName("Test Design School 2017");
         seminar5.setDescription("Die Schulung richtet sich in erster Linie an Tester und Testanalysten, die durch gutes Testdesign und zugehörige Tests\n" +
                 "mit zur Qualität in einem Projekt bzw. mit zur Qualitätssicherung eines Produktes beitragen wollen.\n" +
                 "In der Schulung werden u.a. die Grundlagen zur Erstellung eines Testfalls vermittelt und wie Testwerkzeuge den Tester\n" +
@@ -288,7 +288,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 "Themenstack. Anfragen von extern gibt es bereits (z.B. SBB, CP, Nubix, Formel D).");
         seminar5.setDuration("1,5 - 2,0 Tage");
         seminar5.setCycle("Nach Bedarf");
-        seminar5.setDates(new Date[]{sdf.parse("10/08/2016")});
+        seminar5.setDates(new Date[]{sdf.parse("10/08/2017")});
 
         Seminar seminar6 = new Seminar();
         seminar6.setName("Test Design School 2015");
