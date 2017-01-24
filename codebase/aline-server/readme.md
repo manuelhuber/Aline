@@ -54,3 +54,6 @@ The content of "security" could have been split between the other packages (i.e.
 - The `PersistenceConfiguration.java` adds dummy data - You probably don't want that going live
 - Check the `WebSecurityConfig.java` if everything is up to your standards
 - There is no option to create users since most people will want to integrate it with their existing LDAP / whatever (see Development-Auth)
+- remove `h2servletRegistration` from `AlineServerApplication`
+
+seminare: 1,2,4,

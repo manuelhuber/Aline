@@ -53,9 +53,36 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         User fitStaff = User.builder()
-                .username("fituser")
+                .username("fituser1")
                 .firstName("John")
                 .lastName("Doe")
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
+                .authorities(Authorities.EMPLOYEE)
+                .division("FIT")
+                .build();
+
+        User fitStaff2 = User.builder()
+                .username("fituser2")
+                .firstName("Adam")
+                .lastName("Bien")
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
+                .authorities(Authorities.EMPLOYEE)
+                .division("FIT")
+                .build();
+
+        User fitStaff3 = User.builder()
+                .username("fituser3")
+                .firstName("Peter")
+                .lastName("Parker")
+                .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
+                .authorities(Authorities.EMPLOYEE)
+                .division("FIT")
+                .build();
+
+        User fitStaff4 = User.builder()
+                .username("fituser4")
+                .firstName("Rossie")
+                .lastName("Smith")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
                 .authorities(Authorities.EMPLOYEE)
                 .division("FIT")
@@ -71,7 +98,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .build();
 
         User fitDivisionHead = User.builder()
-                .username("admin")
+                .username("fitchef")
                 .firstName("Dave")
                 .lastName("Davidson")
                 .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi") // admin
@@ -146,7 +173,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         seminar2.setGoal("");
         seminar2.setDuration("2 Tage");
         seminar2.setCycle("1x Jährlich");
-        seminar2.setDates(new Date[]{sdf.parse("08/04/2017"), sdf.parse("09/04/2017")});
+        seminar2.setDates(new Date[]{sdf.parse("01/01/2017"), sdf.parse("11/01/2017")});
 
         Seminar seminar3 = new Seminar();
         seminar3.setName("Mobile Development für iOS 2016");
@@ -314,7 +341,7 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
 
         Booking booking2 = Booking.builder()
                 .seminar(seminar2).user(losStaff)
-                .status(BookingStatus.REQUESTED)
+                .status(BookingStatus.GRANTED)
                 .build();
 
         Booking booking3 = Booking.builder()
@@ -337,8 +364,45 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .status(BookingStatus.GRANTED)
                 .build();
 
+        Booking booking7 = Booking.builder()
+                .seminar(seminar1).user(fitStaff2)
+                .status(BookingStatus.GRANTED)
+                .build();
+        Booking booking8 = Booking.builder()
+                .seminar(seminar2).user(fitStaff2)
+                .status(BookingStatus.GRANTED)
+                .build();
+        Booking booking9 = Booking.builder()
+                .seminar(seminar1).user(fitStaff3)
+                .status(BookingStatus.REQUESTED)
+                .build();
+        Booking booking10 = Booking.builder()
+                .seminar(seminar2).user(fitStaff3)
+                .status(BookingStatus.GRANTED)
+                .build();
+        Booking booking11 = Booking.builder()
+                .seminar(seminar4).user(fitStaff3)
+                .status(BookingStatus.REQUESTED)
+                .build();
+        Booking booking12 = Booking.builder()
+                .seminar(seminar2).user(fitStaff4)
+                .status(BookingStatus.GRANTED)
+                .build();
+        Booking booking13 = Booking.builder()
+                .seminar(seminar4).user(fitStaff4)
+                .status(BookingStatus.GRANTED)
+                .build();
+
         seminarRepository.save(asList(seminar1, seminar2, seminar3, seminar4, seminar5, seminar6));
-        userRepository.save(asList(losStaff, fitStaff, fitDivisionHead, expired, front_office));
-        bookingRepository.save(asList(booking1, booking2, booking3, booking4, booking5, booking6));
+        userRepository.save(asList(losStaff, fitStaff, fitStaff2, fitStaff3, fitStaff4, fitDivisionHead, expired, front_office));
+        bookingRepository.save(asList(booking1, booking2, booking3, booking4, booking5, booking6,
+                booking7,
+                booking8,
+                booking9,
+                booking10,
+                booking11,
+                booking12,
+                booking13
+        ));
     }
 }
