@@ -35,6 +35,8 @@ module.exports = {
                 StorageService.storeCurrentUser(result.user);
             }
         })
+            .catch((error)=> {
+            })
     },
 
     /**

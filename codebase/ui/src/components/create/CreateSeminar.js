@@ -123,14 +123,14 @@ export class CreateSeminar extends React.Component {
                 result => {
                     let formattedCostsPerParticipants = Util.formatMoneyFromCent(result.costsPerParticipant);
                     this.setState({
-                        updatingExistingSeminar: true,
+                        updatingExistingSeminar: (seminarId ? true : false),
 
                         id: result.id || 0,
                         name: result.name,
                         category: result.category || '',
                         agenda: result.agenda || '',
-                        description: result.duration || '',
-                        dates: result.dates || [],
+                        description: result.description || '',
+                        dates: (seminarId ? [] : result.dates) || [],
                         contactPerson: result.contactPerson || '',
                         costsPerParticipant: formattedCostsPerParticipants || 0,
                         cycle: result.cycle || '',
@@ -400,12 +400,12 @@ export class CreateSeminar extends React.Component {
                     </div>
                     <div>
                         <TextField onChange={this.nameInput} fullWidth={true}
-                                   floatingLabelText="Name" floatingLabelFixed={true}
+                                   floatingLabelText="Name (Pflichtfeld)" floatingLabelFixed={true}
                                    value={this.state.name} id="name"
                                    errorText={this.state.nameMissingError === true && "Das Seminar braucht einen Namen."}/>
                     </div>
                     <div>
-                        <SelectField floatingLabelText="Kategorie" floatingLabelFixed={true} fullWidth={true}
+                        <SelectField floatingLabelText="Kategorie (Pflichtfeld)" floatingLabelFixed={true} fullWidth={true}
                                      value={this.state.category} onChange={this.categoryInput}
                                      errorText={this.state.categoryMissingError === true && "Bitte wähle eine Kategorie."}>
                             { this.state.availableCategories.map(this.renderSelectMenuItems) }
