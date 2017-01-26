@@ -16,8 +16,7 @@ module.exports = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
-            },
-            body: {}
+            }
         }).then(Util.checkStatus).then(Util.parseJson)
     },
 
@@ -36,8 +35,7 @@ module.exports = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
-            },
-            body: {}
+            }
         }).then(Util.checkStatus).then(Util.parseJson)
     }
 };
