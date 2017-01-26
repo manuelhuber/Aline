@@ -50,6 +50,7 @@ The content of "security" could have been split between the other packages (i.e.
 #### TODOs:
 - Change REST api to conform more to conventions (i.e. /users resource)
 - Add integration tests
+- Improve Swagger docu
 
 #Production:
 - The token received from the login endpoint has to be put in the header of requests with the key `X-Auth-Token`.

@@ -170,8 +170,11 @@ public class SeminarService {
     private List<Seminar> filterForSeminarsByDate(List<Seminar> seminars, Date referenceDate, boolean getPastSeminars) {
         return seminars.stream().filter(seminar -> {
             Date latestDate = SeminarUtil.getLastDate(seminar);
-            // If there are no dates, return it anyways to ensure no seminar is lost because it doesn't have dates
-            return latestDate == null || latestDate.after(referenceDate) != getPastSeminars;
+            if (latestDate == null) {
+                // If there are no dates, don't return it as a past seminar, but as a future seminar
+                return !getPastSeminars;
+            }
+            return latestDate.after(referenceDate) != getPastSeminars;
         }).collect(Collectors.toList());
     }
 }
