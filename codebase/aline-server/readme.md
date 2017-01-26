@@ -11,7 +11,8 @@ This Project uses Lombok which auto-generates boilerplate code (like getter and 
 
 ##### Database
 Spring Boot uses by default (if nothing else is configured) a embedded H2 database.
-You can access the DB console via `${serveraddress}/${contextPath}/console ` (see `application.yml`).   Default JDBC URL is `jdbc:h2:mem:testdb`, user is `sa` with empty password
+To access the DB via browser, uncomment the `h2servletRegistration` in `AlineServerApplication`.
+Then you go to `${serveraddress}/${contextPath}/console ` (see `application.yml`).   Default JDBC URL is `jdbc:h2:mem:testdb`, user is `sa` with empty password
 
 ##### Swagger
 Url: ${serveraddress}/${contextPath}/swagger-ui.html (see `application.yml`)  
@@ -59,4 +60,3 @@ The content of "security" could have been split between the other packages (i.e.
 - The `PersistenceConfiguration.java` adds dummy data - You probably don't want that going live
 - Check the `WebSecurityConfig.java` if everything is up to your standards
 - There is no option to create users since most people will want to integrate it with their existing LDAP / whatever (see Development-Auth)
-- remove `h2servletRegistration` from `AlineServerApplication`
