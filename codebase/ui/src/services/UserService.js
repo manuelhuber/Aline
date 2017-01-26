@@ -43,16 +43,14 @@ module.exports = {
      */
     getUser(userName) {
         let token = StorageService.getUserToken();
-        return fetch(Util.getBasicUsersPath(), {
+        return fetch(Util.getBasicUsersPath() + '?name=' + userName, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token
             },
-            body: {
-                name: userName
-            }
+            body: {}
         }).then(Util.checkStatus).then(Util.parseJson)
     }
 };
