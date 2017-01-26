@@ -56,7 +56,7 @@
       text-align: center;
       padding: 5px;
     }
-    th{
+    th {
       text-align: left;
     }
   }
@@ -70,16 +70,16 @@
   }
 
   //Seminar Infos
-  .seminar-infos{
+  .seminar-infos {
     label {
       font-weight: bold;
       width: 300px;
       display: inline-block;
     }
-    div + div{
+    div + div {
       margin-top: 5px;
     }
-    .date + .date{
+    .date + .date {
       margin-left: 20px;
     }
   }
@@ -103,5 +103,11 @@
       margin-bottom: 5px;
       padding-bottom: 5px;
     }
+  }
+
+  //Print Button
+  .print-button {
+    text-align: center;
+    margin-top: 20px;
   }
 }

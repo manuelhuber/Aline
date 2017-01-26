@@ -3,6 +3,7 @@ import SeminarService from '../../../services/SeminarService';
 import Util from '../../../services/Util';
 import {Participants} from './Participants';
 import {Divisions} from './Divisions';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export class PrintableInvoice extends React.Component {
     constructor(props) {
@@ -71,6 +72,10 @@ export class PrintableInvoice extends React.Component {
         )
     }
 
+    printPage(){
+        window.print();
+    }
+
     renderCosts() {
         return (
             <div className="costs">
@@ -86,7 +91,7 @@ export class PrintableInvoice extends React.Component {
                         <span className="money-amount participant-count">{this.state.participantCount}</span>
                     </output>
                 </div>
-                <div >
+                <div>
                     <output title="Kosten pro Teilnehmer am Seminar">
                         <label>Kosten/TN</label>
                         <span
@@ -108,6 +113,9 @@ export class PrintableInvoice extends React.Component {
                 {this.renderCosts()}
                 <h3>Kosten pro Bereich</h3>
                 <Divisions divisionSums={this.state.divisionSums}/>
+                <div className="print-button">
+                    <RaisedButton primary={true} label="Rechnung drucken" onClick={this.printPage}/>
+                </div>
             </div>
         )
     }
