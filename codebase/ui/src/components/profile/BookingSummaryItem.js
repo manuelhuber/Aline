@@ -6,7 +6,7 @@ import React from 'react';
 import {Link} from 'react-router'
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
-import {TotalCostItem} from './TotalCostItem';
+import Util from '../../services/Util';
 
 export class BookingSummaryItem extends React.Component {
     constructor() {
@@ -34,11 +34,14 @@ export class BookingSummaryItem extends React.Component {
         return (
             <div className="bookings summary-item">
                 <h3>{this.props.bookingSummary.year}</h3>
-                <TotalCostItem grantedSpending={this.props.bookingSummary.grantedSpending}
-                               plannedAdditionalSpending = {this.props.bookingSummary.plannedAdditionalSpending}
-                               issuedSpending = {this.props.bookingSummary.issuedSpending}
-                               plannedTotalSpending={this.props.bookingSummary.plannedTotalSpending}/>
-
+                <div className="output-properties">
+                    <div className="property">
+                        <output title={'Deine gesamten Ausgaben des Jahres ' + this.props.bookingSummary.year}>
+                            <label>Ausgaben</label>
+                            {Util.formatMoneyFromCent(this.props.bookingSummary.issuedSpending)} €
+                        </output>
+                    </div>
+                </div>
                 { this.props.bookingSummary.bookings.length > 0 &&
                 this.props.bookingSummary.bookings.map(this.renderSingleBooking)
                 }
