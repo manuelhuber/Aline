@@ -5,6 +5,10 @@ export class Error extends React.Component {
         super(props);
     }
 
+    componentDidMount(){
+        this.props.showLoadingIndicator(false);
+    }
+
     render() {
         return (
             <div className="error-page">
