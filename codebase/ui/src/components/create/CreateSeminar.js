@@ -484,7 +484,7 @@ export class CreateSeminar extends React.Component {
                                    value={this.state.trainingType} id="type"/>
                     </div>
                     <div>
-                        <TextField onChange={this.bookingTimelog} fullWidth={true}
+                        <TextField onChange={this.bookingTimelogInput} fullWidth={true}
                                    floatingLabelText="Kontierung (im Timelog)" floatingLabelFixed={true}
                                    value={this.state.bookingTimelog} id="type"/>
                     </div>
