@@ -108,9 +108,7 @@ export class SeminarDetail extends React.Component {
             result => {
                 this.props.showSnackbar('Buchungsanfrage erfolgreich erstellt');
                 this.closeBookingDialog();
-                window.setTimeout(function () {
-                    location.reload();
-                }, 2000);
+                this.componentDidMount();
             })
             .catch(failureResult => {
                 this.props.router.replace('/error');
