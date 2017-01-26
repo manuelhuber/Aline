@@ -22,28 +22,15 @@ module.exports = {
     },
 
     /**
-     *
-     * @returns {Promise.<TResult>|*} the current logged in user as a promise
-     */
-    getUser() {
-        let token = StorageService.getUserToken();
-        return fetch(Util.getBasicUsersPath(), {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Auth-Token': token
-            },
-            body: {}
-        }).then(Util.checkStatus).then(Util.parseJson)
-    },
-
-    /**
      * @returns {Promise.<TResult>|*} the user data of the given user name as a promise
      */
     getUser(userName) {
+        let path = Util.getBasicUsersPath();
+        if (userName) {
+            path += '?name=' + userName;
+        }
         let token = StorageService.getUserToken();
-        return fetch(Util.getBasicUsersPath() + '?name=' + userName, {
+        return fetch(path, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
