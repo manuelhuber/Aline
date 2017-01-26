@@ -34,7 +34,7 @@ export class BookingSummaryItem extends React.Component {
         return (
             <div className="bookings summary-item">
                 <h3>{this.props.bookingSummary.year}</h3>
-                <TotalCostItem grantedSpending={this.props.bookingSummary.grantedSpending}
+                <TotalCostItem grantedSpending={this.props.bookingSummary.grantedSpending} isHistory={this.props.isHistory}
                                plannedAdditionalSpending = {this.props.bookingSummary.plannedAdditionalSpending}
                                issuedSpending = {this.props.bookingSummary.issuedSpending}
                                plannedTotalSpending={this.props.bookingSummary.plannedTotalSpending}/>

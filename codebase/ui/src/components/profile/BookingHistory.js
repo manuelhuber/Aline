@@ -49,7 +49,7 @@ export class BookingHistory extends React.Component {
                                         icon={<FontIcon className="material-icons">navigate_before</FontIcon>}/>
                     </span>
                     {this.state.bookings.map((bookingSummary)=> {
-                        return <BookingSummaryItem bookingSummary={bookingSummary}/>
+                        return <BookingSummaryItem bookingSummary={bookingSummary} isHistory={true}/>
                     })
                     }
                     {this.state.bookings.length < 1 &&
