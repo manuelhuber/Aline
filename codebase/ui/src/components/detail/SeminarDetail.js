@@ -81,7 +81,7 @@ export class SeminarDetail extends React.Component {
     }
 
     checkIfCurrentUserHasAlreadyBooked() {
-        let result = this.state.userBookings.map((bookingSummary)=>{
+        let result = this.state.userBookings.map((bookingSummary)=> {
             return bookingSummary.bookings.find((booking) => {
                 return booking.seminarId === this.state.seminar.id;
             })
@@ -215,26 +215,29 @@ export class SeminarDetail extends React.Component {
                 <h2>{this.state.seminar.name}</h2>
                 <div className="seminar-info-chips">
                     { this.checkIfCurrentUserHasAlreadyBooked() &&
-                    <Chip backgroundColor="rgb(255, 64, 129)">Von dir gebucht</Chip>
+                    <Chip backgroundColor="rgb(255, 64, 129)" title="Du hast das Seminar bereits gebucht.">Von dir
+                        gebucht</Chip>
                     }
                     {this.maximumParticipantsAchieved() &&
-                    <Chip backgroundColor="rgb(255, 64, 129)">Maximale Teilnehmeranzahl erreicht</Chip>
+                    <Chip backgroundColor="rgb(255, 64, 129)"
+                          title="Die maximale Teilnehmeranzahl ist erreicht. Das Seminar ist nicht mehr buchbar. Wenn du möchtest, lass dich persönlich vom Frontoffice auf die Warteliste setzen.">Maximale
+                        Teilnehmeranzahl erreicht</Chip>
                     }
                     {!this.isBookable() &&
-                    <Chip backgroundColor="rgb(255, 64, 129)">Nicht buchbar</Chip>
+                    <Chip backgroundColor="rgb(255, 64, 129)" title="Das Seminar wurde (aus unbekannten Gründen) als nicht buchbar markiert.">Nicht buchbar</Chip>
                     }
                 </div>
 
                 { AuthService.isFrontOffice() &&
                 <div className="button-wrapper frontoffice-buttons">
-                    <RaisedButton label="Löschen" onClick={this.openDeleteDialog}>
+                    <RaisedButton label="Löschen" onClick={this.openDeleteDialog} title="Lösche das Seminar.">
                         <Dialog actions={deleteActions} modal={false} open={this.state.deleteAlertOpen}
                                 onRequestClose={this.close}>
                             Möchtest du das Seminar <span className="highlight-text">"{this.state.seminar.name}" </span>
                             wirklich löschen?
                         </Dialog>
                     </RaisedButton>
-                    <RaisedButton label="Bearbeiten" onClick={this.handleSeminarUpdate}/>
+                    <RaisedButton label="Bearbeiten" onClick={this.handleSeminarUpdate} title="Bearbeite das Seminar."/>
                 </div>
                 }
                 {
@@ -262,7 +265,7 @@ export class SeminarDetail extends React.Component {
                 <div className="button-wrapper">
                     { AuthService.isFrontOffice() &&
                     <div>
-                        <Link target="_blank" to={`invoice/${this.state.seminar.id}`}>
+                        <Link target="_blank" to={`invoice/${this.state.seminar.id}`} title="Generiere die Rechnung für das Seminar. Die Rechnung wird in einem neuen Tab geöffnet.">
                             <RaisedButton label="Rechnung generieren"/>
                         </Link>
                     </div>

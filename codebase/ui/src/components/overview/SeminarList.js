@@ -125,7 +125,7 @@ export class SeminarList extends React.Component {
                            clearFilter={this.clearFilter} searchForText={this.searchForText}/>
                 <main className="seminar-tiles">
                     {this.state.isFrontOffice &&
-                    <div className="add-seminar-tile">
+                    <div className="add-seminar-tile" title="Klicke hier um ein neues Seminar anzulegen.">
                         <Link to={`create`}>
                             <i className="material-icons">add</i>
                         </Link>

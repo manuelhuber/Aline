@@ -9,7 +9,8 @@ export class SeminarListItem extends React.Component {
 
     render() {
         return (
-            <Link to={`seminars/${this.props.seminar.id}`}>
+            <Link to={`seminars/${this.props.seminar.id}`}
+                  title={'Klicke hier um zur Detailansicht des Seminars ' + this.props.seminar.name + ' zu navigieren.'}>
                 <Paper className={this.props.isPast ? 'seminar-tile past-seminar' : 'seminar-tile'} zDepth={1}>
                     <div className="name">{this.props.seminar.name}</div>
                     <div className="trainer">{this.props.seminar.trainer}</div>

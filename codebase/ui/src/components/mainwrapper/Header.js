@@ -54,14 +54,14 @@ export class Header extends React.Component {
     render() {
         return (
             <header className="header">
-                <div className="navlink">
+                <div className="navlink" title="Zur Seminarübersicht navigieren. Sehe hier alle verfügbaren Seminare ein und navigiere zu den Detailansichten der Seminare.">
                     <Link to="/seminars" activeClassName="active">
                         <i className="material-icons md-light">list</i>
                         Seminarübersicht
                     </Link>
                 </div>
                 {AuthService.isDivisionHead() &&
-                <div className="navlink">
+                <div className="navlink" title="Zur Bereichsübersicht navigieren. Hier sind Budgetinformationen zum Bereich einsehbar, und die Mitarbeiter des Bereichs.">
                     <Link to="/bereichuebersicht" activeClassName="active">
                         <i className="material-icons md-light">group</i>
                         Mein Bereich
@@ -76,8 +76,8 @@ export class Header extends React.Component {
                              targetOrigin={{horizontal: 'right', vertical: 'top'}}
                              onRequestClose={this.closeMenu}>
                         <Menu>
-                            <MenuItem primaryText={this.state.userName} disabled={true}/>
-                            <MenuItem primaryText="Öffne Profil" onClick={this.navigateToProfile}/>
+                            <MenuItem primaryText={this.state.userName} disabled={true} title="Das bist du!"/>
+                            <MenuItem primaryText="Öffne Profil" onClick={this.navigateToProfile} title="Navigiere zu deinem eigenen Profil."/>
                             <MenuItem primaryText="Ausloggen" onClick={this.logOut}/>
                         </Menu>
                     </Popover>

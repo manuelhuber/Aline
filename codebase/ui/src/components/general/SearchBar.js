@@ -128,30 +128,30 @@ export class SearchBar extends React.Component {
         } else {
             return (
                 <div className="search-bar">
-                    <div className="text-search">
+                    <div className="text-search" title="Alle Seminare nach dem eingegebenen Text durchsuchen.">
                         <TextField type="search" hintText="Volltextsuche" value={this.state.textSearchInput}
                                    onChange={this.handleTextSearch}/>
                         <IconButton onClick={this.searchForText} iconClassName="material-icons">search</IconButton>
                     </div>
-                    <div className="dropdown">
+                    <div className="dropdown" title="Filtere die Seminare nach einer von dir gewählten Kategorie.">
                         <SelectField hintText="Filterkategorie wählen"
                                      value={this.state.categoryDropdownValue}
                                      onChange={this.chooseCategory}>
                             { this.state.categories.map(this.renderSelectMenuItems) }
                         </SelectField>
                     </div>
-                    <div className="dropdown">
+                    <div className="dropdown" title="Filtere die Seminare nach einer von dir gewählten Stufe.">
                         <SelectField hintText="Filterstufe wählen"
                                      value={this.state.tierDropdownValue}
                                      onChange={this.chooseTier}>
                             { this.state.availableTiers.map(this.renderSelectMenuItems) }
                         </SelectField>
                     </div>
-                    <FlatButton onClick={this.clearFilter} label="Filter löschen"
+                    <FlatButton onClick={this.clearFilter} label="Filter löschen" title="Lösche alle aktiven Filter"
                                 icon={<FontIcon className="material-icons">clear</FontIcon>}
                     />
                     {this.state.isFrontOffice &&
-                    <div className="checkbox-wrapper">
+                    <div className="checkbox-wrapper" title="Aktiviere diese Funktion, wenn du auch in der Vergangenheit liegende Seminare einsehen möchtest. Zum Beispiel um Rechnungen davon zu generieren.">
                         <Toggle label="In der Vergangenheit liegende Seminare anzeigen"
                                 value={this.state.showPastSeminars}
                                 onToggle={this.handlePastSeminarsToggle} labelPosition="right"/>
