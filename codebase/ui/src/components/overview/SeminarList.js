@@ -134,7 +134,7 @@ export class SeminarList extends React.Component {
                     { this.state.shownSeminars.map(this.renderSeminar) }
                     { (this.state.isFrontOffice && this.state.showPastSeminars) && this.state.shownPastSeminars.map(this.renderPastSeminar) }
                     { ((this.state.shownSeminars.length < 1 ) && ((this.state.shownPastSeminars.length < 1) || !(this.state.showPastSeminars))) &&
-                    <div className="no-seminar-found">
+                    <div className={this.state.isFrontOffice? 'no-seminar-found-frontoffice' : 'no-seminar-found'}>
                         <i className="material-icons md-36">sentiment_neutral</i>
                         <p title="Ja, schlechte Sprüche sind cool!">Ein Satz mit X das war wohl Nix.</p>
                     </div>}
