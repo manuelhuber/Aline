@@ -5,6 +5,7 @@ import {EmployeeListItem} from "./EmployeeListItem";
 import {SearchBar} from "../general/SearchBar";
 import {Popover, PopoverAnimationVertical} from "material-ui/Popover";
 import BookingService from "../../services/BookingService";
+import StorageService from "../../services/StorageService";
 
 export class EmployeeList extends React.Component {
     constructor() {
@@ -16,6 +17,7 @@ export class EmployeeList extends React.Component {
         this.grantSingleBooking = this.grantSingleBooking.bind(this);
         this.grantAllBookings = this.grantAllBookings.bind(this);
         this.checkForUngrantedBookings = this.checkForUngrantedBookings.bind(this);
+
         this.state = {
             employees: [],
             filteredEmployees: [],
@@ -23,6 +25,7 @@ export class EmployeeList extends React.Component {
             showRelevantEmployees: false,
             totalIssuedSpending: 0,
             totalPlannedSpending: 0,
+            userName: '',
         }
     }
 
@@ -36,6 +39,10 @@ export class EmployeeList extends React.Component {
             .catch(failureResult => {
                 this.props.router.replace('/error');
             });
+        let user = StorageService.getCurrentUser();
+        this.setState({
+            user: user.userName,
+        })
     }
 
     calculateSeminareTotalAmount(employees) {
@@ -180,10 +187,12 @@ export class EmployeeList extends React.Component {
     }
 
     renderEmployee(currentEmployee) {
-        return <EmployeeListItem employee={currentEmployee} router={this.props.router}
-                                 key={currentEmployee.userName}
-                                 confirmSingleBooking={this.grantSingleBooking}
-                                 confirmAllBookings={this.grantAllBookings}
-                                 checkForUngrantedBookings={this.checkForUngrantedBookings}/>;
+        if(currentEmployee.userName != this.state.user) {
+            return <EmployeeListItem employee={currentEmployee} router={this.props.router}
+                                     key={currentEmployee.userName}
+                                     confirmSingleBooking={this.grantSingleBooking}
+                                     confirmAllBookings={this.grantAllBookings}
+                                     checkForUngrantedBookings={this.checkForUngrantedBookings}/>;
+        }
     }
 }
