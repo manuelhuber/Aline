@@ -53,9 +53,9 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         User fitStaff = User.builder()
-                .username("fituser1")
-                .firstName("John")
-                .lastName("Doe")
+                .username("h.stange")
+                .firstName("Heiko")
+                .lastName("Stange")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
                 .authorities(Authorities.EMPLOYEE)
                 .division("FIT")
@@ -98,18 +98,18 @@ public class PersistenceConfiguration extends JpaRepositoryConfigExtension {
                 .build();
 
         User fitDivisionHead = User.builder()
-                .username("fitchef")
-                .firstName("Dr")
-                .lastName("Who")
+                .username("f.haaf")
+                .firstName("Franziska")
+                .lastName("Haaf")
                 .password("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi") // admin
                 .authorities(Authorities.EMPLOYEE + ',' + Authorities.DIVISION_HEAD + ',' + Authorities.TOP_DOG)
                 .division("FIT")
                 .build();
 
         User front_office = User.builder()
-                .username("front")
-                .firstName("Sussi")
-                .lastName("Zuchini")
+                .username("m.huber")
+                .firstName("Manuel")
+                .lastName("Huber")
                 .password("$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC") // password
                 .authorities(Authorities.EMPLOYEE + ',' + Authorities.FRONT_OFFICE)
                 .division("FOO")
