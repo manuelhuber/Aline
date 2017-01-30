@@ -109,11 +109,11 @@ public class SeminarServiceTest {
                 = new LinkedList<>(Arrays.asList(onePastOneFutureDate, allPastDates, allFutureDates, noDates));
         given(seminarRepository.findAll()).willReturn(list);
         assertThat(seminarService.getPastSeminars())
-                .contains(noDates)
                 .contains(allPastDates)
+                .doesNotContain(noDates)
                 .doesNotContain(onePastOneFutureDate)
                 .doesNotContain(allFutureDates)
-                .hasSize(2);
+                .hasSize(1);
     }
 
     @Test
