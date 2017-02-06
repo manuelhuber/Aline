@@ -15,6 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 import static de.fh.rosenheim.aline.util.LoggingUtil.currentUser;
@@ -80,6 +81,10 @@ public class BookingService {
             throw new NoObjectForIdException(Booking.class, id);
         }
         return booking;
+    }
+
+    public List<Booking> getBookingsForSeminar(long seminarId) {
+        return bookingRepository.findBySeminarId(seminarId);
     }
 
     /**

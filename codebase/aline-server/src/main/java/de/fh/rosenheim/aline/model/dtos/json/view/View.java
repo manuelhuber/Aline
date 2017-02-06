@@ -12,12 +12,22 @@ public class View {
     }
 
 
-    public interface SeminarView extends SeminarBasicsView {
+    public interface SeminarIdView {
 
     }
 
 
-    public interface BookingSummaryView extends UserBasicsView, SeminarView {
+    public interface SeminarDetailsView extends SeminarBasicsView {
+
+    }
+
+
+    public interface BookingSummaryView extends UserBasicsView, SeminarIdView {
+
+    }
+
+
+    public interface BookingSummaryWithSeminarDetailsView extends BookingSummaryView, SeminarDetailsView {
 
     }
 
