@@ -159,6 +159,7 @@ public class SeminarsController {
      * @return A updated list of all category names
      */
     @RequestMapping(value = "${route.seminar.category}", method = RequestMethod.POST)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
     public List<String> addCategory(@RequestBody Category category) {
         seminarService.addCategory(category);
         return seminarService.getAllCategories();
@@ -170,6 +171,7 @@ public class SeminarsController {
      * @return A updated list of all category names
      */
     @RequestMapping(value = "${route.seminar.category}", method = RequestMethod.DELETE)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
     public List<String> deleteCategory(@RequestParam String categoryName) {
         seminarService.deleteCategory(categoryName);
         return seminarService.getAllCategories();
