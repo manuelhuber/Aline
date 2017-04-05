@@ -1,6 +1,7 @@
 package de.fh.rosenheim.aline.controller.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import de.fh.rosenheim.aline.model.domain.Booking;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingDTO;
 import de.fh.rosenheim.aline.model.dtos.booking.BookingRequestDTO;
 import de.fh.rosenheim.aline.model.dtos.generic.ErrorResponse;
@@ -18,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * All HTTP endpoints related to booking
@@ -49,7 +52,7 @@ public class BookingsController {
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("@securityService.canBookForUser(principal, #bookingRequest.getUserName())")
     @ApiOperation(value = "book seminar", notes = "Books the seminar with the given ID to the current user (detected via token) or the given name if the current user has sufficient permission")
-    @JsonView(View.BookingSummaryView.class)
+    @JsonView(View.BookingSummaryWithSeminarDetailsView.class)
     public BookingDTO book(HttpServletRequest httpServletRequest, @Validated @RequestBody BookingRequestDTO bookingRequest)
             throws BookingException {
         String requestName = bookingRequest.getUserName();
@@ -67,7 +70,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @JsonView(View.BookingSummaryView.class)
+    @JsonView(View.BookingSummaryWithSeminarDetailsView.class)
     public BookingDTO getBookingById(@PathVariable long id) throws NoObjectForIdException {
         return bookingUtil.generateBookingDTO(bookingService.getBooking(id));
     }
@@ -80,7 +83,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.grant}", method = RequestMethod.POST)
-    @JsonView(View.BookingSummaryView.class)
+    @JsonView(View.BookingSummaryWithSeminarDetailsView.class)
     public BookingDTO grantBooking(@PathVariable long id) throws NoObjectForIdException {
         return bookingUtil.generateBookingDTO(bookingService.grantBooking(id));
     }
@@ -93,7 +96,7 @@ public class BookingsController {
      * @throws NoObjectForIdException if there is no Booking for the given ID
      */
     @RequestMapping(value = "/{id}/${route.booking.deny}", method = RequestMethod.POST)
-    @JsonView(View.BookingSummaryView.class)
+    @JsonView(View.BookingSummaryWithSeminarDetailsView.class)
     public BookingDTO denyBooking(@PathVariable long id) throws NoObjectForIdException {
         return bookingUtil.generateBookingDTO(bookingService.denyBooking(id));
     }
@@ -109,6 +112,17 @@ public class BookingsController {
     public ResponseEntity<?> deleteBookingById(@PathVariable long id) throws NoObjectForIdException {
         bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/${route.booking.seminar}/{id}", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.isFrontOffice(principal)")
+    @JsonView(View.BookingSummaryView.class)
+    public List<BookingDTO> getBookingsForSeminar(@PathVariable long id) throws NoObjectForIdException {
+        List<Booking> bookings = bookingService.getBookingsForSeminar(id);
+
+        return bookings.stream()
+                .map(bookingUtil::generateBookingDTO)
+                .collect(Collectors.toList());
     }
 
     // ----------------------------------------------------------------------------------------------- Exception Handler

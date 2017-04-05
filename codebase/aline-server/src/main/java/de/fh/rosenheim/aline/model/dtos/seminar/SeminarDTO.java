@@ -11,22 +11,22 @@ import java.util.Date;
 @Data
 public class SeminarDTO extends SeminarBasicsDTO {
 
-    @JsonView(View.SeminarView.class)
+    @JsonView({View.SeminarDetailsView.class, View.SeminarIdView.class})
     private long id;
 
     /**
      * The number of non-denied bookings (meaning all granted and requested bookings)
      */
-    @JsonView(View.SeminarView.class)
+    @JsonView(View.SeminarDetailsView.class)
     @ApiModelProperty(notes = SwaggerTexts.ACTIVE_BOOKINGS)
     private int activeBookings;
 
-    @JsonView(View.SeminarView.class)
+    @JsonView(View.SeminarDetailsView.class)
     private Date created;
 
-    @JsonView(View.SeminarView.class)
+    @JsonView(View.SeminarDetailsView.class)
     private boolean billGenerated;
 
-    @JsonView(View.SeminarView.class)
+    @JsonView(View.SeminarDetailsView.class)
     private Date updated;
 }
