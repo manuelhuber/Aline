@@ -21,7 +21,7 @@ logging:
       hibernate: DEBUG
 
 token:
-# Used to encrypt the JWTs
+# Used to sign the JWTs
   secret: foobar123
 # Token header key
   header: X-Auth-Token
