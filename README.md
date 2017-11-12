@@ -1,4 +1,4 @@
-# Aline (As least it's not Excel)
+# Aline (At least it's not Excel)
 
 ![](codebase/ui/src/assets/aline_500x500.png?raw=true)
 
